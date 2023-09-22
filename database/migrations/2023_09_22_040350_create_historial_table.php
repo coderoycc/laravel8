@@ -13,20 +13,18 @@ class CreateHistorialTable extends Migration
      */
     public function up()
     {
-        Schema::create('historial', function (Blueprint $table) {
-            $table->id();
+        Schema::create('tblHistorial', function (Blueprint $table) {
+            $table->id('idHistorial');
             $table->unsignedBigInteger('idUsuario');
-            $table->date('fechaConsulta')->default(\Carbon\Carbon::now()->toDateString());
-            $table->text('evolucion');
-            $table->string('valoracion', 250)->nullable();
-            $table->string('observaciones', 250)->nullable();
-            $table->decimal('peso')->nullable();
-            $table->decimal('talla', 3, 2)->nullable();
-            $table->date('proxConsulta')->nullable();
-            $table->string('internacion', 2)->default('NO');
+            $table->unsignedBigInteger('idMedico');
+            $table->string('caso', 250)->nullable();
+            $table->date('fechaRegistro')->default(\Carbon\Carbon::now()->toDateString());
+            $table->text('datosIngreso');
             $table->timestamps();
-            // Definir la llave foránea
+            // Definir la llave foránea paciente
             $table->foreign('idUsuario')->references('idUsuario')->on('tblUsuario');
+            // Definir la llave foránea paciente
+            $table->foreign('idMedico')->references('idUsuario')->on('tblUsuario');
         });
     }
 
@@ -37,6 +35,6 @@ class CreateHistorialTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('historial');
+        Schema::dropIfExists('tblHistorial');
     }
 }

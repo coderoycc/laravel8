@@ -5,17 +5,13 @@
 
 @section('content_header')
 
-  <h1>Dashboard</h1>
+  <h1>Crear un nuevo paciente</h1>
 @stop
 
 
 @section('content')
 
-  <div class="row">
-    @foreach ($users as $user)
-      <a href="#">{{ $user->nombres }}</a>
-    @endforeach
-  </div>
+  
 @stop
 
 

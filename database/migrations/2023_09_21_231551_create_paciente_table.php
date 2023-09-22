@@ -23,6 +23,7 @@ class CreatePacienteTable extends Migration
             $table->string('rol', 10);
             $table->date('fechaNac')->nullable();
             $table->string('especialidad', 100)->nullable();
+            $table->string('genero', 1)->nullable();
             $table->string('password')->default(Hash::make('admin2023'));
             $table->rememberToken();
             $table->timestamps();

@@ -11,3 +11,6 @@
 * Para crear un modelo `php artisan make:model carpeta/modeloNOmbre`
 * Limpiar la cache `php artisan cache:clear`, `php artisan config:clear`, `php artisan config:cache`
 
+## Consola de debuggeo
+* Usar "barryvdh/laravel-debugbar".
+

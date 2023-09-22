@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Historial;
+use App\Http\Controllers\Medico;
+use App\Http\Controllers\Paciente;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,9 +16,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('admin.index');
+    $users = App\Models\Historial\Historial::all();
+    return view('admin.index', ['users' => $users]);
 });
 
+// Rutas para Medicos
+Route::resource('medico', Medico::class)->names('medico');
+
+// Rutas para Pacientes
+Route::resource('paciente', Paciente::class)->names('paciente');
+
+
+// Rutas para controlador Historial
+Route::resource('historial', Historial::class)->names('historial');
 
 Auth::routes();
 

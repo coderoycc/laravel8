@@ -12,9 +12,9 @@
 @section('content')
 
   <div class="row">
-    @foreach ($users as $user)
+    {{-- @foreach ($users as $user)
       <a href="#">{{ $user->nombres }}</a>
-    @endforeach
+    @endforeach --}}
   </div>
 @stop
 

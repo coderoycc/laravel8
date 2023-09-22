@@ -24,6 +24,7 @@ class User extends Authenticatable
         'usuario',
         'password',
     ];
+    protected $table = 'tblUsuario';
 
     /**
      * The attributes that should be hidden for serialization.
@@ -43,4 +44,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function historialPaciente(){
+        return $this->hasOne(Historial::class, 'idUsuario');
+    }
+    public function tieneMedico(){
+        return $this->hasOne(Historial::class, 'idMedico');
+    }
+    public function edad($fechaNac){
+        date_default_timezone_set("America/La_Paz");
+        $f_fin = date_create(date('Y-m-d'));
+        $res = date_diff(date_create($fechaNac), $f_fin);
+        return $res->format("%y años %m meses %d dias");
+    }
 }

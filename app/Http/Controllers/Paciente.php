@@ -2,29 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Historial\HistorialModel;
 use Illuminate\Http\Request;
+use App\Models\User;
 
-class HistorialController extends Controller
+class Paciente extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $pacientes = User::where('rol', 'PACIENTE')->get();
+        return view('pacientes.index', compact('pacientes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('pacientes.create');
     }
 
     /**
@@ -41,21 +32,21 @@ class HistorialController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Historial\HistorialModel  $historialModel
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(HistorialModel $historialModel)
+    public function show($id)
     {
-        //
+        return view('pacientes.show');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Historial\HistorialModel  $historialModel
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(HistorialModel $historialModel)
+    public function edit($id)
     {
         //
     }
@@ -64,10 +55,10 @@ class HistorialController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Historial\HistorialModel  $historialModel
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, HistorialModel $historialModel)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -75,10 +66,10 @@ class HistorialController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Historial\HistorialModel  $historialModel
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(HistorialModel $historialModel)
+    public function destroy($id)
     {
         //
     }
