@@ -6,7 +6,7 @@
 @section('content_header')
   <div class="d-flex m-2 justify-content-between">
     <h1>Ver Pacientes</h1>
-    <button class="btn btn-success float-right"><i class="fas fa-plus"></i> Nuevo Paciente</button>
+    <a class="btn btn-success float-right" href="{{route('paciente.create')}}"><i class="fas fa-plus"></i> Nuevo Paciente</a>
 
   </div>
 @stop

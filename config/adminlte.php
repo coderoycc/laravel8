@@ -339,12 +339,12 @@ return [
         ['header' => 'MÉDICOS'],
         [
             'text' => 'Registrar nuevo médico',
-            'url'  => 'medico/nuevo',
+            'route'  => 'medico.create',
             'icon' => 'fas fa-fw fa-plus',
         ],
         [
             'text' => 'Ver médicos',
-            'url'  => 'medico',
+            'route'  => 'medico.index',
             'icon' => 'fas fa-fw fa-user-md',
         ],
         ['header' => 'account_settings'],
