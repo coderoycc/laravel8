@@ -5,10 +5,11 @@ namespace App\Models\Historial;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Historial extends Model
+class HistorialModel extends Model
 {
     use HasFactory;
     protected $table = 'tblhistorial';
+    protected $fillable = ['idUsuario', 'idMedico'];
     // para saber a que usuario pertenece este historial
     public function paciente(){
         return $this->belongsTo(User::class, 'idUsuario');

@@ -347,15 +347,36 @@ return [
             'route'  => 'medico.index',
             'icon' => 'fas fa-fw fa-user-md',
         ],
-        ['header' => 'account_settings'],
+        // vista solo para medicos
+        ['header' => 'MIS PACIENTES'],
         [
-            'text' => 'profile',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
+            'text' => 'Pacientes Nuevos',
+            'route'  => 'paciente.nuevos',
+            'icon' => 'fas fa-fw fa-plus-circle',
         ],
         [
+            'text' => 'Mis Pacientes',
+            'route'  => 'paciente.medico',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        // vista solo para pacientes
+        ['header' => 'MI EVOLUCIÓN'],
+        [
+            'text' => 'Mi evolución',
+            'route'  => 'paciente.evolucion',
+            'icon' => 'fas fa-fw fa-leaf',
+        ],
+        // [
+        //     'text' => 'Mis Pacientes',
+        //     'route'  => 'paciente.medico',
+        //     'icon' => 'fas fa-fw fa-user-md',
+        // ],
+
+        // Para todos los usuarios
+        ['header' => 'account_settings'],
+        [
             'text' => 'change_password',
-            'url'  => 'admin/settings',
+            'url'  => 'admin/password',
             'icon' => 'fas fa-fw fa-lock',
         ],
         [
