@@ -1,23 +1,99 @@
-@extends('layouts.app')
+@extends('adminlte::page')
+@section('title', 'Inicio')
+@section('content_header')
+  <h1>Inicio</h1>
+@stop
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{ __('You are logged in!') }}
-                </div>
-            </div>
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      @can('admin')
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-info">
+          <div class="inner">
+            <h3>#</h3>
+            <p>Todos los médicos</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-bag"></i>
+          </div>
+          <a href="{{route('medico.index')}}" class="small-box-footer">Ver <i class="fas fa-eye"></i> </a>
         </div>
+      </div>
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3>+</h3>
+            <p>Agregar nuevo paciente</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+          <a href="{{route('paciente.create')}}" class="small-box-footer">Agregar nuevo <i class="fas fa-plus"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-primary">
+          <div class="inner">
+            <h3>#</h3>
+            <p>Ver solicitudes de internación</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-bag"></i>
+          </div>
+          <a href="#" class="small-box-footer">Ver <i class="fas fa-eye"></i> </a>
+        </div>
+      </div>
+      @endcan
+      @can('medico')
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3>53</h3>
+            <p>Pacientes nuevos</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-stats-bars"></i>
+          </div>
+          <a href="#" class="small-box-footer">Ver listado <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-info">
+          <div class="inner">
+            <h3>#</h3>
+            <p>Todos mis pacientes</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-bag"></i>
+          </div>
+          <a href="{{route('medico.index')}}" class="small-box-footer">Ver listado<i class="fas fa-eye"></i> </a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-warning">
+          <div class="inner">
+            <h3>#</h3>
+            <p>Consultas programadas</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-person-add"></i>
+          </div>
+          <a href="#" class="small-box-footer">Ver <i class="fas fa-eye"></i> </a>
+        </div>
+      </div>
+      @endcan
     </div>
-</div>
-@endsection
+  </div>
+</section>
+@stop
+
+
+@section('css')
+  <link rel="stylesheet" href="/css/admin_custom.css">
+@stop
+
+@section('js')
+  <script> console.log('Hi!'); </script>
+@stop

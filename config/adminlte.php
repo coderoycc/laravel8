@@ -14,9 +14,9 @@ return [
     |
     */
 
-    'title' => 'Hospital',
+    'title' => '',
     'title_prefix' => '',
-    'title_postfix' => '',
+    'title_postfix' => ' | Hospital',
 
     /*
     |--------------------------------------------------------------------------
@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'use_ico_only' => false,
+    'use_ico_only' => true,
     'use_full_favicon' => false,
 
     /*
@@ -68,7 +68,7 @@ return [
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Admin Logo',
+    'logo_img_alt' => 'Logo',
 
     /*
     |--------------------------------------------------------------------------
@@ -84,9 +84,9 @@ return [
     */
 
     'auth_logo' => [
-        'enabled' => false,
+        'enabled' => true,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'path' => 'vendor/adminlte/dist/img/mini.png',
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -107,7 +107,7 @@ return [
     */
 
     'preloader' => [
-        'enabled' => true,
+        'enabled' => false,
         'img' => [
             'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
             'alt' => 'AdminLTE Preloader Image',
@@ -130,10 +130,10 @@ return [
     */
 
     'usermenu_enabled' => true,
-    'usermenu_header' => false,
+    'usermenu_header' => true,
     'usermenu_header_class' => 'bg-primary',
-    'usermenu_image' => false,
-    'usermenu_desc' => false,
+    'usermenu_image' => true,
+    'usermenu_desc' => true,
     'usermenu_profile_url' => false,
 
     /*
@@ -306,11 +306,6 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
         ],
-        [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
-        ],
         // [
         //     'text'        => 'pages',
         //     'url'         => 'admin/pages',
@@ -320,51 +315,60 @@ return [
         // ],
         [
             'text' => 'INICIO',
-            'url'  => '/',
+            'url'  => '/home',
             'icon' => 'fas fa-fw fa-tachometer-alt',
         ],
-        ['header' => 'PACIENTES'],
+        ['header' => 'PACIENTES', 'can' => 'admin'],
         [
             'text' => 'Registrar nuevo paciente',
             'route'  => 'paciente.create',
             'icon' => 'fas fa-fw fa-plus',
             'data-toggle' => 'pill',
+            'can' => 'admin'
         ],
         [
             'text' => 'Ver pacientes',
             'route'  => 'paciente.index',
             'icon' => 'fas fa-fw fa-user',
             'data-toggle' => 'pill',
+            'can' => 'admin'
         ],
-        ['header' => 'MÉDICOS'],
+        ['header' => 'MÉDICOS', 'can' => 'admin'],
         [
             'text' => 'Registrar nuevo médico',
             'route'  => 'medico.create',
             'icon' => 'fas fa-fw fa-plus',
+            'can' => 'admin'
         ],
         [
             'text' => 'Ver médicos',
             'route'  => 'medico.index',
             'icon' => 'fas fa-fw fa-user-md',
+            'can' => 'admin'
         ],
+
         // vista solo para medicos
-        ['header' => 'MIS PACIENTES'],
+        ['header' => 'MIS PACIENTES', 'can' => 'medico'],
         [
             'text' => 'Pacientes Nuevos',
             'route'  => 'paciente.nuevos',
             'icon' => 'fas fa-fw fa-plus-circle',
+            'can' => 'medico'
         ],
         [
             'text' => 'Mis Pacientes',
             'route'  => 'paciente.medico',
             'icon' => 'fas fa-fw fa-user',
+            'can' => 'medico'
         ],
+
         // vista solo para pacientes
-        ['header' => 'MI EVOLUCIÓN'],
+        ['header' => 'MI EVOLUCIÓN', 'can' => 'paciente'],
         [
             'text' => 'Mi evolución',
             'route'  => 'paciente.evolucion',
             'icon' => 'fas fa-fw fa-leaf',
+            'can' => 'paciente'
         ],
         // [
         //     'text' => 'Mis Pacientes',
@@ -379,60 +383,60 @@ return [
             'url'  => 'admin/password',
             'icon' => 'fas fa-fw fa-lock',
         ],
-        [
-            'text'    => 'multilevel',
-            'icon'    => 'fas fa-fw fa-share',
-            'submenu' => [
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-                [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-            ],
-        ],
-        ['header' => 'labels'],
-        [
-            'text'       => 'important',
-            'icon_color' => 'red',
-            'url'        => '#',
-        ],
-        [
-            'text'       => 'warning',
-            'icon_color' => 'yellow',
-            'url'        => '#',
-        ],
-        [
-            'text'       => 'information',
-            'icon_color' => 'cyan',
-            'url'        => '#',
-        ],
+        // [
+        //     'text'    => 'multilevel',
+        //     'icon'    => 'fas fa-fw fa-share',
+        //     'submenu' => [
+        //         [
+        //             'text' => 'level_one',
+        //             'url'  => '#',
+        //         ],
+        //         [
+        //             'text'    => 'level_one',
+        //             'url'     => '#',
+        //             'submenu' => [
+        //                 [
+        //                     'text' => 'level_two',
+        //                     'url'  => '#',
+        //                 ],
+        //                 [
+        //                     'text'    => 'level_two',
+        //                     'url'     => '#',
+        //                     'submenu' => [
+        //                         [
+        //                             'text' => 'level_three',
+        //                             'url'  => '#',
+        //                         ],
+        //                         [
+        //                             'text' => 'level_three',
+        //                             'url'  => '#',
+        //                         ],
+        //                     ],
+        //                 ],
+        //             ],
+        //         ],
+        //         [
+        //             'text' => 'level_one',
+        //             'url'  => '#',
+        //         ],
+        //     ],
+        // ],
+        // ['header' => 'labels'],
+        // [
+        //     'text'       => 'important',
+        //     'icon_color' => 'red',
+        //     'url'        => '#',
+        // ],
+        // [
+        //     'text'       => 'warning',
+        //     'icon_color' => 'yellow',
+        //     'url'        => '#',
+        // ],
+        // [
+        //     'text'       => 'information',
+        //     'icon_color' => 'cyan',
+        //     'url'        => '#',
+        // ],
     ],
 
     /*
@@ -471,7 +475,7 @@ return [
 
     'plugins' => [
         'Datatables' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',

@@ -12,6 +12,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $primaryKey = 'idUsuario';
     protected $fillable = [
         'nombres',
         'apellidos',
@@ -21,11 +22,6 @@ class User extends Authenticatable
     ];
     protected $table = 'tblUsuario';
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
@@ -51,5 +47,13 @@ class User extends Authenticatable
         $f_fin = date_create(date('Y-m-d'));
         $res = date_diff(date_create($fechaNac), $f_fin);
         return $res->format("%y años %m meses %d dias");
+    }
+
+    public function adminlte_image(){
+        return asset('vendor/images/user.png');
+    }
+
+    public function adminlte_desc(){
+        return '';
     }
 }

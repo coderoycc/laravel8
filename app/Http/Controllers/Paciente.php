@@ -10,6 +10,10 @@ use PhpParser\Node\Stmt\TryCatch;
 
 class Paciente extends Controller
 {
+  public function __construct()
+  {
+      $this->middleware('auth');
+  }
   public function index()
   {
     $pacientes = User::where('rol', 'PACIENTE')->get();

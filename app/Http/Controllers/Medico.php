@@ -2,15 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Medico\MedicoModel;
-
+use App\Models\Medico\MedicoModel; 
+use App\Providers\AuthServiceProvider;
 class Medico extends Controller
 {
 
+  public function __construct()
+  {
+    $this->middleware('auth');
+  }
   public function index()
   {
+    // if (Gate::check('admin')) {
+    //   return view('admin.dashboard');
+    // } else {
+    //     abort(403); // Mostrar una página de error 403 Forbidden
+    // }
     $medicos = User::where('rol', 'MEDICO')->get();
     return view('medico.index', compact('medicos'));
   }
