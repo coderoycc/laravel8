@@ -9,7 +9,7 @@ class HistorialModel extends Model
 {
     use HasFactory;
     protected $table = 'tblhistorial';
-    protected $fillable = ['idUsuario', 'idMedico'];
+    protected $fillable = ['idPaciente', 'idMedico', 'fechaConsulta', 'servicio', 'procedencia','etapa'];
     // para saber a que usuario pertenece este historial
     public function paciente(){
         return $this->belongsTo(User::class, 'idUsuario');

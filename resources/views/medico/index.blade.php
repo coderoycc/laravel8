@@ -37,6 +37,7 @@
           <th>TELÉFONO/CELULAR</th>
           <th>CORREO E.</th>
           <th>ESPECIALIDAD</th>
+          <th>MATRÍCULA P.</th>
           <th>OPCIONES</th>
         </tr>
       </thead>
@@ -47,7 +48,8 @@
           <td>{{$medico->nombres}}</td>
           <td align="center">{{$medico->celular}}</td>
           <td>{{$medico->email}}</td>
-          <td>{{strtoupper($medico->especialidad) }}</td>
+          <td>{{ $medico->especialidad }}</td>
+          <td>{{ $medico->matProfesional }}</td>
           <td>
             <div class="btn-group">
               <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -76,15 +78,15 @@
 @stop
 
 @section('js')
-<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
-{{-- <script src="/public/app.js"></script> --}}
+<script src="/custom/js/main.js"></script>
 <script>
   // hola();
   $(document).ready(function(){
     
     $("#t_medico").DataTable({
+      language: lenguaje,
+      scrollX: true,
+      autoWidth: false
     });
   })
 

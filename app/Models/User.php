@@ -13,8 +13,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $primaryKey = 'idUsuario';
-    protected $fillable = [
-        'nombres',
+    protected $fillable = ['nombres',
         'apellidos',
         'rol',
         'usuario',
@@ -36,12 +35,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function historialPaciente(){
-        return $this->hasOne(Historial::class, 'idUsuario');
-    }
-    public function tieneMedico(){
-        return $this->hasOne(Historial::class, 'idMedico');
-    }
     public function edad($fechaNac){
         date_default_timezone_set("America/La_Paz");
         $f_fin = date_create(date('Y-m-d'));

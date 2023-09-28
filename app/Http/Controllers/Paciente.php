@@ -40,13 +40,15 @@ class Paciente extends Controller
       $paciente = PacienteModel::create($data);
       $idPaciente =$paciente->attributes()['id'];
   
-      $dataHistorial = ['idUsuario'=>$idPaciente, 'idMedico'=>$data['idMedico']];
+      $dataHistorial = ['idPaciente'=>$idPaciente, 'idMedico'=>$data['idMedico'], 'fechaConsulta'=> $data['fechaConsulta'], 'procedencia'=>$data['procedencia'], 'servicio'=>$data['tipo'], 'etapa'=>''];
+
       HistorialModel::create($dataHistorial);
-      $request->session()->flash('success', 'El paciente se ha registrado con éxito.');
-      return redirect()->route('paciente.index');
+      // $request->session()->flash('success', 'El paciente se ha registrado con éxito.');
+      // return redirect()->route('paciente.index');
     } catch (\Throwable $th) {
-      $request->session()->flash('error', 'Ocurrio un error al registrar al paciente.');
-      return redirect()->route('paciente.index');
+      echo "Error: " . $th->getMessage() . " en línea " . $th->getLine();
+      // $request->session()->flash('error', 'Ocurrio un error al registrar al paciente.');
+      // return redirect()->route('paciente.index');
     }
   }
 

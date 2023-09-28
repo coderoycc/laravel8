@@ -17,13 +17,11 @@ class CreateConsultaTable extends Migration
             $table->id('idConsulta');
             $table->unsignedBigInteger('idHistorial');
             $table->date('fechaConsulta')->default(\Carbon\Carbon::now()->toDateString());
-            $table->text('evolucion');
-            $table->string('valoracion', 250)->nullable();
-            $table->string('observaciones', 250)->nullable();
-            $table->decimal('peso')->nullable();
+            $table->text('valoracion')->nullable();
+            $table->text('observaciones')->nullable();
+            $table->decimal('peso', 3, 2)->nullable();
             $table->decimal('talla', 3, 2)->nullable();
             $table->date('proxConsulta')->nullable();
-            $table->string('internacion', 2)->default('NO');
 
             $table->foreign('idHistorial')->references('idHistorial')->on('tblHistorial');
         });

@@ -3,14 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Medico\MedicoModel;
 class RequestController extends Controller
 {
 
   public function medicoespecialidad($especialidad){
-    $medicos = User::where('especialidad', $especialidad)->get();
-    print_r($medicos);
-    echo 'devuelto';
-    // echo json_encode(array('status'=>'success', 'html'));
+    try {
+      $cadHtml = '';
+      if($especialidad == 'EMERGENCIA'){
+        $medicos = MedicoModel::where('rol', 'MEDICO')->get();
+      }else{
+        $medicos = MedicoModel::where('especialidad', $especialidad)->get();
+      }
+      foreach ($medicos as $medico) {
+        $cadHtml .= '<option value="'.$medico->idUsuario.'">'.$medico->apellidos.' '.$medico->nombres.'</option>';
+      }
+      echo json_encode(array('status'=>'success', 'html'=>$cadHtml));
+    } catch (\Throwable $th) {
+      echo json_encode(array('status'=>'error', 'html'=>json_encode($th)));
+    } 
   }
 }

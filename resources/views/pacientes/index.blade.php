@@ -37,6 +37,7 @@
           <th>NOMBRES</th>
           <th>EDAD</th>
           <th>GENERO</th>
+          <th># CARNET S.U.S.</th>
           <th>OPCIONES</th>
         </tr>
       </thead>
@@ -48,6 +49,7 @@
           <td>{{$paciente->nombres}}</td>
           <td>{{$paciente->edad($paciente->fechaNac)}}</td>
           <td align="center">{{$paciente->genero == 'F' ? 'FEMENINO' : 'MASCULINO'}}</td>
+          <td align="center">{{$paciente->codSus}}</td>
           <td>
             <div class="btn-group">
               <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -76,12 +78,13 @@
 @stop
 
 @section('js')
-<script src="/vendor/adminlte/dist/js/app.js"></script>
+<script src="/custom/js/main.js"></script>
 <script>
-  hola();
   $(document).ready(function(){
     $("#t_paciente").DataTable({
-      locale:'es'
+      language: lenguaje,
+      scrollX: true,
+      autoWidth: false
     });
   })
 

@@ -16,15 +16,22 @@ class CreatePacienteTable extends Migration
     {
         Schema::create('tblUsuario', function (Blueprint $table) {
             $table->id('idUsuario');
-            $table->string('usuario', 30)->unique();
             $table->string('apellidos', 100);
             $table->string('nombres', 100);
-            $table->string('ci', 20);
-            $table->string('rol', 10);
-            $table->date('fechaNac')->nullable();
-            $table->string('especialidad', 100)->nullable();
-            $table->string('genero', 1)->nullable();
+            $table->string('ci', 20)->nullable(false);
+            $table->string('email', 100)->nullable(false);
+            $table->string('rol', 20);
             $table->string('password')->default(Hash::make('admin2023'));
+            $table->string('genero', 1)->nullable(); // opcionales
+            $table->string('celular',20)->nullable(); // opcionales
+            $table->date('fechaNac')->nullable(); // opcionales
+            // campos paciente
+            $table->string('codPaciente', 20)->nullable();
+            $table->string('codSus', 50)->nullable();
+            //campos medico
+            $table->string('especialidad', 100)->nullable();
+            $table->string('matProfesional', 50)->nullable();
+            
             $table->rememberToken();
             $table->timestamps();
         });

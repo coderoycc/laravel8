@@ -12,16 +12,19 @@
 @section('content')
 
 <div class="card">
+  <div class="card-header">
+    <button class="btn btn-secondary" onclick="history.back()">Volver</button>
+  </div>
   <div class="card-body">
     {!! Form::open(['route'=>'medico.store']) !!}
       <div class="form-row">
         <div class="form-group col-md-4">
           {!! Form::label('nombres', 'Nombre (s)', []) !!}
-          {!! Form::text('nombres', null, ['class'=>'form-control']) !!}
+          {!! Form::text('nombres', null, ['class'=>'form-control', 'placeholder'=>'Escriba su nombre']) !!}
         </div>
         <div class="form-group col-md-4">      
           {!! Form::label('appellidos', 'Apellidos', []) !!}
-          {!! Form::text('apellidos', null, ['class'=>'form-control']) !!}
+          {!! Form::text('apellidos', null, ['class'=>'form-control', 'placeholder'=>'Ingrese Apellidos']) !!}
         </div>
         <div class="form-group col-md-4">      
           {!! Form::label('ci', 'Nro. Carnet de Identidad (solo números)', []) !!}
@@ -34,7 +37,7 @@
           {!! Form::date('fechaNac', null, ['class'=>'form-control','onchange'=>'calcularEdad()', 'id'=>'fechaNac']) !!}
         </div>
         <div class="form-group col-md-4">
-          {!! Form::label('genero', 'Genero.', []) !!}
+          {!! Form::label('genero', 'Género.', []) !!}
           {!! Form::select('genero', ['F'=>'FEMENINO', 'M'=>'MASCULINO'],null, ['class'=>'form-control']) !!}
         </div>
         <div class="form-group col-md-4">
@@ -43,11 +46,15 @@
         </div>
         <div class="form-group col-md-4">
           {!! Form::label('especialidad', 'Especialidad', []) !!}
-          {!! Form::text('especialidad', null, ['class'=>'form-control']) !!}
+          {!! Form::select('especialidad', ['ONCOLOGÍA'=>'ONCOLOGÍA', 'HEMATOLOGÍA'=>'HEMATOLOGÍA'], null, ['class'=>'form-control']) !!}
         </div>
         <div class="form-group col-md-4">
           {!! Form::label('celular', 'Teléfono o Celular', []) !!}
           {!! Form::text('celular', null, ['class'=>'form-control']) !!}
+        </div>
+        <div class="form-group col-md-4">
+          {!! Form::label('matProfesional', 'Matrícula profesional', []) !!}
+          {!! Form::text('matProfesional', null, ['class'=>'form-control']) !!}
         </div>
         <div class="form-group col-md-4">
           {!! Form::label('email', 'Correo electrónico', []) !!}
@@ -70,15 +77,5 @@
 @stop
 
 @section('js')
-<script> 
-  function calcularEdad(){
-    const fechaNac = $('#fechaNac').val();
-    const today = new Date();
-    const ageInMillis = today.getTime() - new Date(fechaNac).getTime();
-    const ageYears = Math.floor(ageInMillis / (365.25 * 24 * 60 * 60 * 1000));
-    const ageMonths = Math.floor((ageInMillis % (365.25 * 24 * 60 * 60 * 1000)) / (30.436875 * 24 * 60 * 60 * 1000));
-    const ageDays = Math.floor((ageInMillis % (30.436875 * 24 * 60 * 60 * 1000)) / (24 * 60 * 60 * 1000));
-    $("#edad").val(`${ageYears} años ${ageMonths} meses ${ageDays} días`); 
-  }
-</script>
+<script src="/custom/js/main.js"></script>
 @stop
