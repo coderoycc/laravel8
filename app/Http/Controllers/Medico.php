@@ -86,4 +86,11 @@ class Medico extends Controller
   {
     //
   }
+
+  public function medicoespecialidad($especialidad){
+    $medicos = User::where('especialidad', $especialidad)->get();
+    print_r($medicos);
+    echo 'devuelto';
+    // echo json_encode(array('status'=>'success', 'html'));
+  }
 }

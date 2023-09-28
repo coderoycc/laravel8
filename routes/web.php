@@ -14,6 +14,7 @@ Route::get('/', function () {
 });
 // Rutas para Medicos
 Route::resource('medico', Medico::class)->names('medico');
+Route::get('medico/{especialidad}', 'Medico@medicoespecialidad');
 
 // Rutas para Pacientes
 Route::resource('paciente', Paciente::class)->names('paciente');

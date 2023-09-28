@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 
 
-@section('title', 'Dashboard')
+@section('title', 'Crear Medico')
 
 @section('content_header')
   <h1>Crear un nuevo paciente</h1>
@@ -53,8 +53,12 @@
           {!! Form::email('email', null, ['class'=>'form-control']) !!}
         </div>
         <div class="form-group col-md-4">
+          {!! Form::label('tipo', 'Seleccione una especialidad', []) !!}
+          {!! Form::select('tipo', ['EMERGENCIA'=>'EMERGENCIA', 'ONCOLOGIA'=>'ONCOLOGÍA', 'EMATOLOGIA'=>'EMATOLOGÍA'], null, ['class'=>'form-control', 'id'=>'tipo']) !!}
+        </div>
+        <div class="form-group col-md-4">
           {!! Form::label('idMedico', 'Seleccione un médico', []) !!}
-          {!! Form::select('idMedico', $arrMedic, null, ['class'=>'form-control']) !!}
+          {!! Form::select('idMedico', $arrMedic, null, ['class'=>'form-control', 'id'=>'medicoSelect']) !!}
         </div>
       </div>
       <div class="form-row mt-2">
@@ -83,5 +87,22 @@
       const ageDays = Math.floor((ageInMillis % (30.436875 * 24 * 60 * 60 * 1000)) / (24 * 60 * 60 * 1000));
       $("#edad").val(`${ageYears} años ${ageMonths} meses ${ageDays} días`); 
     }
+
+
+    $("#tipo").on('change', async () => {
+      console.log('Cambio: '+$("#tipo").val())
+      try {
+        const res = await $.ajax({
+          url: '../api/medico/'+$("#tipo").val(),
+          type: 'GET',
+          dataType: 'json'
+        });
+        if(res.status === 'success'){
+          $("#medicoSelect").html(res.html);
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    })
   </script>
 @stop
