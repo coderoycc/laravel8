@@ -32,3 +32,6 @@ Route::resource('historial', Historial::class)->names('historial');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Ruta de Prueba para el Armado de PDF
+Route::get('/report', [App\Http\Controllers\Paciente::class, 'ProtocolSTJudePDF'])->name('report');
