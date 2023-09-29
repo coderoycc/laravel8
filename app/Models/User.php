@@ -49,4 +49,8 @@ class User extends Authenticatable
     public function adminlte_desc(){
         return '';
     }
+    public function attributes()
+    {
+        return $this->attributes;
+    }
 }

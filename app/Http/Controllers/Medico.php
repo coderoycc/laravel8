@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Medico\MedicoModel; 
 use App\Providers\AuthServiceProvider;
+use Illuminate\Support\Facades\Auth;
+
 class Medico extends Controller
 {
 
@@ -16,10 +18,10 @@ class Medico extends Controller
   }
   public function index()
   {
-    // if (Gate::check('admin')) {
-    //   return view('admin.dashboard');
+    // $gate = app()->make('Gate');
+    // if ($gate->authorize('admin')) {
     // } else {
-    //     abort(403); // Mostrar una página de error 403 Forbidden
+    //   abort(403); // Mostrar una página de error 403 Forbidden
     // }
     $medicos = User::where('rol', 'MEDICO')->get();
     return view('medico.index', compact('medicos'));

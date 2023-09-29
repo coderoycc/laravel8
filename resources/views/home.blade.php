@@ -5,6 +5,7 @@
 @stop
 
 @section('content')
+{{-- {{print_r($variables)}} --}}
 <section class="content">
   <div class="container-fluid">
     <div class="row">
@@ -12,13 +13,25 @@
       <div class="col-lg-3 col-6">
         <div class="small-box bg-info">
           <div class="inner">
-            <h3>#</h3>
+            <h3>{{$variables['cantidadMedicos']}}</h3>
             <p>Todos los médicos</p>
           </div>
           <div class="icon">
             <i class="ion ion-bag"></i>
           </div>
           <a href="{{route('medico.index')}}" class="small-box-footer">Ver <i class="fas fa-eye"></i> </a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-6">
+        <div class="small-box bg-primary">
+          <div class="inner">
+            <h3>{{$variables['todosPacientes']}}</h3>
+            <p>Todos los pacientes</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-bag"></i>
+          </div>
+          <a href="{{route('paciente.index')}}" class="small-box-footer">Ver <i class="fas fa-eye"></i> </a>
         </div>
       </div>
       <div class="col-lg-3 col-6">
@@ -34,7 +47,7 @@
         </div>
       </div>
       <div class="col-lg-3 col-6">
-        <div class="small-box bg-primary">
+        <div class="small-box bg-secondary">
           <div class="inner">
             <h3>#</h3>
             <p>Ver solicitudes de internación</p>
@@ -50,7 +63,7 @@
       <div class="col-lg-3 col-6">
         <div class="small-box bg-success">
           <div class="inner">
-            <h3>53</h3>
+            <h3>{{$variables['nuevos']}}</h3>
             <p>Pacientes nuevos</p>
           </div>
           <div class="icon">
@@ -62,7 +75,7 @@
       <div class="col-lg-3 col-6">
         <div class="small-box bg-info">
           <div class="inner">
-            <h3>#</h3>
+            <h3>{{$variables['misPacientes']}}</h3>
             <p>Todos mis pacientes</p>
           </div>
           <div class="icon">
