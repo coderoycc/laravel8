@@ -1,7 +1,7 @@
 @extends('adminlte::page')
 @section('title', 'Inicio')
 @section('content_header')
-  <h1>Inicio</h1>
+  <h1>Bandeja de Inicio</h1>
 @stop
 
 @section('content')
@@ -69,7 +69,7 @@
           <div class="icon">
             <i class="ion ion-stats-bars"></i>
           </div>
-          <a href="#" class="small-box-footer">Ver listado <i class="fas fa-arrow-circle-right"></i></a>
+          <a href="{{route('mispacientes.nuevos')}}" class="small-box-footer">Ver listado <i class="fas fa-arrow-circle-right"></i></a>
         </div>
       </div>
       <div class="col-lg-3 col-6">
@@ -81,7 +81,7 @@
           <div class="icon">
             <i class="ion ion-bag"></i>
           </div>
-          <a href="{{route('medico.index')}}" class="small-box-footer">Ver listado<i class="fas fa-eye"></i> </a>
+          <a href="{{route('mispacientes.index')}}" class="small-box-footer">Ver listado <i class="fas fa-eye"></i> </a>
         </div>
       </div>
       <div class="col-lg-3 col-6">

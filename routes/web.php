@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Historial;
 use App\Http\Controllers\Medico;
 use App\Http\Controllers\Paciente;
-
+use App\Http\Controllers\MispacientesController;
 
 
 
@@ -18,6 +18,9 @@ Route::get('medico/{especialidad}', 'Medico@medicoespecialidad');
 
 // Rutas para Pacientes
 Route::resource('paciente', Paciente::class)->names('paciente');
+
+Route::get('mispacientes', [MispacientesController::class,'index'])->name('mispacientes.index');
+Route::get('mispacientes/nuevos', [MispacientesController::class,'nuevos'])->name('mispacientes.nuevos');
 
 Route::get('paciente/nuevos', 'Paciente@nuevos')->name('paciente.nuevos');
 Route::get('paciente/medico', 'Paciente@medico')->name('paciente.medico');

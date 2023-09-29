@@ -2,6 +2,7 @@
 
 namespace App\Models\Medico;
 
+use App\Http\Controllers\Historial;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,6 +18,6 @@ class MedicoModel extends Model
   }
 
   public function tienePacientes(){
-    return $this->hasMany(Paciente::class, 'idUsuario');
+    return $this->hasMany(Historial::class, 'idMedico');
   }
 }
