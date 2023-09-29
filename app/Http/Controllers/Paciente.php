@@ -7,12 +7,13 @@ use App\Models\User;
 use App\Models\Paciente\PacienteModel;
 use App\Models\Historial\HistorialModel;
 use PhpParser\Node\Stmt\TryCatch;
+use Carbon\Carbon;
 
 class Paciente extends Controller
 {
   public function __construct()
   {
-      $this->middleware('auth');
+      //$this->middleware('auth');
   }
   public function index()
   {
@@ -97,5 +98,23 @@ class Paciente extends Controller
   public function destroy($id)
   {
     //
+  }
+
+  public function ProtocolSTJudePDF(){
+    $data = [
+      'fecha' => Carbon::parse('2023-08-25'),
+      'etapas' => [
+        'induccion','consolidacion','continuacion 1','reinduccion 1','continuacion ii','reinduccion ii','mantenimiento'
+      ],
+    ];
+    // Inicializando el Objeto creador de PDF
+    $pdf = app('dompdf.wrapper');
+    // Asignando la vista de referencia del documento
+    $pdf->loadView('pacientes.protocol_report', compact('data'));
+    // Configuracion las dimensiones del documento
+    $pdf->setPaper('legal','landscape');
+    // Definiendo el tipo de fuente
+    $pdf->set_option('defaultFont', 'Helvetica');
+    return $pdf->stream();
   }
 }
