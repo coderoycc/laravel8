@@ -351,13 +351,13 @@ return [
         ['header' => 'MIS PACIENTES', 'can' => 'medico'],
         [
             'text' => 'Pacientes Nuevos',
-            'route'  => 'paciente.nuevos',
+            'route'  => 'mispacientes.nuevos',
             'icon' => 'fas fa-fw fa-plus-circle',
             'can' => 'medico'
         ],
         [
             'text' => 'Mis Pacientes',
-            'route'  => 'paciente.medico',
+            'route'  => 'mispacientes.index',
             'icon' => 'fas fa-fw fa-user',
             'can' => 'medico'
         ],
@@ -495,7 +495,7 @@ return [
             ],
         ],
         'Select2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',

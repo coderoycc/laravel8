@@ -49,18 +49,12 @@ class Historial extends Controller
      */
     public function show(HistorialModel $historial) // visualizar un solo registro a detalle
     {
-        //
+        print_r($historial);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  HistorialModel $historial
-     * @return \Illuminate\Http\Response
-     */
     public function edit(HistorialModel $historial) // mostrar para editar un registro
     {
-        //
+        return view('historial.edit', compact('historial'));
     }
 
     /**

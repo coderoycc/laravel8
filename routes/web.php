@@ -28,6 +28,7 @@ Route::get('paciente/evolucion', 'Paciente@evolucion')->name('paciente.evolucion
 
 // Rutas para controlador Historial
 Route::resource('historial', Historial::class)->names('historial');
+Route::get('historial/{historial}', [Historial::class,'edit'])->name('historial.edit');
 
 Auth::routes();
 

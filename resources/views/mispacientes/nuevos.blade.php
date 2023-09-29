@@ -11,7 +11,6 @@
 
 
 @section('content')
-{{-- {{print_r($pacientes)}} --}}
 <div class="card">
   <div class="card-header">
     @if ($message = Session::get('success'))
@@ -35,19 +34,19 @@
           <th>EDAD</th>
           <th># CARNET S.U.S.</th>
           <th>FECHA DE REGISTRO</th>
-          <th>FECHA DE CONSULTA</th>
+          <th>CONSULTA PROGRAMADA</th>
           <th>ATENDER</th>
         </tr>
       </thead>
       <tbody>
-        @foreach ($pacientes as $paciente)
+        @foreach ($historiales as $historial)
           <tr>
-            <td>{{$paciente->apellidos.' '.$paciente->nombres}}</td>
-            <td>{{$paciente->edad($paciente->fechaNac)}}</td>
-            <td>{{$paciente->codSus}}</td>
-            <td>{{$paciente->fechaRegistro}}</td>
-            <td>{{$paciente->fechaConsulta}}</td>
-            <td><a href="#" class="btn btn-success"><i class="fas fa-notes-medical"></i> Atender</></td>
+            <td>{{$historial->paciente->apellidos.' '.$historial->paciente->apellidos}}</td>
+            <td>{{$historial->paciente->edad($historial->paciente->fechaNac)}}</td>
+            <td>{{$historial->paciente->codSus}}</td>
+            <td>{{$historial->fechaRegistro}}</td>
+            <td>{{$historial->fechaConsulta}}</td>
+            <td><a href="{{ route('historial.show', $historial->idHistorial) }}" class="btn btn-success"><i class="fas fa-notes-medical"></i> Atender</a></td>
           </tr>
         @endforeach
       </tbody>

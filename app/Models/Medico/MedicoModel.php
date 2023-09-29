@@ -10,6 +10,7 @@ class MedicoModel extends Model
 {
   use HasFactory;
   protected $table = 'tblUsuario';
+  protected $primaryKey = 'idUsuario';
   protected $fillable = ['nombres', 'apellidos', 'ci', 'fechaNac', 'genero', 'especialidad', 'celular', 'email', 'rol', 'password', 'matProfesional'];
 
   public function attributes()
