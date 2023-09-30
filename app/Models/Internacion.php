@@ -11,5 +11,9 @@ class Internacion extends Model
     protected $table = 'tblInternacion';
     protected $primaryKey = 'idInternacion';
     public $timestamps = false;
-    protected $fillable = ['idPaciente', 'indicaciones', 'motivo', 'fechaSolicitud'];
+    protected $fillable = ['idPaciente', 'idMedico', 'indicaciones', 'motivo'];
+
+    static public function getSolicitudes(){
+        return Internacion::where('estado', 'SOLICITUD')->orderBy('fechaSolicitud', 'ASC')->get();
+    }
 }

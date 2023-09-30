@@ -44,23 +44,20 @@
         <div class="form-group col-md-3">
           {!! Form::label('tipoCancer', 'Seleccione un tipo de cancer', []) !!}
           {!! Form::select('tipoCancer', 
-          [ 'Leucemia','Tumores cerebrales','Neuroblastoma','Tumor de Wilms (cáncer renal infantil)',
-            'Linfoma de Hodgkin','Linfoma no Hodgkin','Cáncer de sarcoma','Retinoblastoma',
-            'Cáncer de tiroides','Cáncer de pulmón','Cáncer colorrectal','Cáncer de riñón',
-            'Cáncer de hígado','Cáncer de estómago','Cáncer de esófago','Cáncer de piel',
-            'Cáncer de cabeza y cuello','Cáncer de cerebro'], null, ['class'=>'form-control']) !!}
+          [ '12'=>'Leucemia','23'=>'Tumores cerebrales','2'=>'Neuroblastoma','98'=>'Tumor de Wilms',
+            '22'=>'Linfoma de Hodgkin','98'=>'Linfoma no Hodgkin','90'=>'Cáncer de sarcoma'], null, ['class'=>'form-control']) !!}
         </div>
         <div class="form-group col-md-3">
           {!! Form::label('etapa', 'Etapa del cáncer', []) !!}
-          {!! Form::select('etapa', ['BAJO', 'MEDIO', 'ALTO'], null, ['class'=>'form-control']) !!}
+          {!! Form::select('etapa', ['BAJO'=>'BAJO', 'MEDIO'=>'MEDIO', 'ALTO'=>'ALTO'], null, ['class'=>'form-control']) !!}
         </div>
         <div class="form-group col-md-3">
           {!! Form::label('peso', 'Peso [kg.]', []) !!}
-          {!! Form::number('peso', null, ['class'=>'form-control', 'step' => '0.05']) !!}
+          {!! Form::number('peso', null, ['class'=>'form-control', 'step' => '0.01']) !!}
         </div>
         <div class="form-group col-md-3">
           {!! Form::label('talla', 'Talla [cm.]', []) !!}
-          {!! Form::number('talla', null, ['class'=>'form-control', 'step' => '0.05']) !!}
+          {!! Form::number('talla', null, ['class'=>'form-control', 'step' => '0.01']) !!}
         </div>
       </div>
       <div class="form-row">
@@ -74,7 +71,7 @@
         </div>
         <div class="form-group col-md-4">
           {!! Form::label('diagnostico', 'Diagnóstico (s)', []) !!}
-          <select class="select2" multiple="multiple" data-placeholder="Selecione uno o varios" style="width: 100%;">
+          <select class="select2" multiple="multiple" data-placeholder="Selecione uno o varios" id="diag" style="width: 100%;">
             <option value="C00"> Tumor maligno del labio</option>
             <option value="C34"> Tumor maligno de los bronquios y del pulmón, parte no especificada</option>
             <option value="C56"> Tumor maligno del ovario</option>
@@ -100,6 +97,7 @@
           {!! Form::button('¿Requiere internación?', ['class' => 'btn btn-warning', 'type' => 'button', 'data-toggle'=>'modal', 'data-target'=>'#modal_internacion', 'id'=>'botonSolicitud']) !!}
         </div>
       </div>
+      <input name="diagnosticos" type="hidden" id="listDiag" value="">
       <div class="form-row mt-2">
         <div class="form-group col-md-12">
           {!! Form::submit('Guardar Paciente', ['class' => 'btn btn-primary float-right']) !!}
@@ -122,7 +120,8 @@
       <div class="modal-body">
         <form onsubmit="return false" id="form_internacion">
           @csrf
-          <input type="hidden" name="idPaciente" value="{{$historial->paciente->idUsuario}}">
+          <input type="hidden" name="idPaciente" value="{{$historial->idPaciente}}">
+          <input type="hidden" name="idMedico" value="{{$historial->idMedico}}">
           <div class="form-group">
             <label>Nombre del paciente</label>
             <input type="text" class="form-control" value="{{$historial->paciente->nombres}} {{$historial->paciente->apellidos}}" disabled>
@@ -191,5 +190,9 @@
         $("#botonSolicitud").attr('disabled', true);
       }
     }
+    $("#diag").on('change', ()=>{
+      $("#listDiag").val(JSON.stringify($("#diag").val()))
+      console.log($("#listDiag").val())
+    })
   </script>
 @stop

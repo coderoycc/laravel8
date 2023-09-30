@@ -86,7 +86,8 @@
     $("#t_medico").DataTable({
       language: lenguaje,
       scrollX: true,
-      autoWidth: false
+      autoWidth: false,
+      scrollY: '50vh'
     });
   })
 

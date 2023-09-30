@@ -17,7 +17,13 @@ class CreateTblcontenidorecetaTable extends Migration
             $table->id('idContenidoReceta');
             $table->unsignedBigInteger('idReceta');
             $table->unsignedBigInteger('idMedicamento');
-            $table->integer('cantidad');
+            $table->string('unidad')->nullable()->comment('Unidade de medida');
+            $table->integer('cantidad')->nullable();
+            $table->foreign('idReceta')
+                  ->references('idReceta')
+                  ->on('tblReceta')
+                  ->onDelete('cascade');
+            $table->foreign('idMedicamento')->references('idMedicamento')->on('tblMedicamento')->onDelete('cascade');
         });
     }
 

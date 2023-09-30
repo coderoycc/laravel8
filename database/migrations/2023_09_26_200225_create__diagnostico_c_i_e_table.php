@@ -28,6 +28,6 @@ class CreateDiagnosticoCIETable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('_diagnostico_c_i_e');
+        Schema::dropIfExists('tblDiagnosticoCIE');
     }
 }

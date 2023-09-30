@@ -12,7 +12,6 @@ class Admin extends Controller
   }
   public function index() 
   {
-    print_r('ADMINININISNISNISNIS');
     return view('admin.index');
   }
 

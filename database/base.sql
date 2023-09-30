@@ -121,6 +121,16 @@ INSERT INTO tblmedicamento(descripcion) VALUES ('Vismodegib');
 INSERT INTO tblmedicamento(descripcion) VALUES ('Voriconazol');
 INSERT INTO tblmedicamento(descripcion) VALUES ('Vorinostat');
 
+INSERT INTO tblDiagnosticoCIE(codigo_cie, descripcion) VALUES('C00', 'Tumor maligno del labio');
+INSERT INTO tblDiagnosticoCIE(codigo_cie, descripcion) VALUES('C34', 'Tumor maligno de los bronquios y del pulmón, parte no especificada');
+INSERT INTO tblDiagnosticoCIE(codigo_cie, descripcion) VALUES('C56', 'Tumor maligno del ovario');
+INSERT INTO tblDiagnosticoCIE(codigo_cie, descripcion) VALUES('C70', 'Tumor maligno de las meninges');
+INSERT INTO tblDiagnosticoCIE(codigo_cie, descripcion) VALUES('C81', 'Linfoma de Hodgkin');
+INSERT INTO tblDiagnosticoCIE(codigo_cie, descripcion) VALUES('C90', 'Leucemia de células precursoras de linfocitos B');
+INSERT INTO tblDiagnosticoCIE(codigo_cie, descripcion) VALUES('C91', 'Leucemia linfoblástica aguda');
+INSERT INTO tblDiagnosticoCIE(codigo_cie, descripcion) VALUES('C94', 'Leucemia de células de la granulación eosinófila');
+INSERT INTO tblDiagnosticoCIE(codigo_cie, descripcion) VALUES('C40', 'Tumor maligno de los huesos y del cartílago articular de los miembros');
+
 
 
 INSERT INTO `tblusuario` VALUES (1, 'Administrador', 'Administrador', '123321', 'ADMIN', '1999-12-12', NULL, NULL, '$2y$10$LMcE3IMBlFOgb1MECPqJk.vgK8jopdox04BVOdBPThfE0eHOmrBbu', NULL, NULL, NULL, NULL, 'ad@mail.com', NULL);

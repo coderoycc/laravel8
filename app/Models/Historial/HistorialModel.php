@@ -14,7 +14,7 @@ class HistorialModel extends Model
     protected $fillable = ['idPaciente', 'idMedico', 'fechaConsulta', 'servicio', 'procedencia','etapa'];
 
     static public function obtenerNuevos($idMedico){
-        return HistorialModel::where('atendido','NO')->where('idMedico',$idMedico)->get();
+        return HistorialModel::where('atendido','NO')->orderBy('fechaConsulta','asc')->where('idMedico',$idMedico)->get();
     }
 
     // para saber a que usuario pertenece este historial

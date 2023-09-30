@@ -33,8 +33,9 @@
           <th>APELLIDOS</th>
           <th>NOMBRES</th>
           <th>EDAD</th>
-          <th>GENERO</th>
           <th># CARNET S.U.S.</th>
+          <th>ETAPA CANCER</th>
+          <th>PROCEDENCIA</th>
           <th>OPCIONES</th>
         </tr>
       </thead>
@@ -59,7 +60,8 @@
     $("#t_paciente").DataTable({
       language: lenguaje,
       scrollX: true,
-      autoWidth: false
+      autoWidth: false,
+      scrollY: '50vh'
     });
   })
 

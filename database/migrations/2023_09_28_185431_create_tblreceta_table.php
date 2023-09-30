@@ -17,7 +17,7 @@ class CreateTblrecetaTable extends Migration
             $table->id('idReceta');
             $table->unsignedBigInteger('idConsulta');
             $table->string('diagnostico', 200)->nullable();
-            $table->string('indicaciones', 200)->nullable();
+            $table->string('indicaciones', 240)->nullable();
             $table->foreign('idConsulta')->references('idConsulta')->on('tblConsulta');
         });
     }

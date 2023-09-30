@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateConsultaTable extends Migration
@@ -16,11 +17,11 @@ class CreateConsultaTable extends Migration
         Schema::create('tblConsulta', function (Blueprint $table) {
             $table->id('idConsulta');
             $table->unsignedBigInteger('idHistorial');
-            $table->date('fechaConsulta')->default(\Carbon\Carbon::now()->toDateString());
+            $table->date('fechaConsulta')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->text('valoracion')->nullable();
             $table->text('observaciones')->nullable();
-            $table->decimal('peso', 3, 2)->nullable();
-            $table->decimal('talla', 3, 2)->nullable();
+            $table->decimal('peso', 8, 2)->nullable();
+            $table->decimal('talla', 8, 2)->nullable();
             $table->date('proxConsulta')->nullable();
 
             $table->foreign('idHistorial')->references('idHistorial')->on('tblHistorial');

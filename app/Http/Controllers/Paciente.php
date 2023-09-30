@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Paciente\PacienteModel;
 use App\Models\Historial\HistorialModel;
-use PhpParser\Node\Stmt\TryCatch;
 use Carbon\Carbon;
 
 class Paciente extends Controller
@@ -39,7 +38,7 @@ class Paciente extends Controller
       $data['password'] = bcrypt($data['ci']); 
       $data['rol'] = 'PACIENTE';
       $paciente = PacienteModel::create($data);
-      $idPaciente =$paciente->attributes()['id'];
+      $idPaciente =$paciente->attributes()['idUsuario'];
   
       $dataHistorial = ['idPaciente'=>$idPaciente, 'idMedico'=>$data['idMedico'], 'fechaConsulta'=> $data['fechaConsulta'], 'procedencia'=>$data['procedencia'], 'servicio'=>$data['tipo'], 'etapa'=>''];
 
@@ -48,7 +47,7 @@ class Paciente extends Controller
       return redirect()->route('paciente.index');
     } catch (\Throwable $th) {
       // echo "Error: " . $th->getMessage() . " en línea " . $th->getLine();
-      $request->session()->flash('error', 'Ocurrio un error al registrar al paciente. {'.$th->getMessage().'}');
+      $request->session()->flash('error', 'Ocurrio un error al registrar al paciente. {'.json_encode($th).'}');
       return redirect()->route('paciente.index');
     }
   }

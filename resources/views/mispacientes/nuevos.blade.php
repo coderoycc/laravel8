@@ -40,12 +40,14 @@
       </thead>
       <tbody>
         @foreach ($historiales as $historial)
+          <?php $fecha1 = date_create($historial->fechaRegistro);
+          $fecha2 = date_create($historial->fechaConsulta)?>
           <tr>
             <td>{{$historial->paciente->apellidos.' '.$historial->paciente->apellidos}}</td>
             <td>{{$historial->paciente->edad($historial->paciente->fechaNac)}}</td>
             <td>{{$historial->paciente->codSus}}</td>
-            <td>{{$historial->fechaRegistro}}</td>
-            <td>{{$historial->fechaConsulta}}</td>
+            <td>{{$fecha1->format('d/m/Y')}}</td>
+            <td>{{$fecha2->format('d/m/Y')}}</td>
             <td><a href="{{ route('historial.edit', $historial->idHistorial) }}" class="btn btn-success"><i class="fas fa-notes-medical"></i> Atender</a></td>
           </tr>
         @endforeach
@@ -69,9 +71,8 @@
       language: lenguaje,
       scrollX: true,
       autoWidth: false,
-      columnDefs: [
-        {orderable: false, targets: [3,4,5]}
-      ],
+      ordering: false,
+      scrollY: '50vh'
     });
   })
 
