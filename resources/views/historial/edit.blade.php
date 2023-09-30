@@ -2,7 +2,7 @@
 @section('title', 'Historial')
 
 @section('content_header')
-  <h1>Primer consulta del paciente</h1>
+  <h1>Primera consulta del paciente</h1>
 @stop
 
 @section('content')
@@ -73,30 +73,31 @@
           {!! Form::textarea('observacion', '', ['class'=>'form-control no-resize', 'rows'=>4, 'id'=>'obs']) !!}
         </div>
         <div class="form-group col-md-4">
-          {!! Form::label('fechaProxConsulta', 'Fecha de la próxima consulta', []) !!}
-          {!! Form::date('fechaProxConsulta', null, ['class'=>'form-control']) !!}
+          {!! Form::label('diagnostico', 'Diagnóstico (s)', []) !!}
+          <select class="select2" multiple="multiple" data-placeholder="Selecione uno o varios" style="width: 100%;">
+            <option value="C00"> Tumor maligno del labio</option>
+            <option value="C34"> Tumor maligno de los bronquios y del pulmón, parte no especificada</option>
+            <option value="C56"> Tumor maligno del ovario</option>
+            <option value="C70"> Tumor maligno de las meninges</option>
+            <option value="C81"> Linfoma de Hodgkin</option>
+            <option value="C90"> Leucemia de células precursoras de linfocitos B</option>
+            <option value="C91"> Leucemia linfoblástica aguda</option>
+            <option value="C94"> Leucemia de células de la granulación eosinófila</option>
+            <option value="C40"> Tumor maligno de los huesos y del cartílago articular de los miembros</option>
+            <option value="C43"> Melanoma maligno de la piel</option>
+          </select>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-4">
-          <label>Diagnósticos</label>
-            <select class="select2" multiple="multiple" data-placeholder="Selecione uno o varios" style="width: 100%;">
-              <option value="C00"> Tumor maligno del labio</option>
-              <option value="C34"> Tumor maligno de los bronquios y del pulmón, parte no especificada</option>
-              <option value="C56"> Tumor maligno del ovario</option>
-              <option value="C70"> Tumor maligno de las meninges</option>
-              <option value="C81"> Linfoma de Hodgkin</option>
-              <option value="C90"> Leucemia de células precursoras de linfocitos B</option>
-              <option value="C91"> Leucemia linfoblástica aguda</option>
-              <option value="C94"> Leucemia de células de la granulación eosinófila</option>
-              <option value="C40"> Tumor maligno de los huesos y del cartílago articular de los miembros</option>
-              <option value="C43"> Melanoma maligno de la piel</option>
-            </select>
+          {!! Form::label('fechaProxConsulta', 'Fecha de la próxima consulta', []) !!}
+          {!! Form::date('fechaProxConsulta', null, ['class'=>'form-control']) !!}
         </div>
       </div>
+        
       <div class="form-row mt-2">
         <div class="form-group col-md-12 d-flex justify-content-center">
-          {!! Form::button('¿Requiere internación?', ['class' => 'btn btn-warning', 'type' => 'button', 'id' => 'miBoton', 'data-toggle'=>'modal', 'data-target'=>'#modal_internacion']) !!}
+          {!! Form::button('¿Requiere internación?', ['class' => 'btn btn-warning', 'type' => 'button', 'data-toggle'=>'modal', 'data-target'=>'#modal_internacion', 'id'=>'botonSolicitud']) !!}
         </div>
       </div>
       <div class="form-row mt-2">
@@ -119,8 +120,9 @@
         </button>
       </div>
       <div class="modal-body">
-        <form onsubmit="return false">
-          <input type="hidden" name="idUsuario" value="{{$historial->paciente->idUsuario}}">
+        <form onsubmit="return false" id="form_internacion">
+          @csrf
+          <input type="hidden" name="idPaciente" value="{{$historial->paciente->idUsuario}}">
           <div class="form-group">
             <label>Nombre del paciente</label>
             <input type="text" class="form-control" value="{{$historial->paciente->nombres}} {{$historial->paciente->apellidos}}" disabled>
@@ -141,7 +143,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="solicitarInternacion()">Solicitar internación</button>
+        <button type="button"  class="btn btn-primary" data-dismiss="modal" onclick="solicitarInternacion()">Solicitar internación</button>
       </div>
     </div>
   </div>
@@ -169,8 +171,25 @@
       var anio = fechaPorDefecto.getFullYear();
       $("#fechaSol").val(`${anio}-${mes>9?'':'0'}${mes}-${dia}`);
     })
-    function solicitarInternacion(){
-
+    async function solicitarInternacion(){
+      const data = $("#form_internacion").serialize();
+      const res = await $.ajax({
+        url: '/internacion/create',
+        type: 'POST',
+        data: data,
+        dataType: 'json'
+      });
+      if(res.status == 'success'){
+        $(document).Toasts('create', {
+          title: 'Operación exitosa',
+          autohide: true,
+          icon: 'fas fa-check',
+          delay: 2800,
+          class:'bg-success',
+          body: res.message
+        })
+        $("#botonSolicitud").attr('disabled', true);
+      }
     }
   </script>
 @stop

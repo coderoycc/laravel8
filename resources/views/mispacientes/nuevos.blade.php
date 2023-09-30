@@ -46,7 +46,7 @@
             <td>{{$historial->paciente->codSus}}</td>
             <td>{{$historial->fechaRegistro}}</td>
             <td>{{$historial->fechaConsulta}}</td>
-            <td><a href="{{ route('historial.show', $historial->idHistorial) }}" class="btn btn-success"><i class="fas fa-notes-medical"></i> Atender</a></td>
+            <td><a href="{{ route('historial.edit', $historial->idHistorial) }}" class="btn btn-success"><i class="fas fa-notes-medical"></i> Atender</a></td>
           </tr>
         @endforeach
       </tbody>

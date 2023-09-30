@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Historial;
+use App\Http\Controllers\InternacionController;
 use App\Http\Controllers\Medico;
 use App\Http\Controllers\Paciente;
 use App\Http\Controllers\MispacientesController;
@@ -18,6 +19,7 @@ Route::get('medico/{especialidad}', 'Medico@medicoespecialidad');
 
 // Rutas para Pacientes
 Route::resource('paciente', Paciente::class)->names('paciente');
+Route::post('internacion/create', [InternacionController::class, 'create'])->name('internacion.create');
 
 Route::get('mispacientes', [MispacientesController::class,'index'])->name('mispacientes.index');
 Route::get('mispacientes/nuevos', [MispacientesController::class,'nuevos'])->name('mispacientes.nuevos');
@@ -30,8 +32,8 @@ Route::get('paciente/evolucion', 'Paciente@evolucion')->name('paciente.evolucion
 Route::resource('historial', Historial::class)->names('historial');
 Route::get('historial/{historial}', [Historial::class,'edit'])->name('historial.edit');
 
-Auth::routes();
 
+Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Ruta de Prueba para el Armado de PDF

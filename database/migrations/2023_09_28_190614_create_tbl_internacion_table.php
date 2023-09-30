@@ -18,7 +18,6 @@ class CreateTblInternacionTable extends Migration
             $table->unsignedBigInteger('idPaciente');
             $table->text('indicaciones')->nullable();
             $table->date('fechaSolicitud')->default(\Carbon\Carbon::now()->toDateString());
-            $table->date('fechaIngreso');
             $table->foreign('idPaciente')->references('idUsuario')->on('tblUsuario');
         });
     }

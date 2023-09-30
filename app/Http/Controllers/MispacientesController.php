@@ -6,8 +6,6 @@ use App\Models\Historial\HistorialModel;
 use App\Models\Medico\MedicoModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use App\Models\User;
 
 class MispacientesController extends Controller
 {
