@@ -179,14 +179,7 @@
         dataType: 'json'
       });
       if(res.status == 'success'){
-        $(document).Toasts('create', {
-          title: 'Operación exitosa',
-          autohide: true,
-          icon: 'fas fa-check',
-          delay: 2800,
-          class:'bg-success',
-          body: res.message
-        })
+        mensajeToast('Operacion exitosa', res.message, 'success','fa-check', 2800)5
         $("#botonSolicitud").attr('disabled', true);
       }
     }

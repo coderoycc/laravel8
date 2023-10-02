@@ -24,3 +24,15 @@ function calcularEdad(){
   const ageDays = Math.floor((ageInMillis % (30.436875 * 24 * 60 * 60 * 1000)) / (24 * 60 * 60 * 1000));
   $("#edad").val(`${ageYears} años ${ageMonths} meses ${ageDays} días`); 
 }
+
+function mensajeToast(titulo, mensaje, fondo, tiempo){
+  let icono = fondo == 'success' ? 'fa-check' : 'fa-exclamation-triangle';
+  $(document).Toasts('create', {
+    title: titulo,
+    autohide: true,
+    icon: 'fas '+icono,
+    delay: tiempo,
+    class:'bg-'+fondo,
+    body: mensaje
+  })
+}

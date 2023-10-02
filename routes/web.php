@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RecetaController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Historial;
@@ -34,8 +35,11 @@ Route::get('historial/{historial}', [Historial::class,'edit'])->name('historial.
 
 // Rutas para consultas
 Route::get('consulta/{idHistorial}', [ConsultaController::class,'create'])->name('consulta.create');
-Route::resource('consulta', ConsultaController::class)->names('consulta');
+Route::post('consulta/store', [ConsultaController::class,'store'])->name('consulta.store');
+// Route::resource('consulta', ConsultaController::class)->names('consulta');
 
+
+Route::get('receta/{idReceta}', [RecetaController::class, 'show'])->name('receta.show');
 
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

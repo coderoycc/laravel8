@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Medico\MedicoModel;
+use Illuminate\Support\Facades\DB;
+
 class RequestController extends Controller
 {
 
@@ -22,5 +24,19 @@ class RequestController extends Controller
     } catch (\Throwable $th) {
       echo json_encode(array('status'=>'error', 'html'=>json_encode($th)));
     } 
+  }
+  public function medicamento($cadena){
+    try {
+      $cadHtml = '';
+      $respuesta = DB::select("SELECT * FROM tblmedicamento WHERE descripcion LIKE '%$cadena%' LIMIT 0, 8");
+      $cant = 0;
+      foreach ($respuesta as $medicamento) {
+        $cant++;
+        $cadHtml .= '<li data-id="'.$medicamento->idMedicamento.'">'.$medicamento->descripcion.'</li>';
+      }
+      echo json_encode(array('status'=>'success', 'html'=>$cadHtml, 'cant'=>$cant));
+    } catch (\Throwable $th) {
+      echo json_encode(array('status'=>'error', 'html'=>json_encode($th)));
+    }
   }
 }

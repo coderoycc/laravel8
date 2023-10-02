@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Consulta extends Model
 {
   use HasFactory;
+  public $timestamps = false;
   protected $table = 'tblconsulta';
   protected $primaryKey = 'idConsulta';
+  protected $fillable = ['idHistorial', 'valoracion', 'observaciones', 'peso', 'talla', 'proxConsulta'];
 
   // Para saber a que historial pertenece
   public function historial(){
