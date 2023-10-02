@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Historial\HistorialModel;
-use App\Models\Medico\MedicoModel;
+use App\Models\Paciente\PacienteModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +13,8 @@ class MispacientesController extends Controller
         $this->middleware('auth');  
     }
     public function index(){
-        return view('mispacientes.index');
+        $valores = PacienteModel::getPacientesRegular();
+        return view('mispacientes.index', compact('valores'));
     }
     public function nuevos(){
         $user = Auth::user()->attributes();

@@ -81,7 +81,7 @@
             <option value="C91"> Leucemia linfoblástica aguda</option>
             <option value="C94"> Leucemia de células de la granulación eosinófila</option>
             <option value="C40"> Tumor maligno de los huesos y del cartílago articular de los miembros</option>
-            <option value="C43"> Melanoma maligno de la piel</option>
+            {{-- <option value="C43"> Melanoma maligno de la piel</option> --}}
           </select>
         </div>
       </div>

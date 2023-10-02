@@ -7,7 +7,7 @@ use App\Http\Controllers\InternacionController;
 use App\Http\Controllers\Medico;
 use App\Http\Controllers\Paciente;
 use App\Http\Controllers\MispacientesController;
-
+use App\Http\Controllers\ConsultaController;
 
 
 Route::get('/', function () {
@@ -31,6 +31,10 @@ Route::get('paciente/evolucion', 'Paciente@evolucion')->name('paciente.evolucion
 // Rutas para controlador Historial
 Route::resource('historial', Historial::class)->names('historial');
 Route::get('historial/{historial}', [Historial::class,'edit'])->name('historial.edit');
+
+// Rutas para consultas
+Route::get('consulta/{idHistorial}', [ConsultaController::class,'create'])->name('consulta.create');
+Route::resource('consulta', ConsultaController::class)->names('consulta');
 
 
 Auth::routes();

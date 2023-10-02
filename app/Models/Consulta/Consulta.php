@@ -8,6 +8,7 @@ class Consulta extends Model
 {
   use HasFactory;
   protected $table = 'tblconsulta';
+  protected $primaryKey = 'idConsulta';
 
   // Para saber a que historial pertenece
   public function historial(){

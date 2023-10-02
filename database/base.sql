@@ -130,9 +130,3 @@ INSERT INTO tblDiagnosticoCIE(codigo_cie, descripcion) VALUES('C90', 'Leucemia d
 INSERT INTO tblDiagnosticoCIE(codigo_cie, descripcion) VALUES('C91', 'Leucemia linfoblástica aguda');
 INSERT INTO tblDiagnosticoCIE(codigo_cie, descripcion) VALUES('C94', 'Leucemia de células de la granulación eosinófila');
 INSERT INTO tblDiagnosticoCIE(codigo_cie, descripcion) VALUES('C40', 'Tumor maligno de los huesos y del cartílago articular de los miembros');
-
-
-
-INSERT INTO `tblusuario` VALUES (1, 'Administrador', 'Administrador', '123321', 'ADMIN', '1999-12-12', NULL, NULL, '$2y$10$LMcE3IMBlFOgb1MECPqJk.vgK8jopdox04BVOdBPThfE0eHOmrBbu', NULL, NULL, NULL, NULL, 'ad@mail.com', NULL);
-INSERT INTO `tblusuario` VALUES (2, 'Sisaño Pardel', 'Roberto', '123321', 'MEDICO', '1988-02-12', 'ONCOLOGIA', 'M', '$2y$10$LMcE3IMBlFOgb1MECPqJk.vgK8jopdox04BVOdBPThfE0eHOmrBbu', NULL, '2023-09-27 00:38:02', '2023-09-27 00:38:02', '79656767', 'xdd@mail.com', NULL);
-INSERT INTO `tblusuario` VALUES (3, 'Baldomero', 'Regina', '311123112', 'PACIENTE', '2000-02-21', NULL, 'F', '$2y$10$r3VZtImzhbzJ.4azjLaOT.tHkUSuqJLiWE/0yEh9pvWhnpwtw5S8u', NULL, '2023-09-27 00:44:53', '2023-09-27 00:44:53', '77867567', 'admin@mail.com', '667767DA12');

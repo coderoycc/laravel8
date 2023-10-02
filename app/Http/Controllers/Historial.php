@@ -29,7 +29,7 @@ class Historial extends Controller
 
   public function update(Request $request, HistorialModel $historial) // actualizar registro
   {
-    // try {
+    try {
       $valores = $request->all();
       $diagList = json_decode($valores['diagnosticos']);
       $historial->atendido = 'SI';
@@ -37,20 +37,22 @@ class Historial extends Controller
       $historial->etapa = $valores['etapa'];
       $historial->valoracion = $valores['valoracion'];
       $historial->observacion = $valores['observacion'];
+      $historial->fechaProxConsulta = $valores['fechaProxConsulta'];
       $peso = number_format($valores['peso'], 2);
       $historial->peso = $peso;
       $talla = number_format($valores['talla'], 2);
       $historial->talla = $talla;
       $historial->save();
+      // Se deberia crear el registro para la evolucion
       foreach ($diagList as $diag) {
-        echo $diag;
         $data = ['idHistorial' => $historial->idHistorial, 'idDiagnosticoCIE' => $diag]; 
         Diagnosticos::create($data);
       }
-      // Cannot add or update a child row: a foreign key constraint fails (`hospital`.`tbldiagnosticospaciente`, CONSTRAINT `tbldiagnosticospaciente_iddiagnosticocie_foreign` FOREIGN KEY (`idDiagnosticoCIE`) REFERENCES `tbldiagnosticocie` (`codigo_cie`))
-    // } catch (\Throwable $th) {
-    //   echo json_encode($th);
-    //   // print_r($th);
-    // }
+      $request->session()->flash('success', 'Datos guardados con éxito');
+      return redirect()->route('mispacientes.index');
+    } catch (\Throwable $th) {
+      $request->session()->flash('error', 'Ocurrio un error al registrar los datos {'.json_encode($th).'}.');
+      return redirect()->route('mispacientes.index');
+    }
   }
 }

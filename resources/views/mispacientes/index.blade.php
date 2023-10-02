@@ -11,6 +11,7 @@
 
 
 @section('content')
+{{-- {{print_r($valores)}}  --}}
 <div class="card">
   <div class="card-header">
     @if ($message = Session::get('success'))
@@ -26,6 +27,14 @@
     </div>
     @endif
   </div>
+  <?php
+  function edad($fechaNac){
+    date_default_timezone_set("America/La_Paz");
+    $f_fin = date_create(date('Y-m-d'));
+    $res = date_diff(date_create($fechaNac), $f_fin);
+    return $res->format("%y años %m meses %d dias");
+  }
+  ?>
   <div class="card-body">
     <table id="t_paciente" class="table table-striped">
       <thead>
@@ -33,14 +42,35 @@
           <th>APELLIDOS</th>
           <th>NOMBRES</th>
           <th>EDAD</th>
-          <th># CARNET S.U.S.</th>
-          <th>ETAPA CANCER</th>
           <th>PROCEDENCIA</th>
+          <th>ETAPA CANCER</th>
+          <th>PROX. CONSULTA</th>
           <th>OPCIONES</th>
         </tr>
       </thead>
       <tbody>
-        
+        @foreach ($valores as $valor)
+          <tr>
+            <td>{{$valor->nombres}}</td>
+            <td>{{$valor->apellidos}}</td>
+            <td>{{edad($valor->fechaNac)}}</td>
+            <td>{{$valor->procedencia}}</td>
+            <td>{{$valor->etapa}}</td>
+            <td>{{$valor->fechaProxConsulta}}</td>
+            <td>
+              <div class="btn-group">
+                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Opciones
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="{{route('consulta.create', ['idHistorial'=>$valor->idHistorial])}}"><i class="fas fa-plus-square text-primary"></i> Nueva consulta</a>
+                  <a class="dropdown-item" href="#"> <i class="fas fa-notes-medical text-info"></i> Todas las consultas</a>
+                  <a class="dropdown-item" href="#"><i class="fas fa-vial text-warning"></i> Evolución</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        @endforeach
       </tbody>
     </table>
   </div>

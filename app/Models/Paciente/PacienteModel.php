@@ -2,6 +2,7 @@
 namespace App\Models\Paciente;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class PacienteModel extends Model{
   use HasFactory;
@@ -14,6 +15,13 @@ class PacienteModel extends Model{
     $res = date_diff(date_create($fechaNac), $f_fin);
     return $res->format("%y años %m meses %d dias");
   }
+  static public function getPacientesRegular(){
+    return DB::select("SELECT th.idHistorial, th.idMedico, th.procedencia, th.etapa, th.fechaProxConsulta, tu.nombres, tu.apellidos, tu.fechaNac FROM tblhistorial AS th 
+    INNER JOIN tblusuario AS tu
+    ON th.idPaciente = tu.idUsuario
+    WHERE th.atendido LIKE 'SI';", []);
+  }
+
   public function attributes(){
     return $this->attributes;
   }
