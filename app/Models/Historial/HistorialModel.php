@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Paciente\PacienteModel;
 use Illuminate\Support\Facades\DB;
+use App\Models\Consulta\Consulta;
 
 class HistorialModel extends Model
 {
@@ -33,6 +34,6 @@ class HistorialModel extends Model
         return $this->belongsTo(MedicoModel::class, 'idMedico');
     }
     public function consultas(){
-        return $this->hasMany(Consulta::class);
+        return $this->hasMany(Consulta::class, 'idHistorial');
     }
 }

@@ -72,16 +72,9 @@
         <div class="form-group col-md-4">
           {!! Form::label('diagnostico', 'Diagnóstico (s)', []) !!}
           <select class="select2" multiple="multiple" data-placeholder="Selecione uno o varios" id="diag" style="width: 100%;">
-            <option value="C00"> Tumor maligno del labio</option>
-            <option value="C34"> Tumor maligno de los bronquios y del pulmón, parte no especificada</option>
-            <option value="C56"> Tumor maligno del ovario</option>
-            <option value="C70"> Tumor maligno de las meninges</option>
-            <option value="C81"> Linfoma de Hodgkin</option>
-            <option value="C90"> Leucemia de células precursoras de linfocitos B</option>
-            <option value="C91"> Leucemia linfoblástica aguda</option>
-            <option value="C94"> Leucemia de células de la granulación eosinófila</option>
-            <option value="C40"> Tumor maligno de los huesos y del cartílago articular de los miembros</option>
-            {{-- <option value="C43"> Melanoma maligno de la piel</option> --}}
+            @foreach ($diagnosticoscie as $diag)
+            <option value="{{$diag->codigo_cie}}"> {{$diag->descripcion}}</option>
+            @endforeach
           </select>
         </div>
       </div>
@@ -179,13 +172,13 @@
         dataType: 'json'
       });
       if(res.status == 'success'){
-        mensajeToast('Operacion exitosa', res.message, 'success','fa-check', 2800)5
+        mensajeToast('Operacion exitosa', res.message, 'success', 2800);
         $("#botonSolicitud").attr('disabled', true);
       }
     }
     $("#diag").on('change', ()=>{
       $("#listDiag").val(JSON.stringify($("#diag").val()))
-      console.log($("#listDiag").val())
+      // console.log($("#listDiag").val())
     })
   </script>
 @stop

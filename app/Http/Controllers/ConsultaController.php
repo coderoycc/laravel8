@@ -7,6 +7,7 @@ use App\Models\Contenidoreceta;
 use Illuminate\Http\Request;
 use App\Models\Historial\HistorialModel;
 use App\Models\Receta;
+use Illuminate\Support\Facades\DB;
 
 class ConsultaController extends Controller
 {
@@ -24,7 +25,12 @@ class ConsultaController extends Controller
   {
     $historial = HistorialModel::getById($idHistorial);
     $historial = $historial->first();
-    return view('consulta.create', compact('historial'));
+    $medicamentos = DB::select('SELECT * FROM tblmedicamento;');
+    $html = '';
+    foreach ($medicamentos as $value) {
+      $html .= '<option value="'.$value->idMedicamento.'">'.$value->descripcion.'</option>';
+    }
+    return view('consulta.create', compact(array('historial','html')));
   }
 
   public function store(Request $request)
@@ -64,12 +70,10 @@ class ConsultaController extends Controller
     }
   }
 
-  /**
-   * Display the specified resource.
-   *
-   * @param  \App\Models\Consulta  $consulta
-   * @return \Illuminate\Http\Response
-   */
+  public function list($idHistorial){
+    $historial = HistorialModel::find($idHistorial);
+    return view('consulta.list', compact('historial'));
+  }
   public function show(Consulta $consulta)
   {
     //

@@ -64,7 +64,7 @@
                 </button>
                 <div class="dropdown-menu">
                   <a class="dropdown-item" href="{{route('consulta.create', ['idHistorial'=>$valor->idHistorial])}}"><i class="fas fa-plus-square text-primary"></i> Nueva consulta</a>
-                  <a class="dropdown-item" href="#"> <i class="fas fa-notes-medical text-info"></i> Todas las consultas</a>
+                  <a class="dropdown-item" href="{{route('consulta.list', ['idHistorial'=>$valor->idHistorial])}}"> <i class="fas fa-notes-medical text-info"></i> Todas las consultas</a>
                   <a class="dropdown-item" href="#"><i class="fas fa-vial text-warning"></i> Evolución</a>
                 </div>
               </div>

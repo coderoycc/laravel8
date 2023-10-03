@@ -89,6 +89,7 @@
       <div class="tab-pane fade" id="reg-evolucion" role="tabpanel" aria-labelledby="reg-evolucion-tab">
         <h3>Etapa de evolución: Inducción</h3>
         <form>
+          {{-- {{$html}} --}}
           <div class="row">
             <div class="col-md-6">
               <h5>Medicamentos</h5>
@@ -96,8 +97,9 @@
               <div class="row">
                 <div class="form-group col-md-6">
                   <label>Medicamento {{$item}}</label>
-                  <input type="hidden" name="idMed{{$item}}">
-                  <input type="text" class="form-control" >
+                  <select class="form-control select2" style="width: 100%;padding-bottom:5px;" name="idMedicamento{{$item}}">
+                    {!! $html !!}
+                  </select>
                 </div>
                 <div class="form-group col-md-6">
                   <label>Dosis</label>
@@ -185,12 +187,20 @@
     #sugerencias li:hover {
       background-color: #f5f5f5;
     }
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+      color: #444;
+      line-height: 1rem;
+    }
+    .select2-container .select2-selection--single {
+      height: auto !important;
+    }
   </style>
 @stop
 
 @section('js')
   <script src="/custom/js/main.js"></script>
   <script>
+    $('.select2').select2()
     var busquedaInput = document.getElementById('busqueda');
     var sugerenciasLista = document.getElementById('sugerencias');
 

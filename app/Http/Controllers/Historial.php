@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Historial\HistorialModel as HistorialModel;
 use App\Models\Diagnosticos;
+use Illuminate\Support\Facades\DB;
 
 class Historial extends Controller
 {
@@ -24,7 +25,8 @@ class Historial extends Controller
 
   public function edit(HistorialModel $historial) // mostrar para editar un registro
   {
-    return view('historial.edit', compact('historial'));
+    $diagnosticoscie = DB::select('SELECT * FROM tbldiagnosticocie');
+    return view('historial.edit', compact(array('historial', 'diagnosticoscie')));
   }
 
   public function update(Request $request, HistorialModel $historial) // actualizar registro
@@ -45,7 +47,7 @@ class Historial extends Controller
       $historial->save();
       // Se deberia crear el registro para la evolucion
       foreach ($diagList as $diag) {
-        $data = ['idHistorial' => $historial->idHistorial, 'idDiagnosticoCIE' => $diag]; 
+        $data = ['idHistorial' => $historial->idHistorial, 'idDiagnosticoCIE' => $diag];
         Diagnosticos::create($data);
       }
       $request->session()->flash('success', 'Datos guardados con éxito');
