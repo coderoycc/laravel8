@@ -22,5 +22,5 @@
 * En este punto debe tener el archivo .env igual al *.env.example* (con todos los datos del servidor *conexion a la base de datos*, *nombre de la base de datos*, etc)
 * Después ejecute `php artisan key:generate` para generar la llave de la aplicación.
 * Para migrar la estructura de la base de datos ejecutar `php artisan migrate` si siguio los pasos anteriores no debería ocurrir ningun error.
-* Para generar el usuario administrador ejecute `php artisan db:seed --class=AdminSeeder`
+* Para generar el usuario administrador ejecute `php artisan db:seed --class=AdminSeeder` y `php artisan db:seed --class=EtapaSeeder`
 * Finalmente puede lanzar el servidor con el comando `php artisan serve` que ejecutara el proyecto en el puerto 8000. Si desea ejecutarlo en otro puerto puede usar  `php artisan serve --port=8001`
