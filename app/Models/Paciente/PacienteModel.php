@@ -1,5 +1,7 @@
 <?php
 namespace App\Models\Paciente;
+
+use App\Models\Evolucion;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -30,6 +32,10 @@ class PacienteModel extends Model{
   }
   public function tieneMedico(){
     return $this->hasOne(Historial::class, 'idMedico');
+  }
+
+  public function tieneEvolucion(){
+    return $this->hasOne(Evolucion::class, 'idPaciente');
   }
 }
 ?>
