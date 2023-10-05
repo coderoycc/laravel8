@@ -23,6 +23,11 @@ class InternacionController extends Controller{
     } catch (\Throwable $th) {
       echo json_encode(array('status'=>'error', 'message'=>$th->getMessage()));
     }
-
+  }
+  public function solicitud(){
+    return view('internacion.solicitudes');
+  }
+  public function index(){
+    return view('internacion.index');
   }
 }

@@ -18,7 +18,8 @@ class MispacientesController extends Controller
     }
     public function nuevos(){
         $user = Auth::user()->attributes();
-        $historiales = HistorialModel::obtenerNuevos($user['idUsuario']);
-        return view('mispacientes.nuevos', compact('historiales'));
+        $idMedico = $user['idUsuario'];
+        $historiales = HistorialModel::obtenerNuevos($idMedico);
+        return view('mispacientes.nuevos', compact(array('historiales')));
     }
 }

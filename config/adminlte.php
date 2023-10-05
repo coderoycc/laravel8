@@ -333,6 +333,13 @@ return [
             'data-toggle' => 'pill',
             'can' => 'admin'
         ],
+        [
+            'text' => 'Pacientes Internados',
+            'route'  => 'internacion.index',
+            'icon' => 'fas fa-fw fa-briefcase-medical',
+            'data-toggle' => 'pill',
+            'can' => 'admin'
+        ],
         ['header' => 'MÉDICOS', 'can' => 'admin'],
         [
             'text' => 'Registrar nuevo médico',

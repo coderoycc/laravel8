@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Historial\HistorialModel;
+use App\Models\Internacion;
 
 class HomeController extends Controller
 {
@@ -31,6 +32,7 @@ class HomeController extends Controller
         $misPacientes = 0;
         $cantidadMedicos = 0;
         $todosPacientes = 0;
+        $cantSolicitudesInterna = 0;
         $user = Auth::user()->attributes();
         // echo $user['rol'] .'--'.$user['idUsuario'];
         if($user['rol'] == 'MEDICO'){
@@ -39,8 +41,9 @@ class HomeController extends Controller
         }elseif($user['rol'] == 'ADMIN'){
             $cantidadMedicos = MedicoModel::where('rol', 'MEDICO')->count();
             $todosPacientes = User::where('rol', 'PACIENTE')->count();
+            $cantSolicitudesInterna = Internacion::cantidadSolicitudes();
         }
-        $variables = array('nuevos'=>$cantidadNuevos, 'misPacientes'=>$misPacientes, 'cantidadMedicos'=>$cantidadMedicos, 'todosPacientes' => $todosPacientes);
+        $variables = array('nuevos'=>$cantidadNuevos, 'misPacientes'=>$misPacientes, 'cantidadMedicos'=>$cantidadMedicos, 'todosPacientes' => $todosPacientes, 'solicitudesInternacion' => $cantSolicitudesInterna);
         
         return view('home', compact('variables'));
     }

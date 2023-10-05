@@ -16,4 +16,7 @@ class Internacion extends Model
     static public function getSolicitudes(){
         return Internacion::where('estado', 'SOLICITUD')->orderBy('fechaSolicitud', 'ASC')->get();
     }
+    static public function cantidadSolicitudes(){
+        return Internacion::where('estado', 'SOLICITUD')->count();
+    }
 }

@@ -10,7 +10,6 @@ use App\Http\Controllers\Paciente;
 use App\Http\Controllers\MispacientesController;
 use App\Http\Controllers\ConsultaController;
 
-
 Route::get('/', function () {
   return view('admin.index');
 });
@@ -37,8 +36,10 @@ Route::get('historial/{historial}', [Historial::class,'edit'])->name('historial.
 Route::get('consulta/{idHistorial}', [ConsultaController::class,'create'])->name('consulta.create');
 Route::get('consulta/list/{idHistorial}', [ConsultaController::class,'list'])->name('consulta.list');
 Route::post('consulta/store', [ConsultaController::class,'store'])->name('consulta.store');
-// Route::resource('consulta', ConsultaController::class)->names('consulta');
 
+
+Route::get('internacion', [InternacionController::class, 'index'])->name('internacion.index');
+Route::get('internacion/solicitudes', [InternacionController::class, 'solicitud'])->name('internacion.solicitud');
 
 Route::get('receta/{idReceta}', [RecetaController::class, 'show'])->name('receta.show');
 
