@@ -377,6 +377,19 @@ return [
             'icon' => 'fas fa-fw fa-leaf',
             'can' => 'paciente'
         ],
+        ['header' => 'CONSULTAS', 'can' => 'paciente'],
+        [
+            'text' => 'Mis Consultas',
+            'route'  => 'consulta.misconsultas',
+            'icon' => 'fas fa-fw fa-notes-medical',
+            'can' => 'paciente'
+        ],
+        [
+            'text' => 'Mi proxima consulta',
+            'route'  => 'paciente.calendar',
+            'icon' => 'fas fa-fw fa-book-medical',
+            'can' => 'paciente'
+        ],
         // [
         //     'text' => 'Mis Pacientes',
         //     'route'  => 'paciente.medico',
@@ -586,17 +599,7 @@ return [
         ],
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Livewire
-    |--------------------------------------------------------------------------
-    |
-    | Here we can enable the Livewire support.
-    |
-    | For detailed instructions you can look the livewire here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Other-Configuration
-    |
-    */
+
 
     'livewire' => false,
 ];

@@ -2,6 +2,7 @@
 namespace App\Models\Paciente;
 
 use App\Models\Evolucion;
+use App\Models\Historial\HistorialModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +29,7 @@ class PacienteModel extends Model{
     return $this->attributes;
   }
   public function historialPaciente(){
-    return $this->hasOne(Historial::class, 'idPaciente');
+    return $this->hasOne(HistorialModel::class, 'idPaciente');
   }
   public function tieneMedico(){
     return $this->hasOne(Historial::class, 'idMedico');

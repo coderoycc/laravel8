@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('medico/{especialidad}', 'App\Http\Controllers\RequestController@medicoespecialidad');
 Route::get('medicamento/{cadena}', 'App\Http\Controllers\RequestController@medicamento');
+Route::get('internacion/{id}', 'App\Http\Controllers\InternacionController@data');
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

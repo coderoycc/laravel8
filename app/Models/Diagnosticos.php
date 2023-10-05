@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Diagnosticos extends Model
 {
@@ -15,4 +16,7 @@ class Diagnosticos extends Model
 
     protected $fillable = ['idHistorial', 'idDiagnosticoCIE'];
 
+    public function nombre(){
+        return DB::select('SELECT * FROM tblDiagnosticocie WHERE codigo_cie = ?', [$this->idDiagnosticoCIE])[0];
+    }
 }

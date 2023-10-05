@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Paciente\PacienteModel;
 use Illuminate\Support\Facades\DB;
 use App\Models\Consulta\Consulta;
+use App\Models\Diagnosticos;
 
 class HistorialModel extends Model
 {
@@ -35,5 +36,8 @@ class HistorialModel extends Model
     }
     public function consultas(){
         return $this->hasMany(Consulta::class, 'idHistorial');
+    }
+    public function diagnosticos(){
+        return $this->hasMany(Diagnosticos::class, 'idHistorial');
     }
 }

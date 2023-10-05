@@ -7,6 +7,7 @@ use App\Models\Contenidoreceta;
 use Illuminate\Http\Request;
 use App\Models\Historial\HistorialModel;
 use App\Models\Receta;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ConsultaController extends Controller
@@ -73,6 +74,18 @@ class ConsultaController extends Controller
   public function list($idHistorial){
     $historial = HistorialModel::find($idHistorial);
     return view('consulta.list', compact('historial'));
+  }
+  public function misconsultas(){
+    $usuario = Auth::user();
+    if($usuario->rol == 'PACIENTE'){
+      $historial = HistorialModel::where('idPaciente',$usuario->idUsuario)->get();
+      $historial = $historial->first();
+      
+      return view('consulta.list', compact('historial'));
+    }else{
+      //redireccionar a 404 de laravel adminlte
+      return view('errors.404');
+    }
   }
   public function show(Consulta $consulta)
   {

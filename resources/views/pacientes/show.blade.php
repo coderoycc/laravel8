@@ -5,7 +5,7 @@
 
 @section('content_header')
 
-  <h1>Dashboard</h1>
+  <h1>INICIO</h1>
 @stop
 
 

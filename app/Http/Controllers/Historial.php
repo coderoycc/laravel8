@@ -45,7 +45,6 @@ class Historial extends Controller
       $talla = number_format($valores['talla'], 2);
       $historial->talla = $talla;
       $historial->save();
-      // Se deberia crear el registro para la evolucion
       foreach ($diagList as $diag) {
         $data = ['idHistorial' => $historial->idHistorial, 'idDiagnosticoCIE' => $diag];
         Diagnosticos::create($data);

@@ -11,7 +11,7 @@ class Evolucion extends Model
     use HasFactory;
 
     protected $primaryKey = 'idEvolucion';
-    protected $fillable = [];
+    protected $fillable = ['idPaciente', 'idEtapaActual'];
     protected $table = 'tblEvolucion';
     public $timestamps = false;
 

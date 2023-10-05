@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Evolucion;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Paciente\PacienteModel;
 use App\Models\Historial\HistorialModel;
+use App\Models\Tratamiento;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class Paciente extends Controller
 {
@@ -38,11 +41,14 @@ class Paciente extends Controller
       $data['password'] = bcrypt($data['ci']); 
       $data['rol'] = 'PACIENTE';
       $paciente = PacienteModel::create($data);
-      $idPaciente =$paciente->attributes()['idUsuario'];
-  
+      // $idPaciente =$paciente->attributes()['idUsuario'];
+      $idPaciente = $paciente->idUsuario;
       $dataHistorial = ['idPaciente'=>$idPaciente, 'idMedico'=>$data['idMedico'], 'fechaConsulta'=> $data['fechaConsulta'], 'procedencia'=>$data['procedencia'], 'servicio'=>$data['tipo'], 'etapa'=>''];
 
-      HistorialModel::create($dataHistorial);
+      $historial = HistorialModel::create($dataHistorial);
+      // Se deberia crear el registro para la evolucion con etapa actual 1
+      $evolucion = Evolucion::create(['idPaciente'=>$idPaciente, 'idEtapaActual'=>1]);
+      $tratamiento = Tratamiento::create(['idEvolucion'=>$evolucion->idEvolucion, 'idEtapa'=>1]);
       $request->session()->flash('success', 'El paciente se ha registrado con éxito.');
       return redirect()->route('paciente.index');
     } catch (\Throwable $th) {
@@ -51,7 +57,16 @@ class Paciente extends Controller
       return redirect()->route('paciente.index');
     }
   }
+  public function calendar()
+  {
+    $user = Auth::user();
+    if($user->rol == 'PACIENTE'){
+      return view('pacientes.calendar');
+    }else{
+      return redirect()->route('home');
+    }
 
+  }
   public function medico()
   {
     return view('pacientes.medico');
@@ -63,6 +78,7 @@ class Paciente extends Controller
 
   public function evolucion()
   {
+    echo 'assasdgadsghfdghfdfffffffffffffffff';
     return view('pacientes.evolucion');
   }
 

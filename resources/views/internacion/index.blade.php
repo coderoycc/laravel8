@@ -19,16 +19,25 @@
     <table id="t_paciente" class="table table-striped">
       <thead>
         <tr align="center">
-          <th>CONSULTA</th>
-          <th>VALORACIÓN</th>
-          <th>OBSERVACIÓN</th>
-          <th>PESO</th>
-          <th>TALLA</th>
+          <th>MÉDICO</th>
+          <th>PACIENTE</th>
+          <th>INDICACIONES</th>
+          <th>CAMA</th>
           <th>OPCIONES</th>
         </tr>
       </thead>
       <tbody>
-        
+        @foreach ($internaciones as $internacion)
+        <tr>
+          <td>{{$internacion->medico->apellidos.' '.$internacion->medico->nombres}}</td>
+          <td>{{$internacion->paciente->apellido.' '.$internacion->paciente->nombres}}</td>
+          <td>{{$internacion->indicaciones}}</td>
+          <td></td>
+          <td>
+            <a href="{{route('internacion.formulario', ['idInternacion'=>$internacion->idInternacion])}}" type="button" target="_blank" class="btn btn-secondary"><i class="fas fa-print"></i> Imprimir solicitud</a>
+          </td>
+        </tr>
+        @endforeach
       </tbody>
     </table>
   </div>

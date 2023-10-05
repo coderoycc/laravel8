@@ -9,7 +9,7 @@ class Tratamiento extends Model
 {
     use HasFactory;
     protected $primaryKey = 'idTratamiento';
-    protected $fillable = [];
+    protected $fillable = ['idEtapa', 'idEvolucion'];
     protected $table = 'tblTratamiento';
     public $timestamps = false;
 
