@@ -13,12 +13,12 @@ class MispacientesController extends Controller
         $this->middleware('auth');  
     }
     public function index(){
-        $valores = PacienteModel::getPacientesRegular();
+        $valores = PacienteModel::getPacientesRegular(Auth::user()->idUsuario);
         return view('mispacientes.index', compact('valores'));
     }
     public function nuevos(){
-        $user = Auth::user()->attributes();
-        $idMedico = $user['idUsuario'];
+        $user = Auth::user();
+        $idMedico = $user->idUsuario;
         $historiales = HistorialModel::obtenerNuevos($idMedico);
         return view('mispacientes.nuevos', compact(array('historiales')));
     }

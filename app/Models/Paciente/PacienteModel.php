@@ -19,11 +19,12 @@ class PacienteModel extends Model{
     $res = date_diff(date_create($fechaNac), $f_fin);
     return $res->format("%y años %m meses %d dias");
   }
-  static public function getPacientesRegular(){
+  static public function getPacientesRegular($idMedico){
     return DB::select("SELECT th.idHistorial, th.idMedico, th.procedencia, th.etapa, th.fechaProxConsulta, tu.nombres, tu.apellidos, tu.idUsuario, tu.fechaNac FROM tblhistorial AS th 
     INNER JOIN tblusuario AS tu
     ON th.idPaciente = tu.idUsuario
-    WHERE th.atendido LIKE 'SI';", []);
+    WHERE th.atendido LIKE 'SI'
+    AND th.idMedico = ?;", [$idMedico]);
   }
 
   public function attributes(){

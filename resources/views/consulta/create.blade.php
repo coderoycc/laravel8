@@ -363,7 +363,7 @@
     })
     $("#form_registro").submit(async (e) => {
       e.preventDefault();
-      const data = $("#form_registro").serialize()+'&fechaFinal'+$("#f_final").val()
+      const data = $("#form_registro").serialize()+'&fechaFinal='+$("#f_final").val()
       const res = await $.ajax({
         url: '/tratamiento/create',
         type: 'POST',
@@ -372,7 +372,8 @@
       });
       if(res.status === 'success'){
         //recargar la pagina
-        location.reload();
+        // location.reload();
+        mensajeToast('Guardado con exito ', 'El tratamiento se ha guardado correctamente', 'success', 2500)
       }else{
         mensajeToast('Ocurrio un error', 'No se puedo registrar los datos', 'danger', 2500);
         console.warn(res)
