@@ -161,7 +161,7 @@
       var dia = fechaPorDefecto.getDate();
       var mes = fechaPorDefecto.getMonth() + 1;
       var anio = fechaPorDefecto.getFullYear();
-      $("#fechaSol").val(`${anio}-${mes>9?'':'0'}${mes}-${dia}`);
+      $("#fechaSol").val(`${anio}-${mes>9?'':'0'}${mes}-${dia>9?'':'0'}${dia}`);
     })
     async function solicitarInternacion(){
       const data = $("#form_internacion").serialize();

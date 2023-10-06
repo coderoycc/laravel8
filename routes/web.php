@@ -11,8 +11,9 @@ use App\Http\Controllers\MispacientesController;
 use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\TratamientoController;
 
-Route::get('/', function () {
-  return view('admin.index');
+Route::get('admin/password', function () {
+  $user = Auth::user();
+  return view('admin.password', compact('user'));
 });
 // Rutas para Medicos
 Route::resource('medico', Medico::class)->names('medico');

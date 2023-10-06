@@ -47,4 +47,14 @@ class HomeController extends Controller
         
         return view('home', compact('variables'));
     }
+
+    public function cambiarPassword(Request $request)
+    {
+        $usuario = User::where('idUsuario', Auth::user()->idUsuario)->first();
+        $usuario->password = bcrypt($request->nuevo);
+        $usuario->save();
+        return redirect()->route('home')->with('success', 'Contraseña actualizada');
+    }
+
+    
 }
