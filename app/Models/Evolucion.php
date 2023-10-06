@@ -24,4 +24,7 @@ class Evolucion extends Model
     public function etapaActual(){
         return $this->hasOne(Etapa::class, 'idEtapa');
     }
+    public function paciente(){
+        return $this->belongsTo(PacienteModel::class, 'idPaciente');
+    }
 }

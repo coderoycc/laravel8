@@ -32,18 +32,19 @@
     <link rel="stylesheet" href="{{ public_path("/css/report-print.css") }}" media="all"/>
 </head>
 <body>
+    {{-- {{print_r($evolucion->tratamientoActual())}} --}}
     <div class="block">
         <div class="font-semibold leading-tight text-center m-b-10 text-xs">PROTOCOLO ST JUDE</div>
     </div>
     <div class="block">
-        <div class="font-semibold leading-tight text-center m-b-10 text-xs">RIESGO:  FACE DE REINDUCCION II</div>
+        <div class="font-semibold leading-tight text-center m-b-10 text-xs uppercase">RIESGO: {{$historial->etapa}} &nbsp;&nbsp;&nbsp;FACE DE {{$evolucion->etapaActual->detalle}}</div>
     </div>
     <div class="block">
         <table class="font-semibold leading-tight text-center m-b-10 text-xs">
             <tr>
-                <td class="w-25">PACIENTE: CAROLINA VEGARA CAROLAIN</td>
-                <td class="w-25">TIPO DE CANCER: LEUCEMIA LINFLOBASTICAS</td>
-                <td class="w-20">EDAD: 11 AÑOS</td>
+                <td class="w-25 uppercase">PACIENTE: {{$evolucion->paciente->apellidos.' '.$evolucion->paciente->nombres}}</td>
+                <td class="w-25 uppercase">TIPO DE CANCER: LEUCEMIA LINFLOBASTICAS</td>
+                <td class="w-20">EDAD: {{ $evolucion->paciente->edad($evolucion->paciente->fechaNac) }}</td>
                 <td class="w-20">PESO: 31KG</td>
                 <td class="w-10">TALLA: 1.50 CM</td>
             </tr>
@@ -68,14 +69,32 @@
             </thead>
             <!--CUERPO DE LA TABLA-->
             <tbody>
-                @for ($i = 0; $i < 7; $i++)
+                @foreach ($evolucion->tratamientoActual()->contenido->all() as $cont)
                 <tr>
+                    <td class="border-dark">{{$cont->medicamento->descripcion}}</td>
+                    <td class="border-dark">{{$cont->dosis}}</td>
+                    <td></td>
+                    @for ($j = 0; $j < 21; $j++)
+                    <td class="border-dark" style="height:23px;"></td>
+                    @endfor
+                </tr>
+                @endforeach
+                <tr>
+                    <td class="border-dark" colspan="2" rowspan="2">DIA DE QUIMIOTERAPIA</td>
+                    <td></td>
+                    @for ($j = 0; $j < 21; $j++)
+                    <td class="border-dark" style="height:23px;">{{ $j + 1 }}</td>
+                    @endfor
+                </tr>
+                {{-- @for ($i = 0; $i < 7; $i++)
+                <tr>
+
                     @if ($i < 6)
                     <td class="border-dark">
-                        
+                        holadfshdhsdfhsfhsfhshsdfhsfhsf sfdhsfdh
                     </td>
                     <td class="border-dark">
-                        
+                        12ml
                     </td>
                     @else
                     <td class="border-dark" colspan="2" rowspan="2">DIA DE QUIMIOTERAPIA</td>
@@ -87,11 +106,11 @@
                     </td>
                     @endfor
                 </tr>
-                @endfor
+                @endfor --}}
                 <tr>
                     <td></td>
                     @for ($i = 0; $i < 3; $i++)
-                    <td class="border-dark border-t-3" style="width:40px;height:25px;" colspan="7">SEMANA {{ 17 + $i }}</td>
+                    <td class="border-dark border-t-3" style="width:40px;height:25px;" colspan="7">SEMANA {{ 1 + $i }}</td>
                     @endfor
                 </tr>
             </tbody>

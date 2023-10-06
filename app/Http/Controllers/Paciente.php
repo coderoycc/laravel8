@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Etapa;
 use App\Models\Evolucion;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -78,7 +79,6 @@ class Paciente extends Controller
 
   public function evolucion()
   {
-    echo 'assasdgadsghfdghfdfffffffffffffffff';
     return view('pacientes.evolucion');
   }
 
@@ -115,17 +115,18 @@ class Paciente extends Controller
     //
   }
 
-  public function ProtocolSTJudePDF(){
+  public function ProtocolSTJudePDF($idPaciente){
+    $evolucion = Evolucion::where('idPaciente', $idPaciente)->first();
+    $historial = HistorialModel::where('idPaciente', $idPaciente)->first();
+    $etapas = Etapa::all();
     $data = [
-      'fecha' => Carbon::parse('2023-08-25'),
-      'etapas' => [
-        'induccion','consolidacion','continuacion 1','reinduccion 1','continuacion ii','reinduccion ii','mantenimiento'
-      ],
+      'fecha' => Carbon::parse('2023-08-25'), // tendria que ir la fecha inicio de la etapa
+      'etapas' => $etapas->pluck('detalle')->all(),
     ];
     // Inicializando el Objeto creador de PDF
     $pdf = app('dompdf.wrapper');
     // Asignando la vista de referencia del documento
-    $pdf->loadView('pacientes.protocol_report', compact('data'));
+    $pdf->loadView('pacientes.protocol_report', compact(array('data','evolucion', 'historial')));
     // Configuracion las dimensiones del documento
     $pdf->setPaper('legal','landscape');
     // Definiendo el tipo de fuente

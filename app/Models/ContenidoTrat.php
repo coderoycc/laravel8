@@ -13,5 +13,8 @@ class ContenidoTrat extends Model
     protected $table = 'tblContenidoTrat';
     public $timestamps = false;
 
+    public function medicamento(){
+        return $this->belongsTo(Medicamento::class, 'idMedicamento');
+    }
 
 }

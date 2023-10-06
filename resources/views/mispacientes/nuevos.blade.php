@@ -43,7 +43,7 @@
           <?php $fecha1 = date_create($historial->fechaRegistro);
           $fecha2 = date_create($historial->fechaConsulta)?>
           <tr>
-            <td>{{$historial->paciente->apellidos.' '.$historial->paciente->apellidos}}</td>
+            <td>{{$historial->paciente->apellidos.' '.$historial->paciente->nombres}}</td>
             <td>{{$historial->paciente->edad($historial->paciente->fechaNac)}}</td>
             <td>{{$historial->paciente->codSus}}</td>
             <td>{{$fecha1->format('d/m/Y')}}</td>

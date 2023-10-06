@@ -25,20 +25,27 @@
   </div>
   <div class="row mt-3">
     <div class="col-12 d-flex justify-content-center">
-      <a href="{{route('report')}}" target="_blank" class="btn btn-info text-white">Ver Evolución</a>
+      <a href="{{route('report', ['idPaciente'=>$historial->idPaciente])}}" target="_blank" class="btn btn-info text-white">Ver Evolución</a>
     </div>
   </div>
 </div>
 <div class="card">
+  <?php
+  if($historial->paciente->tieneEvolucion == null){
+    $tratamientoActual = (object) array('tieneMedicamentos' => 'NO', 'idTratamiento' => 0);
+  }else{
+    $tratamientoActual = $historial->paciente->tieneEvolucion->tratamientoActual();
+  }
+  ?>
   <div class="card-body">
     <nav class="w-100">
       <div class="nav nav-tabs" id="product-tab" role="tablist">
         <a class="nav-item nav-link active" id="reg-consulta-tab" data-toggle="tab" href="#reg-consulta" role="tab" aria-controls="reg-consulta" aria-selected="true">Registro de nueva consulta</a>
-
+        @if ($tratamientoActual->tieneMedicamentos == 'NO')
         <a class="nav-item nav-link" id="reg-evolucion-tab" data-toggle="tab" href="#reg-evolucion" role="tab" aria-controls="reg-evolucion" aria-selected="false">Registro de Evolución</a>
-
-        <a class="nav-item nav-link" id="reg-aplicacion-tab" data-toggle="tab" href="#reg-aplicacion" role="tab" aria-controls="reg-aplicacion" aria-selected="false">Aplicación de medicamentos</a>
-
+        @else
+        <a class="nav-item nav-link" id="reg-aplicacion-tab" data-toggle="tab" href="#reg-aplicacion" role="tab" aria-controls="reg-aplicacion" aria-selected="false">Aplicación de medicamentos</a>            
+        @endif
       </div>
     </nav>
     <div class="tab-content p-3" id="nav-tabContent">
@@ -90,11 +97,12 @@
           </div>
         </form>
       </div>
-
+      @if ($tratamientoActual->tieneMedicamentos == 'NO')
       <div class="tab-pane fade" id="reg-evolucion" role="tabpanel" aria-labelledby="reg-evolucion-tab">
-        <h3>Etapa de evolución: Inducción</h3>
+        <h3>Etapa de Evolución: {{$historial->paciente->tieneEvolucion ? $historial->paciente->tieneEvolucion->etapaActual->detalle : ''}}</h3>
         <form id="form_registro">
           @csrf
+          <input type="hidden" name="idTratamiento" value="{{$tratamientoActual->idTratamiento}}">
           <div class="row">
             <div class="col-md-8">
               <h5>Medicamentos</h5>
@@ -134,64 +142,41 @@
           </div>
         </form>
       </div>
-
+      @else
       <div class="tab-pane fade" id="reg-aplicacion" role="tabpanel" aria-labelledby="reg-aplicacion-tab">
-        <h4>Registra las proximas fechas</h4>
-        <table class="table table-responsive">
-          <thead>
-            <tr>
-              <th></th>
-              <th>{{ date('d-m-Y') }}</th>
-              <th>{{ date('d-m-Y') }}</th>
-              <th>{{ date('d-m-Y') }}</th>
-              <th>{{ date('d-m-Y') }}</th>
-              <th>{{ date('d-m-Y') }}</th>
-              <th>{{ date('d-m-Y') }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Medicamento nombre del medica</td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-            </tr>
-            <tr>
-              <td>Medicamento nombre del medica</td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-            </tr>
-            <tr>
-              <td>Medicamento nombre del medica</td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-            </tr>
-            <tr>
-              <td>Medicamento nombre del medica</td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-              <td><input type="checkbox" name="" id=""></td>
-            </tr>
-          </tbody>
-        </table>
+        <h4>Registra las próximas fechas: {{$historial->paciente->tieneEvolucion->etapaActual->detalle}}</h4>
+        <div class="row justify-content-center align-items-center">
+          <table class="table table-responsive">
+            <thead>
+              <tr>
+                <th></th>
+                <th></th>
+                <th>{{ $hoy = date('d-m-Y') }}</th>
+                @for ($i = 1; $i < 6; $i++)
+                  <th>{{date('d-m-Y', strtotime($hoy."+$i days"))}}</th>
+                @endfor
+              </tr>
+            </thead>
+            <tbody>
+              @foreach ($tratamientoActual->contenido as $contenido)
+                <tr>
+                  <td>{{$contenido->medicamento->descripcion}}</td>
+                  <td>{{$contenido->dosis}}</td>
+                  <td><input type="checkbox" name="" id=""></td>
+                  <td><input type="checkbox" name="" id=""></td>
+                  <td><input type="checkbox" name="" id=""></td>
+                  <td><input type="checkbox" name="" id=""></td>
+                  <td><input type="checkbox" name="" id=""></td>
+                  <td><input type="checkbox" name="" id=""></td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
         <form>
         </form>
       </div>
-
+      @endif
     </div>
   </div>
 </div>
@@ -376,10 +361,22 @@
       const nuevaFecha = `${fechaObj.getFullYear()}-${(fechaObj.getMonth() + 1) > 9 ? '' : '0'}${fechaObj.getMonth()+1}-${fechaObj.getDate() > 9 ? '':'0'}${fechaObj.getDate()}`
       $('#f_final').val(nuevaFecha);
     })
-    $("#form_registro").submit((e) => {
+    $("#form_registro").submit(async (e) => {
       e.preventDefault();
-      console.log()
-      const data = $("#form_registro").serialize()+'&fechaFinal'+$("#f_final").val() 
+      const data = $("#form_registro").serialize()+'&fechaFinal'+$("#f_final").val()
+      const res = await $.ajax({
+        url: '/tratamiento/create',
+        type: 'POST',
+        data,
+        dataType: 'json'
+      });
+      if(res.status === 'success'){
+        //recargar la pagina
+        location.reload();
+      }else{
+        mensajeToast('Ocurrio un error', 'No se puedo registrar los datos', 'danger', 2500);
+        console.warn(res)
+      }
     })
   </script>
 @stop

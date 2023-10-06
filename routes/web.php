@@ -9,6 +9,7 @@ use App\Http\Controllers\Medico;
 use App\Http\Controllers\Paciente;
 use App\Http\Controllers\MispacientesController;
 use App\Http\Controllers\ConsultaController;
+use App\Http\Controllers\TratamientoController;
 
 Route::get('/', function () {
   return view('admin.index');
@@ -39,6 +40,7 @@ Route::post('consulta/store', [ConsultaController::class,'store'])->name('consul
 
 Route::get('consulta/me/list', [ConsultaController::class,'misconsultas'])->name('consulta.misconsultas'); // usuarios
 
+Route::post('tratamiento/create', [TratamientoController::class, 'create']);
 
 Route::get('internacion', [InternacionController::class, 'index'])->name('internacion.index');
 Route::get('internacion/solicitudes', [InternacionController::class, 'solicitud'])->name('internacion.solicitud');
@@ -52,4 +54,4 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Ruta de Prueba para el Armado de PDF
-Route::get('/report', [App\Http\Controllers\Paciente::class, 'ProtocolSTJudePDF'])->name('report');
+Route::get('/report/{idPaciente}/show', [App\Http\Controllers\Paciente::class, 'ProtocolSTJudePDF'])->name('report');

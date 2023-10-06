@@ -65,7 +65,7 @@
                 <div class="dropdown-menu">
                   <a class="dropdown-item" href="{{route('consulta.create', ['idHistorial'=>$valor->idHistorial])}}"><i class="fas fa-plus-square text-primary"></i> Nueva consulta</a>
                   <a class="dropdown-item" href="{{route('consulta.list', ['idHistorial'=>$valor->idHistorial])}}"> <i class="fas fa-notes-medical text-info"></i> Todas las consultas</a>
-                  <a class="dropdown-item" href="#"><i class="fas fa-vial text-secondary"></i> Ver Evolución</a>
+                  <a class="dropdown-item" href="{{route('report', ['idPaciente'=>$valor->idUsuario])}}" target="_blank"><i class="fas fa-vial text-secondary"></i> Ver Evolución</a>
                   <a class="dropdown-item" href="#" type="button" data-toggle="modal" data-target="#modal_internacion" data-idMedic="{{$valor->idMedico}}" data-idPaciente="{{$valor->idUsuario}}" data-fullName="{{$valor->nombres.' '.$valor->apellidos}}"><i class="fas fa-file-medical text-warning" ></i> Solicitar Internación</a>
                   <a class="dropdown-item" href="#"><i class="fas fa-check text-success"></i> Dar de alta</a>
                 </div>
