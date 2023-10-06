@@ -27,7 +27,7 @@ class ConsultaController extends Controller
     $historial = HistorialModel::getById($idHistorial);
     $historial = $historial->first();
     $medicamentos = DB::select('SELECT * FROM tblmedicamento;');
-    $html = '';
+    $html = '<option value="0" selected>-- Seleccione Medicamento --</option>';
     foreach ($medicamentos as $value) {
       $html .= '<option value="'.$value->idMedicamento.'">'.$value->descripcion.'</option>';
     }

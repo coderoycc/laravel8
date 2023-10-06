@@ -18,7 +18,10 @@ class Evolucion extends Model
     public function tratamiento(){
         return $this->hasMany(Tratamiento::class, 'idEvolucion');
     }
+    public function tratamientoActual(){
+        return Tratamiento::where('idEtapa', $this->idEtapaActual)->get()->first();
+    }
     public function etapaActual(){
-        return $this->hasOne(Etapa::class, 'idEtapaActual');
+        return $this->hasOne(Etapa::class, 'idEtapa');
     }
 }

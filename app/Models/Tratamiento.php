@@ -13,7 +13,7 @@ class Tratamiento extends Model
     protected $table = 'tblTratamiento';
     public $timestamps = false;
 
-    public function contenidoMedicamento(){
-        
+    public function contenido(){
+        return $this->hasMany(ContenidoTrat::class,'idTratamiento','idTratamiento');
     }
 }

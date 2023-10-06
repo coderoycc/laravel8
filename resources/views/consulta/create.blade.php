@@ -34,7 +34,11 @@
     <nav class="w-100">
       <div class="nav nav-tabs" id="product-tab" role="tablist">
         <a class="nav-item nav-link active" id="reg-consulta-tab" data-toggle="tab" href="#reg-consulta" role="tab" aria-controls="reg-consulta" aria-selected="true">Registro de nueva consulta</a>
+
         <a class="nav-item nav-link" id="reg-evolucion-tab" data-toggle="tab" href="#reg-evolucion" role="tab" aria-controls="reg-evolucion" aria-selected="false">Registro de Evolución</a>
+
+        <a class="nav-item nav-link" id="reg-aplicacion-tab" data-toggle="tab" href="#reg-aplicacion" role="tab" aria-controls="reg-aplicacion" aria-selected="false">Aplicación de medicamentos</a>
+
       </div>
     </nav>
     <div class="tab-content p-3" id="nav-tabContent">
@@ -86,12 +90,13 @@
           </div>
         </form>
       </div>
+
       <div class="tab-pane fade" id="reg-evolucion" role="tabpanel" aria-labelledby="reg-evolucion-tab">
         <h3>Etapa de evolución: Inducción</h3>
-        <form>
-          {{-- {{$html}} --}}
+        <form id="form_registro">
+          @csrf
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8">
               <h5>Medicamentos</h5>
               @foreach ([1,2,3,4,5,6] as $item)
               <div class="row">
@@ -108,23 +113,85 @@
               </div>
               @endforeach
             </div>
-            <div class="col-md-6">
-              <h5>Fechas</h5>
+
+            <div class="col-md-4" >
+              <br><br>
+              <h5>Fechas de inicio del tratamiento </h5>
               <?php
               $hoy = date('Y-m-d');
+              $fechaNueva = date('Y-m-d', strtotime($hoy . ' + 20 days'));
               ?>
-              @foreach ([1,2,3,4,5,6] as $item)
-              <div class="row">
-                <div class="form-group col-md-6">
-                  <label>Fecha medicamento {{$item}}</label>
-                  <input type="date" name="fecha{{$item}}" class="form-control" value="{{$hoy}}">
-                </div>
+              <div class="form-group">
+                <input type="date" class="form-control" value="{{$hoy}}" id="f_inicio" name="fechaInicio">
               </div>
-              @endforeach
+              <div>
+                <h5>Fecha Final de la etpa</h5>
+                <input type="date" class="form-control" id="f_final" value="{{$fechaNueva}}" disabled>
+              </div>
+              <br><br>
+              <button type="submit" class="btn btn-success">Terminar Registro</button>
             </div>
           </div>
         </form>
       </div>
+
+      <div class="tab-pane fade" id="reg-aplicacion" role="tabpanel" aria-labelledby="reg-aplicacion-tab">
+        <h4>Registra las proximas fechas</h4>
+        <table class="table table-responsive">
+          <thead>
+            <tr>
+              <th></th>
+              <th>{{ date('d-m-Y') }}</th>
+              <th>{{ date('d-m-Y') }}</th>
+              <th>{{ date('d-m-Y') }}</th>
+              <th>{{ date('d-m-Y') }}</th>
+              <th>{{ date('d-m-Y') }}</th>
+              <th>{{ date('d-m-Y') }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Medicamento nombre del medica</td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+            </tr>
+            <tr>
+              <td>Medicamento nombre del medica</td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+            </tr>
+            <tr>
+              <td>Medicamento nombre del medica</td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+            </tr>
+            <tr>
+              <td>Medicamento nombre del medica</td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+              <td><input type="checkbox" name="" id=""></td>
+            </tr>
+          </tbody>
+        </table>
+        <form>
+        </form>
+      </div>
+
     </div>
   </div>
 </div>
@@ -132,7 +199,6 @@
 
 
 @section('css')
-  <link rel="stylesheet" href="/css/admin_custom.css">
   <style>
     .no-resize {
       resize: none; 
@@ -193,6 +259,21 @@
     }
     .select2-container .select2-selection--single {
       height: auto !important;
+    }
+    thead {
+      height: 110px;
+    }
+    .table thead th{
+      vertical-align: middle !important;
+    }
+    th {
+      text-align: center;
+      font-size: 14px;
+      font-weight: bold;
+      transform: rotate(-90deg);
+    }
+    td{
+      text-align: center;
     }
   </style>
 @stop
@@ -286,6 +367,19 @@
       }
       $("#btn_submit").prop('disabled', true);
       
+    })
+
+    $("#f_inicio").change(()=>{
+      const fecha = $("#f_inicio").val();
+      const fechaObj = new Date(fecha);
+      fechaObj.setDate(fechaObj.getDate() + 20);
+      const nuevaFecha = `${fechaObj.getFullYear()}-${(fechaObj.getMonth() + 1) > 9 ? '' : '0'}${fechaObj.getMonth()+1}-${fechaObj.getDate() > 9 ? '':'0'}${fechaObj.getDate()}`
+      $('#f_final').val(nuevaFecha);
+    })
+    $("#form_registro").submit((e) => {
+      e.preventDefault();
+      console.log()
+      const data = $("#form_registro").serialize()+'&fechaFinal'+$("#f_final").val() 
     })
   </script>
 @stop

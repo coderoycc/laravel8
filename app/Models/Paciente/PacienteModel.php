@@ -3,6 +3,7 @@ namespace App\Models\Paciente;
 
 use App\Models\Evolucion;
 use App\Models\Historial\HistorialModel;
+use App\Models\Tratamiento;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -37,6 +38,10 @@ class PacienteModel extends Model{
 
   public function tieneEvolucion(){
     return $this->hasOne(Evolucion::class, 'idPaciente');
+  }
+
+  public function tratamiento(){
+    return $this->hasManyThrough(Tratamiento::class, Evolucion::class, 'idPaciente', 'idEvolucion', 'idUsuario', 'idEvolucion');
   }
 }
 ?>
