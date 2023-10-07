@@ -39,4 +39,12 @@ class RequestController extends Controller
       echo json_encode(array('status'=>'error', 'html'=>json_encode($th)));
     }
   }
+
+  public function calendarpac(){
+    try{
+      echo json_encode(array(['title'=>'Evento 1', 'start'=>'2023-10-10','allDay'=>true, 'color'=>'#98cf31', 'url'=>'https://google.com'],['title'=>'Evento 2', 'start'=>'2023-10-11','allDay'=>true, 'color'=>'#84ce22'], ['title'=>'Evento 5', 'start'=>'2023-10-08','allDay'=>true, 'color'=>'#0f8d3e']));
+    }catch(\Exception $th){
+      echo json_encode([]);
+    }
+  }
 }
