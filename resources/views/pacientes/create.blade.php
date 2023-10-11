@@ -14,25 +14,32 @@
     <button class="btn btn-secondary" onclick="history.back()">Volver</button>
   </div>
   <div class="card-body">
-    {!! Form::open(['route'=>'paciente.store']) !!}
+    <h4>Campos con {{'(*)'}} requeridos </h4>
+    {!! Form::open(['route'=>'paciente.store', 'id'=>'form_pac']) !!}
       <div class="form-row">
         <div class="form-group col-md-4">
-          {!! Form::label('nombres', 'Nombre (s)', []) !!}
-          {!! Form::text('nombres', null, ['class'=>'form-control', 'placeholder'=>'Ingrese nombres del paciente']) !!}
+          {!! Form::label('nombres', '* Nombre (s)', []) !!}
+          {!! Form::text('nombres', null, ['class'=>'form-control', 'placeholder'=>'Ingrese nombres del paciente', 'required']) !!}
         </div>
         <div class="form-group col-md-4">      
-          {!! Form::label('appellidos', 'Apellidos', []) !!}
-          {!! Form::text('apellidos', null, ['class'=>'form-control', 'placeholder'=>'Apellidos del paciente']) !!}
+          {!! Form::label('appellidos', '* Apellidos', []) !!}
+          {!! Form::text('apellidos', null, ['class'=>'form-control', 'placeholder'=>'Apellidos del paciente', 'required']) !!}
         </div>
         <div class="form-group col-md-4">      
-          {!! Form::label('ci', 'Carnet de Identidad (solo números)', []) !!}
-          {!! Form::text('ci', null, ['class'=>'form-control', 'placeholder'=>'1231345', 'id'=>'ci']) !!}
+          {!! Form::label('ci', '* Carnet de Identidad (solo números)', []) !!}
+          {!! Form::text('ci', null, ['class'=>'form-control form-number', 'placeholder'=>'1231345', 'id'=>'ci', 'required']) !!}
+          <div  class="invalid-feedback">
+            Por favor, ingrese solo los números 
+          </div>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-4">
-          {!! Form::label('fechaNac', 'Fecha de nacimiento', []) !!}
-          {!! Form::date('fechaNac', null, ['class'=>'form-control','onchange'=>'calcularEdad()', 'id'=>'fechaNac']) !!}
+          {!! Form::label('fechaNac', '* Fecha de nacimiento', []) !!}
+          {!! Form::date('fechaNac', null, ['class'=>'form-control form-age','onchange'=>'calcularEdad()', 'id'=>'fechaNac', 'required']) !!}
+          <div  class="invalid-feedback">
+            Fuera del rango permitido
+          </div>
         </div>
         <div class="form-group col-md-4">
           {!! Form::label('genero', 'Genero.', []) !!}
@@ -43,44 +50,53 @@
           {!! Form::text('edad', null, ['class'=>'form-control', 'disabled'=>true, 'id'=>'edad']) !!}
         </div>
         <div class="form-group col-md-4">
-          {!! Form::label('codPaciente', 'Código del paciente', []) !!}
-          {!! Form::text('codPaciente', null, ['class'=>'form-control', 'id'=>'codPaciente']) !!}
+          {!! Form::label('codPaciente', '* Código del paciente', []) !!}
+          {!! Form::text('codPaciente', null, ['class'=>'form-control', 'id'=>'codPaciente', 'required']) !!}
         </div>
         <div class="form-group col-md-4">
           {!! Form::label('celular', 'Teléfono o Celular', []) !!}
           {!! Form::text('celular', null, ['class'=>'form-control']) !!}
+          <div  class="invalid-feedback">
+            Agrege un teléfono o celular válido
+          </div>
         </div>
         <div class="form-group col-md-4">
-          {!! Form::label('email', 'Correo electrónico', []) !!}
-          {!! Form::email('email', null, ['class'=>'form-control']) !!}
+          {!! Form::label('email', '* Correo electrónico', []) !!}
+          {!! Form::email('email', null, ['class'=>'form-control', 'required']) !!}
+          <div  class="invalid-feedback">
+            Ingrese un correo electrónico válido
+          </div>
         </div>
         <div class="form-group col-md-4">
-          {!! Form::label('procedencia', 'Procedencia para atención', []) !!}
-          {!! Form::select('procedencia', ['Interconsulta'=>'Interconsulta', 'Externo'=>'Externo'], null, ['class'=>'form-control']) !!}
+          {!! Form::label('procedencia', '* Procedencia para atención', []) !!}
+          {!! Form::select('procedencia', ['Interconsulta'=>'Interconsulta', 'Externo'=>'Externo'], null, ['class'=>'form-control', 'required']) !!}
         </div>
         <div class="form-group col-md-4">
-          {!! Form::label('tipo', 'Seleccione una especialidad', []) !!}
-          {!! Form::select('tipo', ['EMERGENCIA'=>'EMERGENCIA', 'ONCOLOGÍA'=>'ONCOLOGÍA', 'HEMATOLOGÍA'=>'HEMATOLOGÍA'], null, ['class'=>'form-control', 'id'=>'tipo']) !!}
+          {!! Form::label('tipo', '* Seleccione una especialidad', []) !!}
+          {!! Form::select('tipo', ['EMERGENCIA'=>'EMERGENCIA', 'ONCOLOGÍA'=>'ONCOLOGÍA', 'HEMATOLOGÍA'=>'HEMATOLOGÍA'], null, ['class'=>'form-control', 'id'=>'tipo', 'required']) !!}
         </div>
         <div class="form-group col-md-4">
-          {!! Form::label('idMedico', 'Seleccione un médico', []) !!}
-          {!! Form::select('idMedico', $arrMedic, null, ['class'=>'form-control', 'id'=>'medicoSelect']) !!}
+          {!! Form::label('idMedico', '* Seleccione un médico', []) !!}
+          {!! Form::select('idMedico', $arrMedic, null, ['class'=>'form-control', 'id'=>'medicoSelect', 'required']) !!}
         </div>
       </div>
       <div class="form-row">
         <div class="form-group col-md-4">
-          {!! Form::label('codSus', 'Código de S.U.S.', []) !!}
-          {!! Form::text('codSus', null, ['class'=>'form-control', 'placeholder'=>'Identificador del seguro']) !!}
+          {!! Form::label('codSus', '* Código de S.U.S.', []) !!}
+          {!! Form::text('codSus', null, ['class'=>'form-control', 'placeholder'=>'Identificador del seguro', 'required']) !!}
         </div>
         <div class="form-group col-md-4">
-          {!! Form::label('fechaConsulta', 'Día que hará la consulta (fecha)', []) !!}
-          {!! Form::date('fechaConsulta', null, ['class'=>'form-control']) !!}
+          {!! Form::label('fechaConsulta', '* Día que hará la consulta (fecha)', []) !!}
+          {!! Form::date('fechaConsulta', null, ['class'=>'form-control', 'required']) !!}
+          <div  class="invalid-feedback">
+            Fecha fuera del rango permitido
+          </div>
         </div>
         <div class="form-group col-md-4"></div>
       </div>
       <div class="form-row mt-2">
         <div class="form-group col-md-12">
-          {!! Form::submit('Guardar Paciente', ['class' => 'btn btn-primary float-right']) !!}
+          {!! Form::submit('Guardar Paciente', ['class' => 'btn btn-primary float-right', 'id' => 'btn_form', 'disabled']) !!}
         </div>
       </div>
     {!! Form::close() !!}
@@ -90,12 +106,15 @@
 
 
 @section('css')
-  <link rel="stylesheet" href="/css/admin_custom.css">
+
 @stop
 
 @section('js')
   <script src="/custom/js/main.js"></script>
-  <script> 
+  <script src="/custom/js/formValidator.js"></script>
+  <script>
+    validator('btn_form', 'form_pac');
+    validator_age_range(5,18);
     $('#ci').on('change', () => {
       $('#codPaciente').val($('#ci').val())
     })
