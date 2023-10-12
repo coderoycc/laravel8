@@ -12,20 +12,16 @@ use App\Models\Tratamiento;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
-class Paciente extends Controller
-{
-  public function __construct()
-  {
+class Paciente extends Controller {
+  public function __construct() {
     $this->middleware('auth');
   }
-  public function index()
-  {
+  public function index() {
     $pacientes = User::where('rol', 'PACIENTE')->get();
     return view('pacientes.index', compact('pacientes'));
   }
 
-  public function create()
-  {
+  public function create() {
     //consultar la base de datos para obtener a usuarios con rol medico
     $medicos = User::where('rol', 'MEDICO')->get();
     $arrMedic = [];
@@ -35,60 +31,53 @@ class Paciente extends Controller
     return view('pacientes.create', compact('arrMedic'));
   }
 
-  public function store(Request $request)
-  {
+  public function store(Request $request) {
     try {
       $data = $request->all();
-      $data['password'] = bcrypt($data['ci']); 
+      $data['password'] = bcrypt($data['ci']);
       $data['rol'] = 'PACIENTE';
       $paciente = PacienteModel::create($data);
       // $idPaciente =$paciente->attributes()['idUsuario'];
       $idPaciente = $paciente->idUsuario;
-      $dataHistorial = ['idPaciente'=>$idPaciente, 'idMedico'=>$data['idMedico'], 'fechaConsulta'=> $data['fechaConsulta'], 'procedencia'=>$data['procedencia'], 'servicio'=>$data['tipo'], 'etapa'=>''];
+      $dataHistorial = ['idPaciente' => $idPaciente, 'idMedico' => $data['idMedico'], 'fechaConsulta' => $data['fechaConsulta'], 'procedencia' => $data['procedencia'], 'servicio' => $data['tipo'], 'etapa' => ''];
 
       $historial = HistorialModel::create($dataHistorial);
       // Se deberia crear el registro para la evolucion con etapa actual 1
-      $evolucion = Evolucion::create(['idPaciente'=>$idPaciente, 'idEtapaActual'=>1]);
-      $tratamiento = Tratamiento::create(['idEvolucion'=>$evolucion->idEvolucion, 'idEtapa'=>1]);
+      $evolucion = Evolucion::create(['idPaciente' => $idPaciente, 'idEtapaActual' => 1]);
+      $tratamiento = Tratamiento::create(['idEvolucion' => $evolucion->idEvolucion, 'idEtapa' => 1]);
       $request->session()->flash('success', 'El paciente se ha registrado con éxito.');
       return redirect()->route('paciente.index');
     } catch (\Throwable $th) {
       // echo "Error: " . $th->getMessage() . " en línea " . $th->getLine();
-      $request->session()->flash('error', 'Ocurrio un error al registrar al paciente. {'.json_encode($th).'}');
+      $request->session()->flash('error', 'Ocurrio un error al registrar al paciente. {' . json_encode($th) . '}');
       return redirect()->route('paciente.index');
     }
   }
-  public function calendar()
-  {
+  public function calendar() {
     $user = Auth::user();
-    if($user->rol == 'PACIENTE'){
+    if ($user->rol == 'PACIENTE') {
       return view('pacientes.calendar');
-    }else{
+    } else {
       return redirect()->route('home');
     }
-
   }
-  public function medico()
-  {
+  public function medico() {
     return view('pacientes.medico');
   }
 
-  public function nuevos(){
+  public function nuevos() {
     return view('pacientes.nuevos');
   }
 
-  public function evolucion()
-  {
+  public function evolucion() {
     return view('pacientes.evolucion');
   }
 
-  public function show($id)
-  {
+  public function show($id) {
     return view('pacientes.show');
   }
 
-  public function edit($id)
-  {
+  public function edit($id) {
     //
   }
 
@@ -99,8 +88,7 @@ class Paciente extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
-  {
+  public function update(Request $request, $id) {
     //
   }
 
@@ -110,12 +98,11 @@ class Paciente extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($id)
-  {
+  public function destroy($id) {
     //
   }
 
-  public function ProtocolSTJudePDF($idPaciente){
+  public function ProtocolSTJudePDF($idPaciente) {
     $evolucion = Evolucion::where('idPaciente', $idPaciente)->first();
     $historial = HistorialModel::where('idPaciente', $idPaciente)->first();
     $etapas = Etapa::all();
@@ -126,9 +113,9 @@ class Paciente extends Controller
     // Inicializando el Objeto creador de PDF
     $pdf = app('dompdf.wrapper');
     // Asignando la vista de referencia del documento
-    $pdf->loadView('pacientes.protocol_report', compact(array('data','evolucion', 'historial')));
+    $pdf->loadView('pacientes.protocol_report', compact(array('data', 'evolucion', 'historial')));
     // Configuracion las dimensiones del documento
-    $pdf->setPaper('legal','landscape');
+    $pdf->setPaper('legal', 'landscape');
     // Definiendo el tipo de fuente
     $pdf->set_option('defaultFont', 'Helvetica');
     return $pdf->stream();

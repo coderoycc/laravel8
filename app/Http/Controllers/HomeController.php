@@ -57,14 +57,26 @@ class HomeController extends Controller
                 $usuario->password = bcrypt($request->nuevo);
                 $usuario->save();
                 echo json_encode(array('status'=>'success', 'message'=>'Actualizó su contraseña exitosamente'));
-                // return redirect()->to('home', 'GET')->with('success', 'Contraseña actualizada');
             }else{
                 echo json_encode(array('status'=>'error', 'message'=>'Su contraseña anterior es incorrecta'));
-                // return redirect()->to('home', 'GET')->with('error', 'No se actualizo la contraseña, la contraseña anterior no es la correcta');
             }
         } catch (\Throwable $th) {
             echo json_encode(array('status'=>'error', 'message'=>'Ocurrió algo inesperado '.json_encode($th)));
-            // return redirect()->to('home', 'GET')->with('error', 'Ocurrió un error inesperado: '.$th->getMessage());
+        }
+    }
+
+    public function resetearPassword(Request $request){
+        try {
+            $usuario = User::where('idUsuario', $request->idUsuario)->first();
+            if($usuario){
+                $usuario->password = bcrypt($usuario->ci);
+                $usuario->save();
+                echo json_encode(array('status'=>'success', 'message'=>'Se restableció la contraseña exitosamente'));
+            }else{
+                echo json_encode(array('status'=>'error', 'message'=>'No se encontró el usuario'));
+            }
+        }catch (\Throwable $th) {
+            echo json_encode(array('status'=>'error', 'message'=>'Ocurrió algo inesperado '.json_encode($th)));
         }
     }
 

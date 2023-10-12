@@ -57,6 +57,7 @@
                         <input type="password" name="nuevo" class="form-control" value=""
                             id="nuevo" />
                         <span class="fas fa-fw fa-eye password-icon show-password" data-br="nuevo"></span>
+                        <small id="passNew" class="form-text text-danger d-none">La contraseña debe ser como minimo de 6 caracteres</small>
                       </div>
                       <div class="form-group">
                         <label for="departamento">Repita su nueva contraseña:</label>
@@ -77,6 +78,7 @@
 
 
 @section('css')
+<link rel="stylesheet" href="/vendor/sweetalert2/sweetalert2.min.css">
 <style>
   .password-icon {
     float: right;
@@ -88,7 +90,7 @@
 @stop
 
 @section('js')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/vendor/sweetalert2/sweetalert2.all.min.js"></script>
 <script>
     window.addEventListener("load", function() {
 
@@ -102,6 +104,20 @@
           e.target.classList.toggle("fa-eye-slash");
         }
       })
+    });
+    $("#nuevo").on('input', ()=>{
+      if($("#nuevo2").val().length > 3){
+        if($("#nuevo").val() != $("#nuevo2").val()){
+          $("#passHelp").removeClass('d-none');
+        }else{
+          $("#passHelp").addClass('d-none');
+        }
+      }
+      if($("#nuevo").val().length >= 6){
+        $("#passNew").addClass('d-none');
+      }else{
+        $('#passNew').removeClass('d-none')
+      }
     });
     $("#nuevo2").on('input', ()=>{
       if($("#nuevo").val() != $("#nuevo2").val()){

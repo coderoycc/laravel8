@@ -19,6 +19,9 @@ Route::get('admin/password', function () {
   return view('admin.password', compact('user'));
 });
 Route::put('admin/password/change', 'App\Http\Controllers\HomeController@cambiarPassword');
+
+Route::put('admin/password/reset', 'App\Http\Controllers\HomeController@resetearPassword');
+
 // Rutas para Medicos
 Route::resource('medico', Medico::class)->names('medico');
 Route::get('medico/{especialidad}', 'Medico@medicoespecialidad');
@@ -44,6 +47,8 @@ Route::get('consulta/list/{idHistorial}', [ConsultaController::class,'list'])->n
 Route::post('consulta/store', [ConsultaController::class,'store'])->name('consulta.store');
 
 Route::get('consulta/me/list', [ConsultaController::class,'misconsultas'])->name('consulta.misconsultas'); // usuarios
+
+Route::get('evolucion/{idHistorial}/show', 'App\Http\Controllers\EvolucionController@show')->name('evolucion.show');
 
 Route::post('tratamiento/create', [TratamientoController::class, 'create']);
 
