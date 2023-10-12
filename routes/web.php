@@ -18,6 +18,7 @@ Route::get('admin/password', function () {
   $user = Auth::user();
   return view('admin.password', compact('user'));
 });
+Route::put('admin/password/change', 'App\Http\Controllers\HomeController@cambiarPassword');
 // Rutas para Medicos
 Route::resource('medico', Medico::class)->names('medico');
 Route::get('medico/{especialidad}', 'Medico@medicoespecialidad');

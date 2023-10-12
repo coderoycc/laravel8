@@ -88,6 +88,7 @@
 @stop
 
 @section('js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     window.addEventListener("load", function() {
 
@@ -113,14 +114,32 @@
     
 
     $("#form_pass").submit(async (e) => {
+      e.preventDefault();
       const data = $('#form_pass').serialize();
       const res = await $.ajax({
-        url: '/',
+        url: '/admin/password/change',
         data,
-        type: 'POST',
+        type: 'PUT',
         dataType: 'json'
       });
-      console.log(res)
+      if(res.status === 'success'){
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: res.message,
+          showConfirmButton: false,
+          timer: 1500
+        })
+        setTimeout(() => {
+          window.location.href = '/home';
+        }, 1800);
+      }else{
+        Swal.fire({
+          icon: 'error',
+          title: 'Ups...',
+          text: res.message,
+        })
+      }
     })
 </script>
 @stop
