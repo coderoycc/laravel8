@@ -34,7 +34,7 @@
   <div class="card-body">
     <nav class="w-100">
       <div class="nav nav-tabs" id="product-tab" role="tablist">
-        <a class="nav-item nav-link" id="reg-evolucion-tab" data-toggle="tab" href="#reg-evolucion" role="tab" aria-controls="reg-evolucion" aria-selected="false">Registro de Evolución</a>
+        <a class="nav-item nav-link active" id="reg-evolucion-tab" data-toggle="tab" href="#reg-evolucion" role="tab" aria-controls="reg-evolucion" aria-selected="false">Registro de Evolución</a>
         <a class="nav-item nav-link" id="reg-aplicacion-tab" data-toggle="tab" href="#reg-aplicacion" role="tab" aria-controls="reg-aplicacion" aria-selected="false">Aplicación de medicamentos</a>            
       </div>
     </nav>
