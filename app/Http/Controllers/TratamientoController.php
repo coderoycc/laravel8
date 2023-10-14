@@ -6,21 +6,19 @@ use App\Models\ContenidoTrat;
 use App\Models\Tratamiento;
 use Illuminate\Http\Request;
 
-class TratamientoController extends Controller
-{
-  public function create(Request $request)
-  {
-    // print_r($request->all());
+class TratamientoController extends Controller {
+  public function create(Request $request) {
     try {
       $cadMedicamento = 'idMedicamento';
       $cadDosis = 'dosis';
       $idTratamiento = $request->idTratamiento;
       $tratamiento = Tratamiento::find($idTratamiento);
-      if($tratamiento->tieneMedicamentos == 'NO'){
+      if ($tratamiento->tieneMedicamentos == 'NO') {
         $tratamiento->tieneMedicamentos = 'SI';
+        $tratamiento->fechaInicio = $request->fechaInicio;
         $tratamiento->save();
-        for ($i = 1; $i <= 6; $i++) { 
-          if($request->{$cadMedicamento . $i} != 0) {
+        for ($i = 1; $i <= 6; $i++) {
+          if ($request->{$cadMedicamento . $i} != 0) {
             $data = ['idTratamiento' => $idTratamiento, 'idMedicamento' => $request->{$cadMedicamento . $i}, 'dosis' => $request->{$cadDosis . $i}];
             ContenidoTrat::create($data);
           }
@@ -28,7 +26,7 @@ class TratamientoController extends Controller
         echo json_encode(['status' => 'success', 'message' => 'Tratamiento creado correctamente.']);
       }
     } catch (\Throwable $th) {
-      echo json_encode(['status' => 'error', 'message' => 'Error al crear el tratamiento.'. json_encode($th)]);
+      echo json_encode(['status' => 'error', 'message' => 'Error al crear el tratamiento.' . json_encode($th)]);
     }
   }
 }

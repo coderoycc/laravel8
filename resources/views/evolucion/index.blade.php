@@ -13,7 +13,7 @@
 
 @section('content')
 {{-- {{print_r($historial)}} --}}
-<div class="callout callout-info">
+<div class="callout callout-success">
   <h5 class="font-weight-bold">Datos del paciente:</h5>
   <div class="row">
     <div class="col-md-4"><b>Nombre completo:</b> {{$historial->paciente->nombres.' '.$historial->paciente->apellidos}}</div>
@@ -25,26 +25,28 @@
   </div>
   <div class="row mt-3">
     <div class="col-12 d-flex justify-content-center">
-      <a href="{{route('report', ['idPaciente'=>$historial->idPaciente])}}" target="_blank" class="btn btn-info text-white">Ver Evolución</a>
+      <a href="{{route('report', ['idPaciente'=>$historial->idPaciente])}}" target="_blank" class="btn btn-success text-white">Ver Reporte</a>
     </div>
   </div>
 </div>
 <div class="card">
-
   <div class="card-body">
     <nav class="w-100">
       <div class="nav nav-tabs" id="product-tab" role="tablist">
+        @if ($mostrarMedicamentos)
         <a class="nav-item nav-link active" id="reg-evolucion-tab" data-toggle="tab" href="#reg-evolucion" role="tab" aria-controls="reg-evolucion" aria-selected="false">Registro de Evolución</a>
-        <a class="nav-item nav-link" id="reg-aplicacion-tab" data-toggle="tab" href="#reg-aplicacion" role="tab" aria-controls="reg-aplicacion" aria-selected="false">Aplicación de medicamentos</a>            
+        @else
+        <a class="nav-item nav-link active" id="reg-aplicacion-tab" data-toggle="tab" href="#reg-aplicacion" role="tab" aria-controls="reg-aplicacion" aria-selected="false">Aplicación de medicamentos</a>            
+        @endif
       </div>
     </nav>
     <div class="tab-content p-3" id="nav-tabContent">
-
+      @if($mostrarMedicamentos)
       <div class="tab-pane fade show active" id="reg-evolucion" role="tabpanel" aria-labelledby="reg-evolucion-tab">
-        <h3>Etapa de Evolución: {{$historial->paciente->tieneEvolucion ? $historial->paciente->tieneEvolucion->etapaActual->detalle : ''}}</h3>
+        <h3>Etapa de Evolución: <b>{{$evolucion->etapaActual->detalle}}</b></h3>
         <form id="form_registro">
           @csrf
-          {{-- <input type="hidden" name="idTratamiento" value="{{$tratamientoActual->idTratamiento}}"> --}}
+          <input type="hidden" name="idTratamiento" value="{{$tratamiento->idTratamiento}}">
           <div class="row">
             <div class="col-md-8">
               <h5>Medicamentos</h5>
@@ -53,7 +55,7 @@
                 <div class="form-group col-md-6">
                   <label>Medicamento {{$item}}</label>
                   <select class="form-control select2" style="width: 100%;padding-bottom:5px;" name="idMedicamento{{$item}}">
-                    {{-- {!! $html !!} --}}
+                    {!! $html !!}
                   </select>
                 </div>
                 <div class="form-group col-md-6">
@@ -84,40 +86,44 @@
           </div>
         </form>
       </div>
-
-      <div class="tab-pane fade" id="reg-aplicacion" role="tabpanel" aria-labelledby="reg-aplicacion-tab">
-        <h4>Registra las próximas fechas: {{$historial->paciente->tieneEvolucion->etapaActual->detalle}}</h4>
-        <div class="row justify-content-center align-items-center">
-          <table class="table table-responsive">
-            <thead>
-              <tr>
-                <th></th>
-                <th></th>
-                <th>{{ $hoy = date('d-m-Y') }}</th>
-                @for ($i = 1; $i < 6; $i++)
-                  <th>{{date('d-m-Y', strtotime($hoy."+$i days"))}}</th>
-                @endfor
-              </tr>
-            </thead>
-            <tbody>
-              {{-- @foreach ($tratamientoActual->contenido as $contenido)
-                <tr>
-                  <td>{{$contenido->medicamento->descripcion}}</td>
-                  <td>{{$contenido->dosis}}</td>
-                  <td><input type="checkbox" name="" id=""></td>
-                  <td><input type="checkbox" name="" id=""></td>
-                  <td><input type="checkbox" name="" id=""></td>
-                  <td><input type="checkbox" name="" id=""></td>
-                  <td><input type="checkbox" name="" id=""></td>
-                  <td><input type="checkbox" name="" id=""></td>
-                </tr>
-              @endforeach --}}
-            </tbody>
-          </table>
+      @else
+      <div class="tab-pane fade show active" id="reg-aplicacion" role="tabpanel" aria-labelledby="reg-aplicacion-tab">
+        <div class="row d-flex justify-content-between">
+          <h4>Registra las próximas fechas de la etapa: <b>{{$evolucion->etapaActual->detalle}}</b></h4>
+          <button class="btn btn-primary">REGISTRAR CAMBIOS</button>
         </div>
-        <form>
-        </form>
+        <div class="row d-flex justify-content-center" >
+          <div style="max-width:1000px;">
+            <table style="width:auto; border:1px solid red" class="table table-responsive">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Dosis</th>
+                  <th>{{ $hoy = date('d-m-Y', strtotime($tratamiento->fechaInicio)) }}</th>
+                  @for ($i = 1; $i < 6; $i++)
+                    <th>{{date('d-m-Y', strtotime($hoy."+$i days"))}}</th>
+                  @endfor
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($tratamiento->contenido as $contenido)
+                  <tr>
+                    <td style="text-align:right">{{$contenido->medicamento->descripcion}}</td>
+                    <td>{{$contenido->dosis}}</td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td><input type="checkbox" name="" id=""></td>
+                    <td><input type="checkbox" name="" id=""></td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>            
+          </div>
+        </div>
       </div>
+      @endif
     </div>
   </div>
 </div>
@@ -208,92 +214,6 @@
   <script src="/custom/js/main.js"></script>
   <script>
     $('.select2').select2()
-    var busquedaInput = document.getElementById('busqueda');
-    var sugerenciasLista = document.getElementById('sugerencias');
-
-    busquedaInput.addEventListener('input', async function() {
-      var query = this.value;
-      sugerenciasLista.innerHTML = '';
-      if(query.length >= 3){
-        const res = await $.ajax({
-          url: `/api/medicamento/${query}`,
-          type: 'GET',
-          dataType: 'json',
-        });
-        if(res.status == 'success'){
-          if(res.cant > 0){
-            $("#sugerencias").html(res.html);
-          }else{
-            $("#sugerencias").html('<li align="center">No hay resultados</li>')
-          }
-          sugerenciasLista.style.display = 'block';
-        }else{
-          console.log(res)
-        }
-      } else {
-        sugerenciasLista.style.display = 'none';
-      }
-    });
-
-    sugerenciasLista.addEventListener('click', function(event) {
-      if (event.target.tagName === 'LI') {
-        const textMed = $(event.target).text();
-        if(textMed != 'No hay resultados'){
-          const idMedicamento = $(event.target).data('id');
-          $("#medicinas").append(`<div class="row d-flex justify-content-between linea-baja mt-2">
-              <label for="">${textMed}</label>
-              <input type="hidden" name="idMedicamento[]" value="${idMedicamento}" />
-              <input type="text" class="form-list" name="dosificacion[]" placeholder="Dosificacion">
-            </div>`);
-        }
-        busquedaInput.value = '';
-        sugerenciasLista.style.display = 'none';
-      }
-    });
-
-    document.addEventListener('click', function(event) {
-      if (event.target !== busquedaInput) {
-        sugerenciasLista.style.display = 'none';
-      }
-    });
-
-    $("#form_consulta").submit(async (e)=>{
-      e.preventDefault();
-      const formData = new FormData(e.target);
-      let data = {};
-      for (let [key, value] of formData.entries()) {
-        if(!key.endsWith('[]')){
-          data[key] = value;
-        }
-      }
-      let idsMedicamento = [];
-      $('input[name="idMedicamento[]"]').each(function() {
-        idsMedicamento.push($(this).val());
-      });
-      let valoresDosis = [];
-      $('input[name="dosificacion[]"]').each(function() {
-        valoresDosis.push($(this).val());
-      });
-      data['idsMedicamento'] = JSON.stringify(idsMedicamento);
-      data['valoresDosis'] = JSON.stringify(valoresDosis);
-      // console.log(data);
-      const res = await $.ajax({
-        url: '/consulta/store',
-        type: 'POST',
-        dataType: 'json',
-        data
-      });
-      if(res.status === 'success'){
-        mensajeToast('Consulta registrada', 'La consulta y la receta se han registrado', 'success', 2800)
-        if(res.idReceta > 0){
-          $("#botones").append(`<div class="form-group col-md-12 mt-3 d-flex justify-content-center">
-            <a href="/receta/${res.idReceta}" target="_blank" type="button" class="btn btn-secondary">Imprimir receta</a>
-          </div>`);
-        }
-      }
-      $("#btn_submit").prop('disabled', true);
-      
-    })
 
     $("#f_inicio").change(()=>{
       const fecha = $("#f_inicio").val();
@@ -312,9 +232,10 @@
         dataType: 'json'
       });
       if(res.status === 'success'){
-        //recargar la pagina
-        // location.reload();
-        mensajeToast('Guardado con exito ', 'El tratamiento se ha guardado correctamente', 'success', 2500)
+        mensajeToast('Guardado con exito ', 'El tratamiento se ha guardado correctamente', 'success', 2000)
+        setTimeout(() => {
+          location.reload();
+        }, 2100);
       }else{
         mensajeToast('Ocurrio un error', 'No se puedo registrar los datos', 'danger', 2500);
         console.warn(res)

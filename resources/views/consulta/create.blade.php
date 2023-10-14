@@ -25,159 +25,60 @@
   </div>
   <div class="row mt-3">
     <div class="col-12 d-flex justify-content-center">
-      <a href="{{route('report', ['idPaciente'=>$historial->idPaciente])}}" target="_blank" class="btn btn-info text-white">Ver Evolución</a>
+      <a href="{{route('evolucion.show', ['idHistorial'=>$historial->idHistorial])}}" target="_blank" class="btn btn-info text-white">Seguimiento Evolución</a>
     </div>
   </div>
 </div>
 <div class="card">
-  <?php
-  if($historial->paciente->tieneEvolucion == null){
-    $tratamientoActual = (object) array('tieneMedicamentos' => 'NO', 'idTratamiento' => 0);
-  }else{
-    $tratamientoActual = $historial->paciente->tieneEvolucion->tratamientoActual();
-  }
-  ?>
   <div class="card-body">
-    <nav class="w-100">
-      <div class="nav nav-tabs" id="product-tab" role="tablist">
-        <a class="nav-item nav-link active" id="reg-consulta-tab" data-toggle="tab" href="#reg-consulta" role="tab" aria-controls="reg-consulta" aria-selected="true">Registro de nueva consulta</a>
-        @if ($tratamientoActual->tieneMedicamentos == 'NO')
-        <a class="nav-item nav-link" id="reg-evolucion-tab" data-toggle="tab" href="#reg-evolucion" role="tab" aria-controls="reg-evolucion" aria-selected="false">Registro de Evolución</a>
-        @else
-        <a class="nav-item nav-link" id="reg-aplicacion-tab" data-toggle="tab" href="#reg-aplicacion" role="tab" aria-controls="reg-aplicacion" aria-selected="false">Aplicación de medicamentos</a>            
-        @endif
-      </div>
-    </nav>
-    <div class="tab-content p-3" id="nav-tabContent">
-      <div class="tab-pane fade show active" id="reg-consulta" role="tabpanel" aria-labelledby="reg-consulta-tab">
-        <form id="form_consulta">
-          @csrf
-          <input type="hidden" name="idHistorial" value="{{$historial->idHistorial}}">
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <label>Valoracion</label>
-              <textarea name="valoracion" class="form-control no-resize" rows="2"></textarea>
-            </div>
-            <div class="form-group col-md-6">
-              <label>Observaciones o recomendaciones</label>
-              <textarea name="observacion" class="form-control no-resize" rows="2"></textarea>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-3">
-              <label for="peso">Peso [kg]</label>
-              <input class="form-control" step="0.01" name="peso" type="number" id="peso">
-            </div>
-            <div class="form-group col-md-3">
-              <label for="talla">Talla [cm]</label>
-              <input type="number" step="0.01" name="talla" id="talla" class="form-control">
-            </div>
-            <div class="form-group col-md-4">
-              <label for="fechaProx">Fecha prox. consulta</label>
-              <input type="date" class="form-control" name="fechaProxConsulta">
-            </div>
-          </div>
-          <h4>Receta médica</h4>
-          <div class="form-row">
-            <div class="form-group col-md-6 autocomplete">
-              <label for="busqueda">Medicamento</label>
-              <input class="form-control" type="text" id="busqueda" placeholder="Escribe aquí" autocomplete="off">
-              <ul id="sugerencias"></ul>
-            </div>
-            <div class="form-group col-md-6">
-              <div class="callout callout-success" id="medicinas">
-                <h4>Lista de medicamentos</h4>
-              </div>
-            </div>
-          </div>
-          <div class="form-row mt-2" id="botones">
-            <div class="form-group col-md-12">
-              <button type="submit" id="btn_submit" class="btn btn-primary float-right">Guardar consulta</button>
-            </div>
-          </div>
-        </form>
-      </div>
-      @if ($tratamientoActual->tieneMedicamentos == 'NO')
-      <div class="tab-pane fade" id="reg-evolucion" role="tabpanel" aria-labelledby="reg-evolucion-tab">
-        <h3>Etapa de Evolución: {{$historial->paciente->tieneEvolucion ? $historial->paciente->tieneEvolucion->etapaActual->detalle : ''}}</h3>
-        <form id="form_registro">
-          @csrf
-          <input type="hidden" name="idTratamiento" value="{{$tratamientoActual->idTratamiento}}">
-          <div class="row">
-            <div class="col-md-8">
-              <h5>Medicamentos</h5>
-              @foreach ([1,2,3,4,5,6] as $item)
-              <div class="row">
-                <div class="form-group col-md-6">
-                  <label>Medicamento {{$item}}</label>
-                  <select class="form-control select2" style="width: 100%;padding-bottom:5px;" name="idMedicamento{{$item}}">
-                    {!! $html !!}
-                  </select>
-                </div>
-                <div class="form-group col-md-6">
-                  <label>Dosis</label>
-                  <input type="text" name="dosis{{$item}}" class="form-control">
-                </div>
-              </div>
-              @endforeach
-            </div>
 
-            <div class="col-md-4" >
-              <br><br>
-              <h5>Fechas de inicio del tratamiento </h5>
-              <?php
-              $hoy = date('Y-m-d');
-              $fechaNueva = date('Y-m-d', strtotime($hoy . ' + 20 days'));
-              ?>
-              <div class="form-group">
-                <input type="date" class="form-control" value="{{$hoy}}" id="f_inicio" name="fechaInicio">
-              </div>
-              <div>
-                <h5>Fecha Final de la etpa</h5>
-                <input type="date" class="form-control" id="f_final" value="{{$fechaNueva}}" disabled>
-              </div>
-              <br><br>
-              <button type="submit" class="btn btn-success">Terminar Registro</button>
-            </div>
-          </div>
-        </form>
-      </div>
-      @else
-      <div class="tab-pane fade" id="reg-aplicacion" role="tabpanel" aria-labelledby="reg-aplicacion-tab">
-        <h4>Registra las próximas fechas: {{$historial->paciente->tieneEvolucion->etapaActual->detalle}}</h4>
-        <div class="row justify-content-center align-items-center">
-          <table class="table table-responsive">
-            <thead>
-              <tr>
-                <th></th>
-                <th></th>
-                <th>{{ $hoy = date('d-m-Y') }}</th>
-                @for ($i = 1; $i < 6; $i++)
-                  <th>{{date('d-m-Y', strtotime($hoy."+$i days"))}}</th>
-                @endfor
-              </tr>
-            </thead>
-            <tbody>
-              @foreach ($tratamientoActual->contenido as $contenido)
-                <tr>
-                  <td>{{$contenido->medicamento->descripcion}}</td>
-                  <td>{{$contenido->dosis}}</td>
-                  <td><input type="checkbox" name="" id=""></td>
-                  <td><input type="checkbox" name="" id=""></td>
-                  <td><input type="checkbox" name="" id=""></td>
-                  <td><input type="checkbox" name="" id=""></td>
-                  <td><input type="checkbox" name="" id=""></td>
-                  <td><input type="checkbox" name="" id=""></td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
+    <form id="form_consulta">
+      @csrf
+      <input type="hidden" name="idHistorial" value="{{$historial->idHistorial}}">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>Valoracion</label>
+          <textarea name="valoracion" class="form-control no-resize" rows="2"></textarea>
         </div>
-        <form>
-        </form>
+        <div class="form-group col-md-6">
+          <label>Observaciones o recomendaciones</label>
+          <textarea name="observacion" class="form-control no-resize" rows="2"></textarea>
+        </div>
       </div>
-      @endif
-    </div>
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <label for="peso">Peso [kg]</label>
+          <input class="form-control" step="0.01" name="peso" type="number" id="peso">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="talla">Talla [cm]</label>
+          <input type="number" step="0.01" name="talla" id="talla" class="form-control">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="fechaProx">Fecha prox. consulta</label>
+          <input type="date" class="form-control" name="fechaProxConsulta">
+        </div>
+      </div>
+      <h4>Receta médica</h4>
+      <div class="form-row">
+        <div class="form-group col-md-6 autocomplete">
+          <label for="busqueda">Medicamento</label>
+          <input class="form-control" type="text" id="busqueda" placeholder="Escribe aquí" autocomplete="off">
+          <ul id="sugerencias"></ul>
+        </div>
+        <div class="form-group col-md-6">
+          <div class="callout callout-success" id="medicinas">
+            <h4>Lista de medicamentos</h4>
+          </div>
+        </div>
+      </div>
+      <div class="form-row mt-2" id="botones">
+        <div class="form-group col-md-12">
+          <button type="submit" id="btn_submit" class="btn btn-primary float-right">Guardar consulta</button>
+        </div>
+      </div>
+    </form>
+
   </div>
 </div>
 @stop
@@ -354,13 +255,6 @@
       
     })
 
-    $("#f_inicio").change(()=>{
-      const fecha = $("#f_inicio").val();
-      const fechaObj = new Date(fecha);
-      fechaObj.setDate(fechaObj.getDate() + 20);
-      const nuevaFecha = `${fechaObj.getFullYear()}-${(fechaObj.getMonth() + 1) > 9 ? '' : '0'}${fechaObj.getMonth()+1}-${fechaObj.getDate() > 9 ? '':'0'}${fechaObj.getDate()}`
-      $('#f_final').val(nuevaFecha);
-    })
     $("#form_registro").submit(async (e) => {
       e.preventDefault();
       const data = $("#form_registro").serialize()+'&fechaFinal='+$("#f_final").val()
