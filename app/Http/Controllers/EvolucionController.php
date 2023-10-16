@@ -8,33 +8,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class EvolucionController extends Controller {
-  /**
-   * Display a listing of the resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
+
   public function index() {
     //
   }
 
-  /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function create() {
-    //
-  }
-
-  /**
-   * Store a newly created resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
-   */
-  public function store(Request $request) {
-    //
-  }
 
   public function show($idHistorial) {
     $historial = HistorialModel::where('idHistorial', $idHistorial)->get()->first();
@@ -43,43 +21,46 @@ class EvolucionController extends Controller {
     $tratamiento = $evolucion->tratamientoActual();
     $mostrarMedicamentos = $tratamiento->tieneMedicamentos == 'NO' ? true : false;
     $html = '';
+    $arrFechas = [];
     if($mostrarMedicamentos){
       $medicamentos = DB::select('SELECT * FROM tblmedicamento;');
       $html = '<option value="0" selected>-- Seleccione Medicamento --</option>';
       foreach ($medicamentos as $value) {
         $html .= '<option value="'.$value->idMedicamento.'">'.$value->descripcion.'</option>';
       }
+    }else{
+      $fechaInicio = strtotime($tratamiento->fechaInicio);
+      $fechaFinal = strtotime($tratamiento->fechaInicio.'+20 days');
+      $hoy = strtotime(date('Y-m-d'));
+      if($hoy > $fechaInicio){
+        $fechaInicio = $hoy;
+      }
+      $arrFechas[] = date('d-m-Y', $fechaInicio);
+      $fechaActual = $fechaInicio;
+      for($i = 1; $i < 6; $i++){
+        if($fechaActual < $fechaFinal){
+          $fechaActual = strtotime(date('d-m-Y',$fechaActual).'+1 days');
+          $arrFechas[] = date('d-m-Y', strtotime(date('d-m-Y',$fechaInicio)."+$i days"));
+        } else {
+          break;
+        } 
+      }
+
     }
-    return view('evolucion.index', compact('historial', 'evolucion', 'tratamiento', 'html', 'mostrarMedicamentos'));
+    return view('evolucion.index', compact('historial', 'evolucion', 'tratamiento', 'html', 'mostrarMedicamentos','arrFechas'));
   }
 
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  \App\Models\Evolucion  $evolucion
-   * @return \Illuminate\Http\Response
-   */
+
   public function edit(Evolucion $evolucion) {
     //
   }
 
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  \App\Models\Evolucion  $evolucion
-   * @return \Illuminate\Http\Response
-   */
+
   public function update(Request $request, Evolucion $evolucion) {
     //
   }
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  \App\Models\Evolucion  $evolucion
-   * @return \Illuminate\Http\Response
-   */
+
   public function destroy(Evolucion $evolucion) {
     //
   }

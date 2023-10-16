@@ -19,11 +19,17 @@
       <div class="form-row">
         <div class="form-group col-md-4">
           {!! Form::label('nombres', '* Nombre (s)', []) !!}
-          {!! Form::text('nombres', null, ['class'=>'form-control', 'placeholder'=>'Ingrese nombres del paciente', 'required']) !!}
+          {!! Form::text('nombres', null, ['class'=>'form-control form-cad-3', 'placeholder'=>'Ingrese nombres del paciente', 'required']) !!}
+          <div  class="invalid-feedback">
+            Debe tener un minimo de 3 caracteres
+          </div>
         </div>
         <div class="form-group col-md-4">      
           {!! Form::label('appellidos', '* Apellidos', []) !!}
-          {!! Form::text('apellidos', null, ['class'=>'form-control', 'placeholder'=>'Apellidos del paciente', 'required']) !!}
+          {!! Form::text('apellidos', null, ['class'=>'form-control form-cad-3', 'placeholder'=>'Apellidos del paciente', 'required']) !!}
+          <div  class="invalid-feedback">
+            Debe tener un minimo de 3 caracteres
+          </div>
         </div>
         <div class="form-group col-md-4">      
           {!! Form::label('ci', '* Carnet de Identidad (solo números)', []) !!}
@@ -55,14 +61,14 @@
         </div>
         <div class="form-group col-md-4">
           {!! Form::label('celular', 'Teléfono o Celular', []) !!}
-          {!! Form::text('celular', null, ['class'=>'form-control']) !!}
+          {!! Form::text('celular', null, ['class'=>'form-control form-movil-phone']) !!}
           <div  class="invalid-feedback">
             Agrege un teléfono o celular válido
           </div>
         </div>
         <div class="form-group col-md-4">
           {!! Form::label('email', '* Correo electrónico', []) !!}
-          {!! Form::email('email', null, ['class'=>'form-control', 'required']) !!}
+          {!! Form::email('email', null, ['class'=>'form-control form-email', 'required']) !!}
           <div  class="invalid-feedback">
             Ingrese un correo electrónico válido
           </div>
@@ -87,9 +93,9 @@
         </div>
         <div class="form-group col-md-4">
           {!! Form::label('fechaConsulta', '* Día que hará la consulta (fecha)', []) !!}
-          {!! Form::date('fechaConsulta', null, ['class'=>'form-control', 'required']) !!}
+          {!! Form::date('fechaConsulta', null, ['class'=>'form-control form-today', 'required']) !!}
           <div  class="invalid-feedback">
-            Fecha fuera del rango permitido
+            La fecha debe ser mayor al día de hoy
           </div>
         </div>
         <div class="form-group col-md-4"></div>

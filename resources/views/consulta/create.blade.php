@@ -25,7 +25,7 @@
   </div>
   <div class="row mt-3">
     <div class="col-12 d-flex justify-content-center">
-      <a href="{{route('evolucion.show', ['idHistorial'=>$historial->idHistorial])}}" target="_blank" class="btn btn-info text-white">Seguimiento Evolución</a>
+      <a href="{{route('evolucion.show', ['idHistorial'=>$historial->idHistorial])}}" class="btn btn-info text-white">Seguimiento Evolución</a>
     </div>
   </div>
 </div>

@@ -92,35 +92,34 @@
           <h4>Registra las próximas fechas de la etapa: <b>{{$evolucion->etapaActual->detalle}}</b></h4>
           <button class="btn btn-primary">REGISTRAR CAMBIOS</button>
         </div>
-        <div class="row d-flex justify-content-center" >
-          <div style="max-width:1000px;">
-            <table style="width:auto; border:1px solid red" class="table table-responsive">
-              <thead>
+        {{-- {{print_r($arrFechas)}} --}}
+        <div class="overflow-auto">
+          <table class="table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Dosis</th>
+                <th>{{ $hoy = date('d-m-Y', strtotime($tratamiento->fechaInicio)) }}</th>
+                @for ($i = 1; $i < 6; $i++)
+                <th>{{date('d-m-Y', strtotime($hoy."+$i days"))}}</th>
+                @endfor
+              </tr>
+            </thead>
+            <tbody>
+              @foreach ($tratamiento->contenido as $contenido)
                 <tr>
-                  <th></th>
-                  <th>Dosis</th>
-                  <th>{{ $hoy = date('d-m-Y', strtotime($tratamiento->fechaInicio)) }}</th>
-                  @for ($i = 1; $i < 6; $i++)
-                    <th>{{date('d-m-Y', strtotime($hoy."+$i days"))}}</th>
-                  @endfor
+                  <td style="text-align:right">{{$contenido->medicamento->descripcion}}</td>
+                  <td>{{$contenido->dosis}}</td>
+                  <td><input type="checkbox" data-idMedic="{{$contenido->medicamento->idMedicamento}}" data-fecha></td>
+                  <td><input type="checkbox" data-idMedic="{{$contenido->medicamento->idMedicamento}}" data-fecha></td>
+                  <td><input type="checkbox" data-idMedic="{{$contenido->medicamento->idMedicamento}}" data-fecha></td>
+                  <td><input type="checkbox" data-idMedic="{{$contenido->medicamento->idMedicamento}}" data-fecha></td>
+                  <td><input type="checkbox" data-idMedic="{{$contenido->medicamento->idMedicamento}}" data-fecha></td>
+                  <td><input type="checkbox" data-idMedic="{{$contenido->medicamento->idMedicamento}}" data-fecha></td>
                 </tr>
-              </thead>
-              <tbody>
-                @foreach ($tratamiento->contenido as $contenido)
-                  <tr>
-                    <td style="text-align:right">{{$contenido->medicamento->descripcion}}</td>
-                    <td>{{$contenido->dosis}}</td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td><input type="checkbox" name="" id=""></td>
-                    <td><input type="checkbox" name="" id=""></td>
-                  </tr>
-                @endforeach
-              </tbody>
-            </table>            
-          </div>
+              @endforeach
+            </tbody>
+          </table>
         </div>
       </div>
       @endif

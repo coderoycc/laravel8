@@ -5,6 +5,12 @@ function validator(idButton, idForm){
       validator_number(e.target);
     }else if(classes.includes('form-email')){
       validator_email(e.target);
+    }else if(classes.includes('form-cad-3')){
+      validator_cad(e.target, 3);
+    } else if(classes.includes('form-movil-phone')) {
+      validator_movil_phone(e.target);
+    } else if(classes.includes('form-today')){
+      validator_date_today(e.target);
     }
 
     
@@ -20,7 +26,7 @@ function validator(idButton, idForm){
       isFormValid = false;
     }
     if (isFormValid) {
-      console.log('valido')
+      // console.log('valido')
       $(`#${idButton}`).prop('disabled', false);
     } else {
       $(`#${idButton}`).prop('disabled', true);
@@ -37,13 +43,43 @@ function validator_number(e){
 }
 
 function validator_email(e){
-
+  const pattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  if(pattern.test(e.value)){
+    $(e).removeClass('is-invalid');
+  }else{
+    $(e).addClass('is-invalid');
+  }
 }
 
-function validator_movil_phone(){
-
+// validador para que la fecha sea mayor a hoy
+function validator_date_today(e){
+  const today = new Date();
+  let current = new Date(e.value);
+  if(current.getTime() > today.getTime()){
+    $(e).removeClass('is-invalid');
+  }else{
+    $(e).addClass('is-invalid');
+  }
 }
 
+function validator_movil_phone(e){
+  if($.isNumeric(e.value) && (e.value.startsWith('6') || e.value.startsWith('7') || e.value.startsWith('2'))){
+    if(e.value.length == 8){
+      $(e).removeClass('is-invalid');
+    }else{
+      $(e).addClass('is-invalid');
+    }
+  }else{
+    $(e).addClass('is-invalid');
+  }
+}
+function validator_cad(e, max){
+  if(e.value.length < max){
+    $(e).addClass('is-invalid');
+  }else{
+    $(e).removeClass('is-invalid');
+  }
+}
 function validator_age_range(min, max){
   const today = new Date();
   var year = today.getFullYear();

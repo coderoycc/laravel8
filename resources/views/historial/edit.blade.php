@@ -11,7 +11,7 @@
     <button class="btn btn-secondary" onclick="history.back()">Volver</button>
   </div>
   <div class="card-body">
-    {!! Form::open(['route' => ['historial.update', $historial->idHistorial], 'method' => 'PUT']) !!}
+    {!! Form::open(['route' => ['historial.update', $historial->idHistorial], 'method' => 'PUT', 'id'=>'form_historial']) !!}
       <div class="form-row">
         <div class="form-group col-md-4">
           {!! Form::label('nombres', 'Nombre (s)', []) !!}
@@ -81,7 +81,10 @@
       <div class="form-row">
         <div class="form-group col-md-4">
           {!! Form::label('fechaProxConsulta', 'Fecha de la próxima consulta', []) !!}
-          {!! Form::date('fechaProxConsulta', null, ['class'=>'form-control']) !!}
+          {!! Form::date('fechaProxConsulta', null, ['class'=>'form-control form-today']) !!}
+          <div  class="invalid-feedback">
+            La fecha debe ser mayor al día de hoy
+          </div>
         </div>
       </div>
         
@@ -93,7 +96,7 @@
       <input name="diagnosticos" type="hidden" id="listDiag" value="">
       <div class="form-row mt-2">
         <div class="form-group col-md-12">
-          {!! Form::submit('Guardar Paciente', ['class' => 'btn btn-primary float-right']) !!}
+          {!! Form::submit('Guardar Paciente', ['class' => 'btn btn-primary float-right', 'id'=>'btn_enviar', 'disabled']) !!}
         </div>
       </div>
     {!! Form::close() !!}
@@ -153,7 +156,9 @@
 
 @section('js')
   <script src="/custom/js/main.js"></script>
+  <script src="/custom/js/formValidator.js"></script>
   <script>
+    validator('btn_enviar', 'form_historial')
     $('.select2').select2()
     $("#modal_internacion").on('show.bs.modal', ()=>{
       $("#motivo").val($("#valoracion").val());
