@@ -16,4 +16,5 @@ class Tratamiento extends Model
     public function contenido(){
         return $this->hasMany(ContenidoTrat::class,'idTratamiento','idTratamiento');
     }
+
 }
