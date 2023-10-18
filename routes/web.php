@@ -28,14 +28,14 @@ Route::get('medico/{especialidad}', 'Medico@medicoespecialidad');
 
 // Rutas para Pacientes
 Route::resource('paciente', Paciente::class)->names('paciente');
-
-Route::get('mispacientes', [MispacientesController::class,'index'])->name('mispacientes.index');
-Route::get('mispacientes/nuevos', [MispacientesController::class,'nuevos'])->name('mispacientes.nuevos');
-
 Route::get('paciente/nuevos', 'Paciente@nuevos')->name('paciente.nuevos');
 Route::get('paciente/medico', 'Paciente@medico')->name('paciente.medico');
 Route::get('paciente/evolucion/show', 'App\Http\Controllers\Paciente@evolucion')->name('paciente.evolucion');
 Route::get('paciente/calendar/show', 'App\Http\Controllers\Paciente@calendar')->name('paciente.calendar');
+
+Route::get('mispacientes', [MispacientesController::class,'index'])->name('mispacientes.index');
+Route::get('mispacientes/nuevos', [MispacientesController::class,'nuevos'])->name('mispacientes.nuevos');
+
 
 // Rutas para controlador Historial
 Route::resource('historial', Historial::class)->names('historial');
@@ -49,6 +49,8 @@ Route::post('consulta/store', [ConsultaController::class,'store'])->name('consul
 Route::get('consulta/me/list', [ConsultaController::class,'misconsultas'])->name('consulta.misconsultas'); // usuarios
 
 Route::get('evolucion/{idHistorial}/show', 'App\Http\Controllers\EvolucionController@show')->name('evolucion.show');
+
+Route::post('evolucion/insertDelete/appTrat', 'App\Http\Controllers\AplicacionTratController@insertDeleteApTrat');
 
 Route::post('tratamiento/create', [TratamientoController::class, 'create']);
 

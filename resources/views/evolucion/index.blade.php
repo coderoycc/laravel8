@@ -92,8 +92,8 @@
           <h4>Registra las próximas fechas de la etapa: <b>{{$evolucion->etapaActual->detalle}}</b></h4>
           <button type="button" class="btn btn-primary" id="btn_changes">REGISTRAR CAMBIOS</button>
         </div>
-        <input type="hidden" id="idTratamiento" value="{{$tratamiento->idTratamiento}}">
         <div class="overflow-auto">
+          @csrf
           <table class="table">
             <thead>
               <tr>
@@ -110,7 +110,7 @@
                   <td style="text-align:right">{{$contenido->medicamento->descripcion}}</td>
                   <td>{{$contenido->dosis}}</td>
                   @foreach ($arrFechas as $fecha)
-                  <td><input type="checkbox" data-fecha="{{$fecha}}" {{$contenido->aplicacion($fecha)?'checked':''}}></td>
+                  <td><input type="checkbox" data-idconttrat="{{$contenido->idContenidoTrat}}" data-fecha="{{$fecha}}" {{$contenido->aplicacion($fecha)?'checked':''}}></td>
                   @endforeach
                 </tr>
               @endforeach
@@ -237,19 +237,30 @@
       }
     })
 
-    $("#btn_changes").click(() => {
+    $("#btn_changes").click(async () => {
       $("#btn_changes").attr('disabled', 'disabled');
       let arrChecks = []
-      const idContenidoTrat = 
       $("input[type='checkbox']").each((_,e) => {
         if(e.checked){
-          arrChecks.append({
+          arrChecks.push({
             fecha: e.dataset.fecha,
-            idContenidoTrat: 
+            idContenidoTrat: e.dataset.idconttrat
           })
         }
       });
       console.log(arrChecks)
+      console.log(JSON.stringify(arrChecks))
+      try {
+        const res = await $.ajax({
+          url: '/evolucion/insertDelete/appTrat',
+          type: 'POST',
+          data: {data: JSON.stringify(arrChecks), _token: $("input[name='_token']").val()},
+          dataType: 'JSON'
+        });
+      } catch (error) {
+        console.warn(error)
+        mensajeToast('¡Ups! Ocurrió un error', 'Ocurrió un error al intentar guardar los datos', 'warning', 2000)
+      }
     })
   </script>
 @stop
