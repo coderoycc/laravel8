@@ -110,7 +110,8 @@
                   <td style="text-align:right">{{$contenido->medicamento->descripcion}}</td>
                   <td>{{$contenido->dosis}}</td>
                   @foreach ($arrFechas as $fecha)
-                  <td><input type="checkbox" data-idconttrat="{{$contenido->idContenidoTrat}}" data-fecha="{{$fecha}}" {{$contenido->aplicacion($fecha)?'checked':''}}></td>
+                  {{$existApp = $contenido->aplicacion($fecha);}}
+                  <td><input type="checkbox" data-idconttrat="{{$contenido->idContenidoTrat}}" data-fecha="{{$fecha}}" {{$existApp?'checked':''}} data-idapptrat="{{}}"></td>
                   @endforeach
                 </tr>
               @endforeach
@@ -232,7 +233,7 @@
           location.reload();
         }, 2100);
       }else{
-        mensajeToast('Ocurrio un error', 'No se puedo registrar los datos', 'danger', 2500);
+        mensajeToast('Ocurrio un error', 'No se pudo registrar los datos', 'danger', 2500);
         console.warn(res)
       }
     })
@@ -248,8 +249,6 @@
           })
         }
       });
-      console.log(arrChecks)
-      console.log(JSON.stringify(arrChecks))
       try {
         const res = await $.ajax({
           url: '/evolucion/insertDelete/appTrat',
