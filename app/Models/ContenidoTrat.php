@@ -30,4 +30,36 @@ class ContenidoTrat extends Model {
       ->where('idContenidoTrat', $this->idContenidoTrat)
       ->exists();
   }
+
+  /**
+   * Genera las aplicaciones en el rango de fechas
+   */
+  public function aplicado($arrFecha){
+    $ini = date('Y-m-d', strtotime($arrFecha[0]));
+    $fin = date('Y-m-d', strtotime(end($arrFecha)));
+
+    $aplicaciones = DB::table('tbltratamiento')
+    ->join('tblcontenidotrat', 'tbltratamiento.idTratamiento', '=', 'tblcontenidotrat.idTratamiento')
+    ->leftJoin('tblaplicaciontrat', 'tblaplicaciontrat.idContenidoTrat', '=', 'tblcontenidotrat.idContenidoTrat')
+    ->where('tblcontenidotrat.idContenidoTrat', $this->idContenidoTrat)
+    ->whereBetween('fechaAplicacion', [$ini, $fin])
+    ->select('tblaplicaciontrat.idAplicacionTrat', 'tblcontenidotrat.idMedicamento', 'tblaplicaciontrat.fechaAplicacion')
+    ->get();
+    $salida = array();
+    foreach ($aplicaciones as $aplicacion) {
+      $fecha = date('d-m-Y', strtotime($aplicacion->fechaAplicacion));
+      $i = array_search($fecha, $arrFecha);
+      if($i !== false){
+        $salida[$arrFecha[$i]] = $aplicacion->idAplicacionTrat;
+      }
+    }
+    $resp = array();
+    foreach ($arrFecha as $fecha) {
+      if(!isset($salida[$fecha])){
+        $salida[$fecha] = 0;
+      }
+      $resp[$fecha] = $salida[$fecha];
+    }
+    return $resp;
+  }
 }

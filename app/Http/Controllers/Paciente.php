@@ -106,14 +106,28 @@ class Paciente extends Controller {
     $evolucion = Evolucion::where('idPaciente', $idPaciente)->first();
     $historial = HistorialModel::where('idPaciente', $idPaciente)->first();
     $etapas = Etapa::all();
+    $tratamientoActual = $evolucion->tratamientoActual();
     $data = [
-      'fecha' => Carbon::parse('2023-08-25'), // tendria que ir la fecha inicio de la etapa
+      'fecha' => Carbon::parse($tratamientoActual->fechaInicio), // tendria que ir la fecha inicio de la etapa
       'etapas' => $etapas->pluck('detalle')->all(),
     ];
+    $arrFechas = [];
+    $fechaInicio = strtotime($tratamientoActual->fechaInicio);
+    $arrFechas[] = date('d-m-Y', $fechaInicio);
+    $fechaActual = strtotime($tratamientoActual->fechaInicio);
+    $fechaFinal = strtotime($tratamientoActual->fechaInicio.'+20 days');
+    for($i = 1; $i < 21; $i++){
+      if($fechaActual < $fechaFinal){
+        $fechaActual = strtotime(date('d-m-Y',$fechaActual).'+1 days');
+        $arrFechas[] = date('d-m-Y', strtotime(date('d-m-Y',$fechaInicio)."+$i days"));
+      } else {
+        break;
+      } 
+    }
     // Inicializando el Objeto creador de PDF
     $pdf = app('dompdf.wrapper');
     // Asignando la vista de referencia del documento
-    $pdf->loadView('pacientes.protocol_report', compact(array('data', 'evolucion', 'historial')));
+    $pdf->loadView('pacientes.protocol_report', compact(array('data', 'evolucion', 'historial', 'arrFechas', 'tratamientoActual')));
     // Configuracion las dimensiones del documento
     $pdf->setPaper('legal', 'landscape');
     // Definiendo el tipo de fuente

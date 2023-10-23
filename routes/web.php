@@ -53,6 +53,7 @@ Route::get('evolucion/{idHistorial}/show', 'App\Http\Controllers\EvolucionContro
 Route::post('evolucion/insertDelete/appTrat', 'App\Http\Controllers\AplicacionTratController@insertDeleteApTrat');
 
 Route::post('tratamiento/create', [TratamientoController::class, 'create']);
+Route::post('tratamiento/create/intratecales', [TratamientoController::class, 'createIntratecales']);
 
 Route::get('internacion', [InternacionController::class, 'index'])->name('internacion.index');
 Route::get('internacion/solicitudes', [InternacionController::class, 'solicitud'])->name('internacion.solicitud');

@@ -45,7 +45,6 @@ class EvolucionController extends Controller {
           break;
         } 
       }
-
     }
     return view('evolucion.index', compact('historial', 'evolucion', 'tratamiento', 'html', 'mostrarMedicamentos','arrFechas'));
   }

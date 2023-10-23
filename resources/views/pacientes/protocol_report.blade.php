@@ -32,7 +32,6 @@
     <link rel="stylesheet" href="{{ public_path("/css/report-print.css") }}" media="all"/>
 </head>
 <body>
-    {{-- {{print_r($evolucion->tratamientoActual())}} --}}
     <div class="block">
         <div class="font-semibold leading-tight text-center m-b-10 text-xs">PROTOCOLO ST JUDE</div>
     </div>
@@ -61,22 +60,26 @@
                     </td>
                     <td style="width:8px;"></td>
                     {{ $fecha = $data['fecha']->subDay() }}
-                    @for ($i = 0; $i < 21; $i++)
-                    <td class="border-dark" style="width:38px;height:80px;"><div class="text-vertical">{{ $fecha->addDay()->format("d-m-Y") }}</div></td>
-                    @endfor
+                    @foreach ($arrFechas as $fechaF)
+                    <td class="border-dark" style="width:38px;height:80px;"><div class="text-vertical">{{ $fechaF }}</div></td>
+                    @endforeach
                 </tr>
                 <tr><td>&nbsp;</td></tr>
             </thead>
             <!--CUERPO DE LA TABLA-->
             <tbody>
+                
                 @foreach ($evolucion->tratamientoActual()->contenido->all() as $cont)
                 <tr>
                     <td class="border-dark">{{$cont->medicamento->descripcion}}</td>
                     <td class="border-dark">{{$cont->dosis}}</td>
                     <td></td>
-                    @for ($j = 0; $j < 21; $j++)
-                    <td class="border-dark" style="height:23px;"></td>
-                    @endfor
+                    @php
+                        $aplicado = $cont->aplicado($arrFechas);
+                    @endphp
+                    @foreach ($aplicado as $trat)
+                    <td class="border-dark" style="height:23px;">{{$trat!=0?'X':''}}</td>
+                    @endforeach
                 </tr>
                 @endforeach
                 <tr>
@@ -86,27 +89,6 @@
                     <td class="border-dark" style="height:23px;">{{ $j + 1 }}</td>
                     @endfor
                 </tr>
-                {{-- @for ($i = 0; $i < 7; $i++)
-                <tr>
-
-                    @if ($i < 6)
-                    <td class="border-dark">
-                        holadfshdhsdfhsfhsfhshsdfhsfhsf sfdhsfdh
-                    </td>
-                    <td class="border-dark">
-                        12ml
-                    </td>
-                    @else
-                    <td class="border-dark" colspan="2" rowspan="2">DIA DE QUIMIOTERAPIA</td>
-                    @endif
-                    <td></td>
-                    @for ($j = 0; $j < 21; $j++)
-                    <td class="border-dark" style="height:23px;">
-                        @if ($i == 6) {{ $j + 1 }} @endif
-                    </td>
-                    @endfor
-                </tr>
-                @endfor --}}
                 <tr>
                     <td></td>
                     @for ($i = 0; $i < 3; $i++)
@@ -121,7 +103,15 @@
             <tr>
                 <td class="border-dark" style="width:680px;height:110px;"></td>
                 <td style="width:50px;height:110px;"></td>
-                <td class="border-dark align-top p-10" style="width:250px;height:110px;">INTRATECALES:</td>
+                <td class="border-dark align-top p-10" style="width:250px;height:110px;">INTRATECALES:
+                    @if (count($tratamientoActual->intratecales()) == 0)
+                    <p>- Sin intratecales <b style="float:right">--</b></p>
+                    @else
+                    @foreach ($tratamientoActual->intratecales() as $intra)
+                    <p>- {{$intra->descripcion}} <b style="float:right">{{$intra->dosis}}</b></p>
+                    @endforeach
+                    @endif
+                </td>
             </tr>
         </table>
     </div>

@@ -35,6 +35,7 @@
       <div class="nav nav-tabs" id="product-tab" role="tablist">
         @if ($mostrarMedicamentos)
         <a class="nav-item nav-link active" id="reg-evolucion-tab" data-toggle="tab" href="#reg-evolucion" role="tab" aria-controls="reg-evolucion" aria-selected="false">Registro de Evolución</a>
+        <a class="nav-item nav-link" id="reg-intratecales-tab" data-toggle="tab" href="#reg-intratecales" role="tab" aria-controls="reg-intratecales" aria-selected="false">Intratecales</a>
         @else
         <a class="nav-item nav-link active" id="reg-aplicacion-tab" data-toggle="tab" href="#reg-aplicacion" role="tab" aria-controls="reg-aplicacion" aria-selected="false">Aplicación de medicamentos</a>            
         @endif
@@ -81,7 +82,37 @@
                 <input type="date" class="form-control" id="f_final" value="{{$fechaNueva}}" disabled>
               </div>
               <br><br>
-              <button type="submit" class="btn btn-success">Terminar Registro</button>
+              <button type="submit" class="btn btn-success" id="btn_registro">Terminar Registro</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="tab-pane fade" id="reg-intratecales" role="tabpanel" aria-labelledby="reg-intratecales-tab">
+        <h3>Registre medicamentos <b>Intratecales</b></h3>
+        <form id="form_intratecales">
+          @csrf
+          <input type="hidden" name="idTratamiento" value="{{$tratamiento->idTratamiento}}">
+          <div class="row">
+            <div class="col-md-8">
+              <h5>Intratecales</h5>
+              @foreach ([1,2,3] as $item)
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label>Medicamento Intratecal {{$item}}</label>
+                  <select class="form-control select2" style="width: 100%;padding-bottom:5px;" name="idIntra{{$item}}">
+                    {!! $html !!}
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Dosis</label>
+                  <input type="text" name="dosisIntra{{$item}}" class="form-control">
+                </div>
+              </div>
+              @endforeach
+            </div>
+            <div class="col-md-4" >
+              <br><br>
+              <button type="submit" class="btn btn-success">Registrar medicamentos</button>
             </div>
           </div>
         </form>
@@ -109,9 +140,8 @@
                 <tr>
                   <td style="text-align:right">{{$contenido->medicamento->descripcion}}</td>
                   <td>{{$contenido->dosis}}</td>
-                  @foreach ($arrFechas as $fecha)
-                  {{$existApp = $contenido->aplicacion($fecha);}}
-                  <td><input type="checkbox" data-idconttrat="{{$contenido->idContenidoTrat}}" data-fecha="{{$fecha}}" {{$existApp?'checked':''}} data-idapptrat="{{}}"></td>
+                  @foreach ($contenido->aplicado($arrFechas) as $fecha => $idAplicacion)
+                  <td><input type="checkbox" data-idconttrat="{{$contenido->idContenidoTrat}}" data-fecha="{{$fecha}}" {{$idAplicacion != 0 ? 'checked':''}} data-idapptrat="{{$idAplicacion}}"></td>
                   @endforeach
                 </tr>
               @endforeach
@@ -229,33 +259,58 @@
       });
       if(res.status === 'success'){
         mensajeToast('Guardado con exito ', 'El tratamiento se ha guardado correctamente', 'success', 2000)
-        setTimeout(() => {
-          location.reload();
-        }, 2100);
+        $("#btn_registro").attr('disabled', 'disabled')
+        $("#f_inicio").attr('disabled', 'disabled')
+        // setTimeout(() => {
+        //   location.reload();
+        // }, 2100);
       }else{
         mensajeToast('Ocurrio un error', 'No se pudo registrar los datos', 'danger', 2500);
         console.warn(res)
       }
     })
 
+    $("#form_intratecales").submit(async (e) => {
+      e.preventDefault();
+      const data = $("#form_intratecales").serialize();
+      console.log(data)
+      const res = await $.ajax({
+        url: '/tratamiento/create/intratecales',
+        type: 'POST',
+        data,
+        dataType: 'json'
+      })
+      console.log(res)
+    })
+
     $("#btn_changes").click(async () => {
       $("#btn_changes").attr('disabled', 'disabled');
       let arrChecks = []
+      let arrDelete = []
       $("input[type='checkbox']").each((_,e) => {
         if(e.checked){
-          arrChecks.push({
-            fecha: e.dataset.fecha,
-            idContenidoTrat: e.dataset.idconttrat
-          })
+          if(e.dataset.idapptrat == 0){
+            arrChecks.push({
+              fechaAplicacion: e.dataset.fecha,
+              idContenidoTrat: e.dataset.idconttrat
+            })
+          }
+        }else{
+          if(e.dataset.idapptrat != 0){
+            arrDelete.push(e.dataset.idapptrat)
+          }
         }
       });
       try {
         const res = await $.ajax({
           url: '/evolucion/insertDelete/appTrat',
           type: 'POST',
-          data: {data: JSON.stringify(arrChecks), _token: $("input[name='_token']").val()},
+          data: {data: JSON.stringify(arrChecks), dataDelete: JSON.stringify(arrDelete), _token: $("input[name='_token']").val()},
           dataType: 'JSON'
         });
+        if(res.status === 'success'){
+          mensajeToast('Se has modificado las fechas', res.message, 'success', 2400)
+        }
       } catch (error) {
         console.warn(error)
         mensajeToast('¡Ups! Ocurrió un error', 'Ocurrió un error al intentar guardar los datos', 'warning', 2000)

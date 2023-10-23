@@ -120,7 +120,7 @@
   <script src="/custom/js/formValidator.js"></script>
   <script>
     validator('btn_form', 'form_pac');
-    validator_age_range(5,18);
+    validator_age_range(0,18);
     $('#ci').on('change', () => {
       $('#codPaciente').val($('#ci').val())
     })
