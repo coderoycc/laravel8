@@ -8,47 +8,30 @@
 <section class="content">
   <div class="container-fluid">
     <div class="row">
-      @foreach ($tratamientos as $tratamiento)
+      @foreach ($etapas as $etapa)
       <div class="col-12 col-sm-6 col-md-3">
-        <a href="/home" class="text-dark">
-          <div class="info-box shadow">
-            <span class="info-box-icon bg-info elevation-1"><i class="fas fa-check"></i></span>
-            <div class="info-box-content">
-              <span class="info-box-text">{{$tratamiento->idEtapa}}</span>
-              <span class="info-box-number">
-                  10<small>%</small>
-              </span>
-            </div>
-          </div>
-        </a>
-      </div>
-      @endforeach
-      <div class="col-12 col-sm-6 col-md-3">
-        <a href="/home" class="text-dark">
+        @php
+          $url = $etapa->idTratamiento ? '/report/'.$idPaciente.'/show' : '#';
+          $classA = $etapa->idTratamiento ? '' : 'non-active'
+        @endphp
+        <a href="{{$url}}" target="_blank" class="text-dark {{$classA}}">
           <div class="info-box mb-3 shadow">
-            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
+            <span class="info-box-icon elevation-1 text-white" style="background-color:{{ $utils[$etapa->idEtapa][0] }};"><i class="fas {{ $utils[$etapa->idEtapa][1] }}"></i></span>
             <div class="info-box-content">
-                <span class="info-box-text">Etapa 2</span>
+                <span class="info-box-text">{{$etapa->detalle}}</span>
                 <span class="info-box-number">
-                    10<small>%</small>
+                  Inicio: 
+                  @if ($etapa->fechaInicio)
+                  {{date('d-m-Y', strtotime($etapa->fechaInicio))}}
+                  @else
+                    {{'Sin definir'}}
+                  @endif
                 </span>
             </div>
           </div>
         </a>
       </div>
-      <div class="col-12 col-sm-6 col-md-3">
-        <a href="/home" class="text-dark">
-          <div class="info-box mb-3 shadow">
-              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-thumbs-up"></i></span>
-              <div class="info-box-content">
-                  <span class="info-box-text">Etapa 3</span>
-                  <span class="info-box-number">
-                      10<small>%</small>
-                  </span>
-              </div>
-          </div>
-        </a>
-      </div>
+      @endforeach
     </div>
   </div>
 </section>
@@ -56,6 +39,12 @@
 
 
 @section('css')
+<style>
+  .non-active{
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+</style>
 @stop
 
 @section('js')

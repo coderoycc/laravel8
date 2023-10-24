@@ -6,6 +6,7 @@
 
 @section('content')
   <section class="content">
+    <input type="hidden" value="{{$idHistorial}}" id="idHistorial">
     <div class="col-md-12">
       <div class="card card-primary">
         <div class="card-body p-0">
@@ -27,6 +28,7 @@
 <script src="/vendor/fullcalendar/locales/es.js"></script>
   <script>
     $(document).ready(()=>{
+      var idHistorial = $("#idHistorial").val();
       var calendarEl = document.getElementById('calendar');
       var calendar = new FullCalendar.Calendar(calendarEl, {
         locale: 'es',
@@ -48,7 +50,7 @@
 
             info.jsEvent.preventDefault(); // prevents browser from following link in current tab.
           } else {
-            alert('Clicked ' + eventObj.title);
+            // alert('Clicked ' + eventObj.title);
           }
         },
         themeSystem: 'bootstrap',
@@ -56,7 +58,7 @@
         navLinks: true,
         events: function(info, successCallback, failureCallback){
           $.ajax({
-            url: '/api/calendar/paciente',
+            url: '/api/calendar/paciente?id='+idHistorial,
             method: 'GET',
             dataType: 'json',
             success: function(response){

@@ -57,7 +57,11 @@ class Paciente extends Controller {
   public function calendar() {
     $user = Auth::user();
     if ($user->rol == 'PACIENTE') {
-      return view('pacientes.calendar');
+      $idHistorial = HistorialModel::where('idPaciente', $user->idUsuario)->first()->idHistorial;
+      if($idHistorial){
+        return view('pacientes.calendar',compact('idHistorial'));
+      }
+      return redirect()->route('home');
     } else {
       return redirect()->route('home');
     }
@@ -71,12 +75,25 @@ class Paciente extends Controller {
   }
 
   public function evolucion() {
-
     // /report/{idPaciente}/show
     $idPaciente = Auth::user()->idUsuario;
     $evolucion = Evolucion::where('idPaciente', $idPaciente)->get()->first();
     $tratamientos = $evolucion->tratamiento;
-    return view('pacientes.evolucion', compact('tratamientos'));
+    $utils = ["1"=>["#17a2b8","fa-file-medical-alt"], "2"=>["#6c757d","fa-file-medical"], 
+            "3"=>["#fd7e14","fa-notes-medical"], "4" => ["#007bff", "fa-hand-holding-medical"], 
+            "5"=>["#20c997", "fa-prescription-bottle-alt"], 
+            "6"=>["#28a745", "fa-pump-medical"], "7"=>["#6f42c1", "fa-heartbeat"]];
+    $etapas = DB::table('tbletapa as te')
+    ->select('te.detalle', 'te.idEtapa', 'tt.idTratamiento', 'tt.fechaInicio')
+    ->leftJoin(
+        DB::raw('(SELECT idTratamiento, fechaInicio, idEtapa FROM tbltratamiento WHERE idEvolucion = '.$evolucion->idEvolucion.') as tt'),
+        'te.idEtapa',
+        '=',
+        'tt.idEtapa'
+    )
+    ->orderBy('te.idEtapa')
+    ->get();
+    return view('pacientes.evolucion', compact('idPaciente', 'etapas', 'utils'));
   }
 
   public function show($id) {
