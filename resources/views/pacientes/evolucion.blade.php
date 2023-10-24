@@ -8,13 +8,13 @@
 <section class="content">
   <div class="container-fluid">
     <div class="row">
+      @foreach ($tratamientos as $tratamiento)
       <div class="col-12 col-sm-6 col-md-3">
-
         <a href="/home" class="text-dark">
           <div class="info-box shadow">
             <span class="info-box-icon bg-info elevation-1"><i class="fas fa-check"></i></span>
             <div class="info-box-content">
-              <span class="info-box-text">Etapa 1</span>
+              <span class="info-box-text">{{$tratamiento->idEtapa}}</span>
               <span class="info-box-number">
                   10<small>%</small>
               </span>
@@ -22,6 +22,7 @@
           </div>
         </a>
       </div>
+      @endforeach
       <div class="col-12 col-sm-6 col-md-3">
         <a href="/home" class="text-dark">
           <div class="info-box mb-3 shadow">

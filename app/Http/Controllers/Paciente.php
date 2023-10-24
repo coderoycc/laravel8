@@ -11,6 +11,7 @@ use App\Models\Historial\HistorialModel;
 use App\Models\Tratamiento;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Paciente extends Controller {
   public function __construct() {
@@ -70,7 +71,12 @@ class Paciente extends Controller {
   }
 
   public function evolucion() {
-    return view('pacientes.evolucion');
+
+    // /report/{idPaciente}/show
+    $idPaciente = Auth::user()->idUsuario;
+    $evolucion = Evolucion::where('idPaciente', $idPaciente)->get()->first();
+    $tratamientos = $evolucion->tratamiento;
+    return view('pacientes.evolucion', compact('tratamientos'));
   }
 
   public function show($id) {

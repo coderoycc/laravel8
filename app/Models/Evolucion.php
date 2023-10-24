@@ -16,7 +16,7 @@ class Evolucion extends Model
     public $timestamps = false;
 
     public function tratamiento(){
-        return $this->hasMany(Tratamiento::class, 'idEvolucion');
+        return $this->hasMany(Tratamiento::class, 'idEvolucion', 'idEvolucion');
     }
     public function tratamientoActual(){
         return Tratamiento::where('idEtapa', $this->idEtapaActual)->where('idEvolucion', $this->idEvolucion)->get()->first();

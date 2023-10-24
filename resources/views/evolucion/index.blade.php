@@ -112,7 +112,7 @@
             </div>
             <div class="col-md-4" >
               <br><br>
-              <button type="submit" class="btn btn-success">Registrar medicamentos</button>
+              <button type="submit" class="btn btn-success" id="btn_intratec">Registrar medicamentos</button>
             </div>
           </div>
         </form>
@@ -273,14 +273,27 @@
     $("#form_intratecales").submit(async (e) => {
       e.preventDefault();
       const data = $("#form_intratecales").serialize();
-      console.log(data)
       const res = await $.ajax({
         url: '/tratamiento/create/intratecales',
         type: 'POST',
         data,
         dataType: 'json'
       })
-      console.log(res)
+      if(res.status === 'success'){
+        mensajeToast('Registro exitoso de intratecales', res.message, 'success', 2200);
+        $('#btn_intratec').attr('disabled', 'disabled');
+        if($("#btn_registro").attr('disabled') != 'disabled'){
+          setTimeout(() => {
+            mensajeToast('¡ADVERTENCIA!', 'Por favor, llene los medicamentos para el tratamiento', 'warning', 2600);
+          }, 2450);
+        }else{
+          setTimeout(() => {
+            location.reload();
+          }, 2500);
+        }
+      }else{
+        mensajeToast('¡Ups! Ocurrió un error', res.message, 'danger', 2500)
+      }
     })
 
     $("#btn_changes").click(async () => {
