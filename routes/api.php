@@ -18,6 +18,8 @@ Route::get('medico/{especialidad}', 'App\Http\Controllers\RequestController@medi
 Route::get('medicamento/{cadena}', 'App\Http\Controllers\RequestController@medicamento');
 Route::get('internacion/{id}', 'App\Http\Controllers\InternacionController@data');
 Route::get('calendar/paciente', 'App\Http\Controllers\RequestController@calendarpac');
+Route::get('ensala/medico', 'App\Http\Controllers\RequestController@pacientesenSala');
+Route::put('ensala/cambiarEstado', 'App\Http\Controllers\RequestController@cambiarEstado');
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

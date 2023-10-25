@@ -35,6 +35,7 @@ class HomeController extends Controller
         $todosPacientes = 0;
         $cantSolicitudesInterna = 0;
         $user = Auth::user();
+        $idUsuario = $user->idUsuario;
         // echo $user['rol'] .'--'.$user['idUsuario'];
         if($user->rol == 'MEDICO'){
             $cantidadNuevos = HistorialModel::where('idMedico', $user->idUsuario)->where('atendido','NO')->count();
@@ -46,7 +47,7 @@ class HomeController extends Controller
         }
         $variables = array('nuevos'=>$cantidadNuevos, 'misPacientes'=>$misPacientes, 'cantidadMedicos'=>$cantidadMedicos, 'todosPacientes' => $todosPacientes, 'solicitudesInternacion' => $cantSolicitudesInterna);
         
-        return view('home', compact('variables'));
+        return view('home', compact('variables', 'idUsuario'));
     }
 
     public function cambiarPassword(Request $request)

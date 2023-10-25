@@ -97,7 +97,7 @@
           <a href="{{route('mispacientes.index')}}" class="small-box-footer">Ver listado <i class="fas fa-eye"></i> </a>
         </div>
       </div>
-      <div class="col-lg-3 col-6">
+      {{-- <div class="col-lg-3 col-6">
         <div class="small-box bg-warning">
           <div class="inner">
             <h3>#</h3>
@@ -107,6 +107,19 @@
             <i class="ion ion-person-add"></i>
           </div>
           <a href="#" class="small-box-footer">Ver <i class="fas fa-eye"></i> </a>
+        </div>
+      </div> --}}
+      <div class="col-lg-6 col-sm-12">
+        <div class="card card-primary" id="cardRefresh">
+          <div class="card-header">
+            <h3 class="card-title">Pacientes en sala</h3>
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool"  data-uuid="{{$idUsuario}}" id="btn_card_refresh">
+                <i class="fas fa-sync-alt"></i> Actualizar
+              </button>
+            </div>
+          </div>
+          <div class="card-body" id="card-refresh-content"></div>
         </div>
       </div>
       @endcan
@@ -120,4 +133,34 @@
 @stop
 
 @section('js')
+<script src="/custom/js/main.js"></script>
+<script>
+  $("#btn_card_refresh").click(async (e)=>{
+    $("#cardRefresh").append(`<div class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i></div>`)
+    const res = await $.get({
+      url: '/api/ensala/medico?uuid='+e.currentTarget.dataset.uuid,
+      dataType:'json'
+    })
+    if(res.status == 'success'){
+      $("#cardRefresh .overlay").remove();
+      $("#card-refresh-content").html(`${res.html}`)
+    }
+  });
+
+  async function atender(idBiometrico){
+    console.log('Cambiar estado a biometrico', idBiometrico)
+    const res = $.ajax({
+      url: '/api/ensala/cambiarEstado',
+      type: 'PUT',
+      data: {idBiometrico},
+      dataType: 'json'
+    })
+    if(res.status == 'success'){
+      mensajeToast('Operación realizada con éxito', res.message, 'success', 2000)
+    }else{
+      messajeToast('¡Upps! Ocurrió un error', res.message, 'warning', 2000)
+    }
+
+  }
+</script>
 @stop
