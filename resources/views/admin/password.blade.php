@@ -16,7 +16,7 @@
                       <h5 class="widget-user-desc">{{$user->rol}}</h5>
                   </div>
                   <div class="widget-user-image">
-                      <img class="img-circle elevation-2" src="/vendor/images/user.png" alt="User Avatar">
+                      <img class="img-circle elevation-2" src="{{$user->getUrlImageProfile()}}" alt="User Avatar">
                   </div>
                   <div class="card-footer">
                       <div class="row">

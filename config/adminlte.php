@@ -134,7 +134,7 @@ return [
     'usermenu_header_class' => 'bg-primary',
     'usermenu_image' => true,
     'usermenu_desc' => true,
-    'usermenu_profile_url' => false,
+    'usermenu_profile_url' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -261,18 +261,6 @@ return [
     'password_email_url' => 'password/email',
     'profile_url' => false,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Laravel Mix
-    |--------------------------------------------------------------------------
-    |
-    | Here we can enable the Laravel Mix option for the admin panel.
-    |
-    | For detailed instructions you can look the laravel mix section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Other-Configuration
-    |
-    */
-
     'enabled_laravel_mix' => false,
     'laravel_mix_css_path' => 'css/app.css',
     'laravel_mix_js_path' => 'js/app.js',
@@ -397,7 +385,12 @@ return [
         // ],
 
         // Para todos los usuarios
-        ['header' => 'account_settings'],
+        ['header' => 'account_settings'],        
+        [
+            'text' => 'Mi perfil',
+            'url'  => 'admin/profile',
+            'icon' => 'fas fa-fw fa-user',
+        ],
         [
             'text' => 'change_password',
             'url'  => 'admin/password',
@@ -540,13 +533,18 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
+                    'asset' => true,
+                    'location' => '/vendor/sweetalert2/sweetalert2.all.min.js',
                 ],
+                [
+                    'type'=> 'css',
+                    'asset' => true,
+                    'location'=> '/vendor/sweetalert2/sweetalert2.min.css',
+                ]
             ],
         ],
         'Pace' => [

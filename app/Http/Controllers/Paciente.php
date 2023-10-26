@@ -40,7 +40,7 @@ class Paciente extends Controller {
       $paciente = PacienteModel::create($data);
       // $idPaciente =$paciente->attributes()['idUsuario'];
       $idPaciente = $paciente->idUsuario;
-      $dataHistorial = ['idPaciente' => $idPaciente, 'idMedico' => $data['idMedico'], 'fechaConsulta' => $data['fechaConsulta'], 'procedencia' => $data['procedencia'], 'servicio' => $data['tipo'], 'etapa' => ''];
+      $dataHistorial = ['idPaciente' => $idPaciente, 'idMedico' => $data['idMedico'], 'fechaConsulta' => $data['fechaConsulta'], 'procedencia' => $data['procedencia'], 'servicio' => $data['tipo'], 'etapa' => '', 'fechaProxConsulta' => $data['fechaConsulta']];
 
       $historial = HistorialModel::create($dataHistorial);
       // Se deberia crear el registro para la evolucion con etapa actual 1
@@ -104,23 +104,7 @@ class Paciente extends Controller {
     //
   }
 
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function update(Request $request, $id) {
-    //
-  }
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
   public function destroy($id) {
     //
   }

@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Historial\HistorialModel;
 use Illuminate\Http\Request;
 use App\Models\Medico\MedicoModel;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
+use Intervention\Image\ImageManagerStatic;
 
 class RequestController extends Controller {
 
@@ -46,7 +47,6 @@ class RequestController extends Controller {
     $historial =  HistorialModel::where('idHistorial', $idHistorial)->get()->first();
     try {
       $arr = [];
-      // print_r($historial);
       if ($historial) {
         $resultado = DB::table('tblconsulta')
           ->select('fechaConsulta')
@@ -54,7 +54,6 @@ class RequestController extends Controller {
           ->orderBy('proxConsulta')
           ->get();
         $cont = 1;
-        // print_r($resultado);
         foreach ($resultado as $fechaConsult) {
           $arr[] = ['title' => 'Consulta ' . $cont, 'start' => $fechaConsult->fechaConsulta, 'allDay' => true, 'color' => '#98cf31'];
           $cont++;
@@ -96,10 +95,35 @@ class RequestController extends Controller {
   public function cambiarEstado(Request $request) {
     $idBiometrico = $request->all()['idBiometrico'];
     $res = DB::update("UPDATE biometrico SET estado = 'ATENDIDO' WHERE idBiometrico = " . $idBiometrico);
-    if($res){
-      echo json_encode(array("status"=> "success","message"=> "Paciente eliminado de la cola"));
-    }else{
-      echo json_encode(array("status"=> "error","message"=>"No se pudo eliminar de la cola al paciente"));
+    if ($res) {
+      echo json_encode(array("status" => "success", "message" => "Paciente eliminado de la cola"));
+    } else {
+      echo json_encode(array("status" => "error", "message" => "No se pudo eliminar de la cola al paciente"));
+    }
+  }
+
+  public function imageupload(Request $request) {
+    $id = $request->input('id');
+    try{
+      if ($request->hasFile('profile')) {
+        $image = $request->file('profile');
+        if ($image->isValid()) {
+          $imagePath = public_path('images/uploads');
+          if (!File::exists($imagePath)) {
+            File::makeDirectory($imagePath, 0755, true, true);
+          }
+          $newImageName = $id . '.jpg';
+          $image = ImageManagerStatic::make($image->getRealPath());
+          $image->encode('jpg', 75)->save($imagePath . '/' . $newImageName);
+          return response()->json(['status'=>'success','message' => 'Imagen subida exitosamente']);
+        } else {
+          return response()->json(['status'=>'error','error' => 'La imagen no es válida'], 400);
+        }
+      } else {
+        return response()->json(['status'=>'error','error' => 'No se envió ninguna imagen'], 400);
+      }
+    } catch (\Throwable $th) {
+      return response()->json(['status'=>'error','error' => json_encode($th)], 400);
     }
   }
 }

@@ -44,8 +44,8 @@
         <div class="form-group col-md-3">
           {!! Form::label('tipoCancer', 'Seleccione un tipo de cancer', []) !!}
           {!! Form::select('tipoCancer', 
-          [ 'Leucemia'=>'Leucemia','Tumores cerebrales'=>'Tumores cerebrales','Neuroblastoma'=>'Neuroblastoma','Tumor de Wilms'=>'Tumor de Wilms',
-            'Linfoma de Hodgkin'=>'Linfoma de Hodgkin','Cáncer de sarcoma'=>'Cáncer de sarcoma'], null, ['class'=>'form-control']) !!}
+          [ 'Leucemia'=>'Leucemia','Tumores cerebrales'=>'Tumor cerebral','Neuroblastoma'=>'Neuroblastoma',
+            'Linfoma'=>'Linfoma','Cáncer de sarcoma'=>'Cáncer de sarcoma', 'Tumor sólido'=>'Tumor Sólido'], null, ['class'=>'form-control']) !!}
         </div>
         <div class="form-group col-md-3">
           {!! Form::label('etapa', 'Etapa del cáncer', []) !!}

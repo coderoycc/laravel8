@@ -18,6 +18,11 @@ Route::get('admin/password', function () {
   $user = Auth::user();
   return view('admin.password', compact('user'));
 });
+Route::get('admin/profile', function (){
+  $user = Auth::user();
+  return view('admin.profile', compact('user'));
+});
+
 Route::put('admin/password/change', 'App\Http\Controllers\HomeController@cambiarPassword');
 
 Route::put('admin/password/reset', 'App\Http\Controllers\HomeController@resetearPassword');

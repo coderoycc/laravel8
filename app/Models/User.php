@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -43,14 +44,30 @@ class User extends Authenticatable
     }
 
     public function adminlte_image(){
-        return asset('vendor/images/user.png');
+        if(file_exists(public_path('images/uploads/'.Auth::user()->idUsuario.'.jpg'))){
+            return asset('images/uploads/'.Auth::user()->idUsuario.'.jpg');
+        }else{
+            return asset('images/user.png');
+        }
+    }
+    public function getUrlImageProfile(){
+        $url = "/images/";
+        if(file_exists(public_path('images/uploads/'.$this->idUsuario.'.jpg'))){
+            return $url.'uploads/'.$this->idUsuario.'.jpg';
+        }else{
+            return $url.'user.png';
+        }
     }
 
     public function adminlte_desc(){
-        return '';
+        return Auth::user()->rol;
     }
     public function attributes()
     {
         return $this->attributes;
+    }
+
+    public function adminlte_profile_url(){
+        return 'admin/profile';
     }
 }
