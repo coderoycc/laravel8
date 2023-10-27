@@ -66,7 +66,11 @@ Route::get('internacion/solicitudes', [InternacionController::class, 'solicitud'
 Route::post('internacion/create', [InternacionController::class, 'create'])->name('internacion.create');
 Route::put('internacion/update', [InternacionController::class, 'update'])->name('internacion.update');
 Route::get('internacion/formulario/{idInternacion}',[InternacionController::class, 'formulario'])->name('internacion.formulario');
+Route::put('altamedica/internacion/update', 'App\Http\Controllers\AltaController@altamedica');
 Route::get('altamedica/formulario/{idInternacion}','App\Http\Controllers\AltaController@formulario');
+
+Route::get('reports/html/leucemia', 'App\Http\Controllers\ReportsController@reportleucemia')->name('reports.leucemia');
+Route::get('reports/html/tumor', 'App\Http\Controllers\ReportsController@reportTumor')->name('reports.tumor');
 
 Route::get('receta/{idReceta}', [RecetaController::class, 'show'])->name('receta.show');
 

@@ -20,9 +20,12 @@ class PacienteModel extends Model{
     return $res->format("%y años %m meses %d dias");
   }
   static public function getPacientesRegular($idMedico){
-    return DB::select("SELECT th.idHistorial, th.idMedico, th.procedencia, th.etapa, th.fechaProxConsulta, tu.nombres, tu.apellidos, tu.idUsuario, tu.fechaNac FROM tblhistorial AS th 
-    INNER JOIN tblusuario AS tu
-    ON th.idPaciente = tu.idUsuario
+    return DB::select("SELECT th.idHistorial, th.idMedico, th.procedencia, th.etapa, th.fechaProxConsulta, tu.nombres, tu.apellidos, tu.idUsuario, tu.fechaNac, ti.estado, ti.idInternacion
+    FROM tblhistorial AS th 
+    INNER JOIN tblusuario AS tu ON th.idPaciente = tu.idUsuario
+    LEFT JOIN (SELECT idInternacion, idMedico, idPaciente, estado FROM tblinternacion WHERE 
+    estado in ('SOLICITUD','INTERNADO') ) ti 
+    ON th.idPaciente = ti.idPaciente AND th.idMedico = ti.idMedico
     WHERE th.atendido LIKE 'SI'
     AND th.idMedico = ?;", [$idMedico]);
   }

@@ -45,13 +45,17 @@
       </tr>
     </table>
     <br>
+    @php
+      $fechaInternacion = explode('-',date('d-m-Y', strtotime($internacion->fechaInternacion)));
+      $fechaEgreso = explode('-', date('d-m-Y', strtotime($internacion->fechaEgreso)));
+    @endphp
     <div style="display:inline-block">
       <table border="0" style="width:300px">
         <tr class="f-s-12">
           <td colspan="2" style="width:50px;">FECHA DE INGRESO</td>
-          <td class="h-20 border"></td>
-          <td class="h-20 border"></td>
-          <td class="h-20 border"></td>
+          <td class="h-20 border center">{{$fechaInternacion[0]}}</td>
+          <td class="h-20 border center">{{$fechaInternacion[1]}}</td>
+          <td class="h-20 border center">{{$fechaInternacion[2]}}</td>
         </tr>
         <tr class="f-s-12 center">
           <td colspan="2"></td>
@@ -65,9 +69,9 @@
       <table border="0" style="width:100%">
         <tr class="f-s-12">
           <td colspan="2" style="width:50px;">FECHA DE EGRESO</td>
-          <td class="h-20 border"></td>
-          <td class="h-20 border"></td>
-          <td class="h-20 border"></td>
+          <td class="h-20 border center">{{$fechaEgreso[0]}}</td>
+          <td class="h-20 border center">{{$fechaEgreso[1]}}</td>
+          <td class="h-20 border center">{{$fechaEgreso[2]}}</td>
         </tr>
         <tr class="f-s-12 center">
           <td colspan="2"></td>
@@ -108,9 +112,9 @@
         <tr>
           <td></td>
           <td class="center" colspan="2">CAUSAS DE EGRESO: </td>
-          <td class="center" colspan="2">ALTA MÉDICA {{$internacion->paciente->historialPaciente->servicio == 'ONCOLOGÍA' ? '( X )' : '( )'}}</td>
-          <td class="center" colspan="2">ALTA CONSOLIDADA {{$internacion->paciente->historialPaciente->servicio == 'HEMATOLOGÍA' ? '( X )' : '( )'}}</td>
-          <td class="center" colspan="2">FUGA {{$internacion->paciente->historialPaciente->servicio == 'EMERGENCIA' ? '( X )' : '( )'}}</td>
+          <td class="center" colspan="2">ALTA MÉDICA {{$internacion->motivoEgreso == 'ALTA MEDICA' ? '( X )' : '( )'}}</td>
+          <td class="center" colspan="2">ALTA CONSOLIDADA {{$internacion->motivoEgreso == 'ALTA CONSOLIDADA' ? '( X )' : '( )'}}</td>
+          <td class="center" colspan="2">FUGA {{$internacion->motivoEgreso == 'FUGA' ? '( X )' : '( )'}}</td>
           <td></td>
         </tr>
       </table>

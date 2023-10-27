@@ -66,8 +66,11 @@
                   <a class="dropdown-item" href="{{route('consulta.create', ['idHistorial'=>$valor->idHistorial])}}"><i class="fas fa-plus-square text-primary"></i> Nueva consulta</a>
                   <a class="dropdown-item" href="{{route('consulta.list', ['idHistorial'=>$valor->idHistorial])}}"> <i class="fas fa-notes-medical text-info"></i> Todas las consultas</a>
                   <a class="dropdown-item" href="{{route('evolucion.show', ['idHistorial'=>$valor->idHistorial])}}"><i class="fas fa-vial text-secondary"></i> Seguir Evolución</a>
+                  @if ($valor->estado == 'INTERNADO' || $valor->estado == 'SOLICITUD')
+                  <a class="dropdown-item" href="#" type="button" data-toggle="modal" data-target="#modal_alta" data-idinternacion="{{$valor->idInternacion}}" data-fullName="{{$valor->nombres.' '.$valor->apellidos}}"><i class="fas fa-check text-success"></i> Dar de alta</a>
+                  @else
                   <a class="dropdown-item" href="#" type="button" data-toggle="modal" data-target="#modal_internacion" data-idMedic="{{$valor->idMedico}}" data-idPaciente="{{$valor->idUsuario}}" data-fullName="{{$valor->nombres.' '.$valor->apellidos}}"><i class="fas fa-file-medical text-warning" ></i> Solicitar Internación</a>
-                  <a class="dropdown-item" href="#"><i class="fas fa-check text-success"></i> Dar de alta</a>
+                  @endif
                 </div>
               </div>
             </td>
@@ -112,7 +115,66 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <button type="button"  class="btn btn-primary" data-dismiss="modal" onclick="solicitarInternacion()">Solicitar internación</button>
+        <button type="button"  class="btn btn-primary" data-dismiss="modal" id="botonSolicitud" onclick="solicitarInternacion()">Solicitar internación</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{-- Modal Alta medica --}}
+<div class="modal fade" id="modal_alta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Formulario de alta médica </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="return false" id="form_alta">
+          @csrf
+          <input type="hidden" name="idInternacion" id="idinternacion_alta">
+          <div class="form-group">
+            <label>Nombre del paciente</label>
+            <input type="text" class="form-control" value="" id="nombre_alta" disabled>
+          </div>
+          <div class="form-group">
+            <label>Fecha de solicitud</label>
+            <input type="date" class="form-control" id="fecha_alta" disabled>
+          </div>
+          <div class="form-group">
+            <label for="motivo">Motivo </label>
+            <div class="d-flex justify-content-around">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" value="ALTA MEDICA" name="motivo_alta" id="r_am">
+                <label class="form-check-label" for="r_am">
+                  Alta médica
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" value="ALTA CONSOLIDADA" name="motivo_alta" id="r_ac">
+                <label class="form-check-label" for="r_ac">
+                  Alta consolidada
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" value="FUGA" name="motivo_alta" id="r_af">
+                <label class="form-check-label" for="r_af">
+                  Fuga
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Observaciones </label>
+            <input type="text" class="form-control" name="observaciones" placeholder="Observaciones de estado de egreso">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" id="btns_alta">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button"  class="btn btn-primary" id="btn_alta" onclick="darAlta()">Dar de alta</button>
       </div>
     </div>
   </div>
@@ -121,7 +183,6 @@
 
 
 @section('css')
-  <link rel="stylesheet" href="/css/admin_custom.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css">
   <style>
   .no-resize {
@@ -142,6 +203,7 @@
     });
   })
   $("#modal_internacion").on('show.bs.modal', async (e)=>{
+    $("#botonSolicitud").attr('disabled', false)
     var fechaPorDefecto = new Date();
     var dia = fechaPorDefecto.getDate();
     var mes = fechaPorDefecto.getMonth() + 1;
@@ -152,10 +214,12 @@
     $("#nombre").val(e.relatedTarget.dataset.fullname)   
   })
   $("#modal_internacion").on('hide.bs.modal', ()=>{
-    $("#fechaSol").val('');
-    $("#idPaciente").val('');
-    $("#idMedico").val('');
-    $("#nombre").val('')   
+    setTimeout(() => {
+      $("#fechaSol").val('');
+      $("#idPaciente").val('');
+      $("#idMedico").val('');
+      $("#nombre").val('')   
+    }, 1200);
   })
   async function solicitarInternacion(){
     const data = $("#form_internacion").serialize();
@@ -169,6 +233,49 @@
       mensajeToast('Operacion exitosa', res.message, 'success', 2800);
       $("#botonSolicitud").attr('disabled', true);
     }
+  }
+
+  $("#modal_alta").on('show.bs.modal', async (e)=>{
+    $("#btn_alta").attr('disabled', false)
+    var fechaPorDefecto = new Date();
+    var dia = fechaPorDefecto.getDate();
+    var mes = fechaPorDefecto.getMonth() + 1;
+    var anio = fechaPorDefecto.getFullYear();
+    $("#fecha_alta").val(`${anio}-${mes>9?'':'0'}${mes}-${dia>9?'':'0'}${dia}`);
+    $("#idinternacion_alta").val(e.relatedTarget.dataset.idinternacion);
+    $("#nombre_alta").val(e.relatedTarget.dataset.fullname)   
+  })
+
+  $("#modal_alta").on('hide.bs.modal', async ()=>{
+    setTimeout(() => {
+      $("#fecha_alta").val('');
+      $("#idinternacion_alta").val('');
+      $("#nombre_alta").val('')
+    }, 1200);
+  })
+
+  async function darAlta(){
+    const data = $("#form_alta").serialize();
+    console.log(data)
+    const res = await $.ajax({
+      url: '/altamedica/internacion/update',
+      type: 'PUT',
+      data: data,
+      dataType: 'json'
+    });
+    if(res.status == 'success'){
+      mensajeToast('Alta médica registrada', 'Paciente dado de alta con éxito', 'success', 2800);
+      $("#btn_alta").attr('disabled', true);
+      $("#btns_alta").append(`
+        <button type="button" target="_blank" data-dismiss="modal" class="btn btn-info" onclick="formAlta(${res.idInternacion})"><i class="fas fa-print"></i> Imprimir formulario</button>
+      `)
+    }else{
+      mensajeToast('Ocurrió un error al dar de alta', 'No se pudo dar de alta al paciente', 'error', 2800);
+      $("#modal_alta").modal('hide');
+    }
+  }
+  function formAlta(id){
+    window.open(window.location.origin+'/altamedica/formulario/'+id);
   }
 </script>
 @stop

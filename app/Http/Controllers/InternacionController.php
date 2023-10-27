@@ -9,7 +9,6 @@ class InternacionController extends Controller{
   public function create(Request $request){
     try {
       date_default_timezone_set('America/La_Paz');
-      
       if(!isset($request['idPaciente'])){
         throw new \Exception("Error no exista el valor esperado idPaciente", 1);
       }
@@ -53,11 +52,13 @@ class InternacionController extends Controller{
   }
 
   public function update(Request $request){
+    date_default_timezone_set('America/La_Paz');
     try {
       $data = $request->all();
       $internacion = Internacion::find($data['idInternacion']);
       if($internacion){
-        $internacion->estado = 'REVISADO';
+        $internacion->estado = 'INTERNADO';
+        $internacion->fechaInternacion = date('Y-m-d');
         // $internacion->cama = $data['cama'];
         $internacion->save();
         echo json_encode(array('status'=>'success', 'message'=>'Internacion revisada con éxito'));

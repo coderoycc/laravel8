@@ -341,7 +341,22 @@ return [
             'icon' => 'fas fa-fw fa-user-md',
             'can' => 'admin'
         ],
-
+        ['header' => 'REPORTES', 'can' => 'admin'],
+        [
+            'text' => 'Pacientes',
+            'icon' => 'fas fa-fw fa-chart-pie',
+            'can' => 'admin',
+            'submenu' => [
+                [
+                    'text' => 'Pacientes con leucemia',
+                    'route' => 'reports.leucemia'
+                ],
+                [
+                    'text' => 'Pacientes con Tumor',
+                    'route' => 'reports.tumor'
+                ]
+            ]
+        ],
         // vista solo para medicos
         ['header' => 'MIS PACIENTES', 'can' => 'medico'],
         [
@@ -378,11 +393,6 @@ return [
             'icon' => 'fas fa-fw fa-book-medical',
             'can' => 'paciente'
         ],
-        // [
-        //     'text' => 'Mis Pacientes',
-        //     'route'  => 'paciente.medico',
-        //     'icon' => 'fas fa-fw fa-user-md',
-        // ],
 
         // Para todos los usuarios
         ['header' => 'account_settings'],        
@@ -396,6 +406,7 @@ return [
             'url'  => 'admin/password',
             'icon' => 'fas fa-fw fa-lock',
         ],
+
         // [
         //     'text'    => 'multilevel',
         //     'icon'    => 'fas fa-fw fa-share',
@@ -523,12 +534,12 @@ return [
             ],
         ],
         'Chartjs' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js',
+                    'asset' => true,
+                    'location' => '/vendor/chart.js/Chart.min.js',
                 ],
             ],
         ],
