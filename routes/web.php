@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AltaController;
 use App\Http\Controllers\RecetaController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -65,6 +66,7 @@ Route::get('internacion/solicitudes', [InternacionController::class, 'solicitud'
 Route::post('internacion/create', [InternacionController::class, 'create'])->name('internacion.create');
 Route::put('internacion/update', [InternacionController::class, 'update'])->name('internacion.update');
 Route::get('internacion/formulario/{idInternacion}',[InternacionController::class, 'formulario'])->name('internacion.formulario');
+Route::get('altamedica/formulario/{idInternacion}','App\Http\Controllers\AltaController@formulario');
 
 Route::get('receta/{idReceta}', [RecetaController::class, 'show'])->name('receta.show');
 
