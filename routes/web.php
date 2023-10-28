@@ -71,6 +71,7 @@ Route::get('altamedica/formulario/{idInternacion}','App\Http\Controllers\AltaCon
 
 Route::get('reports/html/leucemia', 'App\Http\Controllers\ReportsController@reportleucemia')->name('reports.leucemia');
 Route::get('reports/html/tumor', 'App\Http\Controllers\ReportsController@reportTumor')->name('reports.tumor');
+Route::get('reports/pdf/leucemia', 'App\Http\Controllers\ReportsController@reportleucemiaPdf')->name('reports.leucemia.pdf');
 
 Route::get('receta/{idReceta}', [RecetaController::class, 'show'])->name('receta.show');
 
