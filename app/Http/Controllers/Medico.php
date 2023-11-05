@@ -5,19 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Medico\MedicoModel; 
+use App\Models\Medico\MedicoModel;
 use App\Providers\AuthServiceProvider;
 use Illuminate\Support\Facades\Auth;
 
-class Medico extends Controller
-{
+class Medico extends Controller {
 
-  public function __construct()
-  {
+  public function __construct() {
     $this->middleware('auth');
   }
-  public function index()
-  {
+  public function index() {
     // $gate = app()->make('Gate');
     // if ($gate->authorize('admin')) {
     // } else {
@@ -28,14 +25,12 @@ class Medico extends Controller
   }
 
 
-  public function create()
-  {
+  public function create() {
     return view('medico.create');
   }
 
 
-  public function store(Request $request)
-  {
+  public function store(Request $request) {
     try {
       $data = $request->all();
       $data['password'] = bcrypt($data['ci']);
@@ -50,32 +45,18 @@ class Medico extends Controller
     }
   }
 
-  public function show($id)
-  {
+  public function show($id) {
     //
   }
 
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function edit($id)
-  {
-    //
+  public function edit($id) {
+    $medico = MedicoModel::where('idUsuario', $id)->first();
+    return view('medico.edit', compact('medico'));
   }
 
-  /**
-   * Update the specified resource in storage.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function update(Request $request, $id)
-  {
-    //
+
+  public function update(Request $request, MedicoModel $medico) {
+    print_r($medico);
   }
 
   /**
@@ -84,12 +65,11 @@ class Medico extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($id)
-  {
+  public function destroy($id) {
     //
   }
 
-  public function medicoespecialidad($especialidad){
+  public function medicoespecialidad($especialidad) {
     $medicos = User::where('especialidad', $especialidad)->get();
     print_r($medicos);
     echo 'devuelto';
