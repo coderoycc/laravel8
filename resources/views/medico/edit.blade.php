@@ -19,11 +19,11 @@
       <div class="form-row">
         <div class="form-group col-md-4">
           {!! Form::label('nombres', 'Nombre (s)', []) !!}
-          {!! Form::text('nombres', $medico->nombres, ['class'=>'form-control', 'readonly'=>'readonly']) !!}
+          {!! Form::text('nombres', $medico->nombres, ['class'=>'form-control']) !!}
         </div>
         <div class="form-group col-md-4">      
           {!! Form::label('appellidos', 'Apellidos', []) !!}
-          {!! Form::text('apellidos', $medico->apellidos, ['class'=>'form-control', 'readonly' => 'readonly']) !!}
+          {!! Form::text('apellidos', $medico->apellidos, ['class'=>'form-control']) !!}
         </div>
         <div class="form-group col-md-4">      
           {!! Form::label('ci', 'Nro. Carnet de Identidad (solo números)', []) !!}
@@ -33,7 +33,7 @@
       <div class="form-row">
         <div class="form-group col-md-4">
           {!! Form::label('fechaNac', 'Fecha de nacimiento', []) !!}
-          {!! Form::text('fechaNac', date('d/m/Y',strtotime($medico->fechaNac)), ['class'=>'form-control form-age', 'readonly'=>'readonly']) !!}
+          {!! Form::text('fechaNac', date('d/m/Y',strtotime($medico->fechaNac)), ['class'=>'form-control form-age', 'readonly'=>'readonly', 'disabled'=>'disabled']) !!}
         </div>
         <div class="form-group col-md-4">
           <label for="genero">Genero</label>

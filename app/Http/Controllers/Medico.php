@@ -56,7 +56,22 @@ class Medico extends Controller {
 
 
   public function update(Request $request, MedicoModel $medico) {
-    print_r($medico);
+    $data = $request->all();
+    $medico->nombres = $data['nombres'];
+    $medico->apellidos = $data['apellidos'];
+    $medico->genero = $data['genero'];
+    $medico->especialidad = $data['especialidad'];
+    $medico->matProfesional = $data['matProfesional'];
+    $medico->celular = $data['celular'];
+    $medico->email = $data['email'];
+    try {
+      $medico->save();
+      $request->session()->flash('success', 'El médico se ha modificado con éxito.');
+      return redirect()->route('medico.index');
+    } catch (\Throwable $th) {
+      $request->session()->flash('error', 'Ocurrio un error al modificar al médico.');
+      return redirect()->route('medico.index');
+    }    
   }
 
   /**

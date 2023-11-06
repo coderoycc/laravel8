@@ -22,23 +22,23 @@
 </div>
 
 {{-- Modal Eliminar Medico --}}
-<div class="modal fade" id="modal_eliminar_medico" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_eliminar_paciente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Eliminar médico</h5>
+        <h5 class="modal-title">Eliminar Paciente</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <input type="hidden" name="idMedico" id="idMedico_eliminar">
-        <h5 align="center">¿Está seguro de eliminar al médico?</h5>
-        <h5>Medico: <b id="name_medico"></b></h5>
+        <input type="hidden" id="idPaciente_eliminar">
+        <h5 align="center">¿Está seguro de eliminar al paciente?</h5>
+        <h5>Medico: <b id="name_paciente"></b></h5>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarMedico()">Sí, eliminar</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarPaciente()">Sí, eliminar</button>
       </div>
     </div>
   </div>

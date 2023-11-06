@@ -1,10 +1,10 @@
 @extends('adminlte::page')
 
 
-@section('title', 'Crear Pac.')
+@section('title', 'Editar Pac.')
 
 @section('content_header')
-  <h1>Crear un nuevo paciente</h1>
+  <h1>Editar datos paciente</h1>
 @stop
 
 
@@ -14,7 +14,7 @@
     <button class="btn btn-secondary" onclick="history.back()">Volver</button>
   </div>
   <div class="card-body">
-    <h4>Campos con {{'(*)'}} requeridos </h4>
+    <h4>Campos con {{'(*)'}} son requeridos </h4>
     {!! Form::open(['route'=>'paciente.store', 'id'=>'form_pac']) !!}
       <div class="form-row">
         <div class="form-group col-md-4">
@@ -83,7 +83,7 @@
         </div>
         <div class="form-group col-md-4">
           {!! Form::label('idMedico', '* Seleccione un médico', []) !!}
-          {!! Form::select('idMedico', $arrMedic, null, ['class'=>'form-control', 'id'=>'medicoSelect', 'required']) !!}
+          {{-- {!! Form::select('idMedico', $arrMedic, null, ['class'=>'form-control', 'id'=>'medicoSelect', 'required']) !!} --}}
         </div>
       </div>
       <div class="form-row">

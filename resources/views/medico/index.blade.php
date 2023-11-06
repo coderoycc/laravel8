@@ -110,5 +110,10 @@
     $("#name_medico").html(nombre);
     $("#idMedico_eliminar").val(id);
   })
+
+  async function eliminarMedico() { 
+    const id = $("#idMedico_eliminar").val();
+    mensajeToast('[Operación exitosa MÉDICO]', 'Se eliminó al médico seleccionado', 'success', 3200);
+  }
 </script>
 @stop

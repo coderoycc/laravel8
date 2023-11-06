@@ -101,7 +101,8 @@ class Paciente extends Controller {
   }
 
   public function edit($id) {
-    //
+    $paciente = PacienteModel::where('idUsuario', $id)->first();
+    return view('pacientes.edit', compact('paciente'));
   }
 
 
