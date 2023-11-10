@@ -120,6 +120,14 @@ class Paciente extends Controller {
       'etapas' => $etapas->pluck('detalle')->all(),
     ];
     $arrFechas = [];
+    $tallaPeso = DB::select('SELECT th.peso pesoth, th.talla tallath, tc.peso, tc.talla FROM tblhistorial th
+    LEFT JOIN tblconsulta tc
+    ON th.idHistorial = tc.idHistorial
+    WHERE th.idPaciente = ?
+    ORDER BY tc.fechaConsulta DESC
+    LIMIT 1', [$idPaciente]);
+    $peso = $tallaPeso[0]->peso ? $tallaPeso[0]->peso : $tallaPeso[0]->pesoth;
+    $talla = $tallaPeso[0]->talla ? $tallaPeso[0]->talla : $tallaPeso[0]->tallath;
     $fechaInicio = strtotime($tratamientoActual->fechaInicio);
     $arrFechas[] = date('d-m-Y', $fechaInicio);
     $fechaActual = strtotime($tratamientoActual->fechaInicio);
@@ -135,7 +143,48 @@ class Paciente extends Controller {
     // Inicializando el Objeto creador de PDF
     $pdf = app('dompdf.wrapper');
     // Asignando la vista de referencia del documento
-    $pdf->loadView('pacientes.protocol_report', compact(array('data', 'evolucion', 'historial', 'arrFechas', 'tratamientoActual')));
+    $pdf->loadView('pacientes.protocol_report', compact(array('data', 'evolucion', 'historial', 'arrFechas', 'tratamientoActual', 'peso', 'talla')));
+    // Configuracion las dimensiones del documento
+    $pdf->setPaper('legal', 'landscape');
+    // Definiendo el tipo de fuente
+    $pdf->set_option('defaultFont', 'Helvetica');
+    return $pdf->stream();
+  }
+
+  public function ProtocolSTJudeTrat($idPaciente, $idTratamiento){
+    $evolucion = Evolucion::where('idPaciente', $idPaciente)->first();
+    $historial = HistorialModel::where('idPaciente', $idPaciente)->first();
+    $etapas = Etapa::all();
+    $tratamientoActual = Tratamiento::find($idTratamiento);
+    $data = [
+      'fecha' => Carbon::parse($tratamientoActual->fechaInicio), // tendria que ir la fecha inicio de la etapa
+      'etapas' => $etapas->pluck('detalle')->all(),
+    ];
+    $tallaPeso = DB::select('SELECT th.peso pesoth, th.talla tallath, tc.peso, tc.talla FROM tblhistorial th
+    LEFT JOIN tblconsulta tc
+    ON th.idHistorial = tc.idHistorial
+    WHERE th.idPaciente = ?
+    ORDER BY tc.fechaConsulta DESC
+    LIMIT 1', [$idPaciente]);
+    $peso = $tallaPeso[0]->peso ? $tallaPeso[0]->peso : $tallaPeso[0]->pesoth;
+    $talla = $tallaPeso[0]->talla ? $tallaPeso[0]->talla : $tallaPeso[0]->tallath;
+    $arrFechas = [];
+    $fechaInicio = strtotime($tratamientoActual->fechaInicio);
+    $arrFechas[] = date('d-m-Y', $fechaInicio);
+    $fechaActual = strtotime($tratamientoActual->fechaInicio);
+    $fechaFinal = strtotime($tratamientoActual->fechaInicio.'+20 days');
+    for($i = 1; $i < 21; $i++){
+      if($fechaActual < $fechaFinal){
+        $fechaActual = strtotime(date('d-m-Y',$fechaActual).'+1 days');
+        $arrFechas[] = date('d-m-Y', strtotime(date('d-m-Y',$fechaInicio)."+$i days"));
+      } else {
+        break;
+      } 
+    }
+    // Inicializando el Objeto creador de PDF
+    $pdf = app('dompdf.wrapper');
+    // Asignando la vista de referencia del documento
+    $pdf->loadView('pacientes.protocol_report', compact(array('data', 'evolucion', 'historial', 'arrFechas', 'tratamientoActual','peso', 'talla')));
     // Configuracion las dimensiones del documento
     $pdf->setPaper('legal', 'landscape');
     // Definiendo el tipo de fuente

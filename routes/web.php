@@ -79,4 +79,6 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Ruta de Prueba para el Armado de PDF
-Route::get('/report/{idPaciente}/show', [App\Http\Controllers\Paciente::class, 'ProtocolSTJudePDF'])->name('report');
+Route::get('/report/{idPaciente}/show', [Paciente::class, 'ProtocolSTJudePDF'])->name('report');
+
+Route::get('/report/{idPaciente}/show/{idTratamiento}', [Paciente::class, 'ProtocolSTJudeTrat']);

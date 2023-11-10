@@ -25,4 +25,7 @@ class Tratamiento extends Model
         ->get();
         return $intratecales;
     }
+    public function etapa(){
+        return $this->hasOne(Etapa::class,'idEtapa','idEtapa');
+    }
 }

@@ -30,6 +30,7 @@
   </div>
 </div>
 <div class="card">
+  @if ($resp) {{-- caso normal --}}
   <div class="card-body">
     <nav class="w-100">
       <div class="nav nav-tabs" id="product-tab" role="tablist">
@@ -69,7 +70,7 @@
 
             <div class="col-md-4" >
               <br><br>
-              <h5>Fechas de inicio del tratamiento </h5>
+              <h5>Fecha de inicio del tratamiento </h5>
               <?php
               $hoy = date('Y-m-d');
               $fechaNueva = date('Y-m-d', strtotime($hoy . ' + 20 days'));
@@ -152,6 +153,16 @@
       @endif
     </div>
   </div>
+  @else {{-- caso fin de tratamientos --}}
+  <div class="card-body">
+    <div class="alert alert-success alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+      <h5><i class="icon fas fa-check"></i> Todas las etapas finalizadas</h5>
+      El paciente ha finalizado las 7 etapas de rehabilitación.
+    </div>
+  </div>   
+  @endif
+  
 </div>
 @stop
 

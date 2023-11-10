@@ -36,7 +36,7 @@
         <div class="font-semibold leading-tight text-center m-b-10 text-xs">PROTOCOLO ST JUDE</div>
     </div>
     <div class="block">
-        <div class="font-semibold leading-tight text-center m-b-10 text-xs uppercase">RIESGO: {{$historial->etapa}} &nbsp;&nbsp;&nbsp;FACE DE {{$evolucion->etapaActual->detalle}}</div>
+        <div class="font-semibold leading-tight text-center m-b-10 text-xs uppercase">RIESGO: {{$historial->etapa}} &nbsp;&nbsp;&nbsp;FACE DE {{$tratamientoActual->etapa->detalle}}</div>
     </div>
     <div class="block">
         <table class="font-semibold leading-tight text-center m-b-10 text-xs">
@@ -44,8 +44,8 @@
                 <td class="w-25 uppercase">PACIENTE: {{$evolucion->paciente->apellidos.' '.$evolucion->paciente->nombres}}</td>
                 <td class="w-25 uppercase">TIPO DE CANCER: LEUCEMIA LINFLOBASTICAS</td>
                 <td class="w-20">EDAD: {{ $evolucion->paciente->edad($evolucion->paciente->fechaNac) }}</td>
-                <td class="w-20">PESO: 31KG</td>
-                <td class="w-10">TALLA: 1.50 CM</td>
+                <td class="w-20">PESO: {{intval($peso)}} KG</td>
+                <td class="w-10">TALLA: {{intval($talla)}} CM</td>
             </tr>
         </table>
     </div>
@@ -69,7 +69,7 @@
             <!--CUERPO DE LA TABLA-->
             <tbody>
                 
-                @foreach ($evolucion->tratamientoActual()->contenido->all() as $cont)
+                @foreach ($tratamientoActual->contenido->all() as $cont)
                 <tr>
                     <td class="border-dark">{{$cont->medicamento->descripcion}}</td>
                     <td class="border-dark">{{$cont->dosis}}</td>

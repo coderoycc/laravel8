@@ -11,7 +11,7 @@
       @foreach ($etapas as $etapa)
       <div class="col-12 col-sm-6 col-md-3">
         @php
-          $url = $etapa->idTratamiento ? '/report/'.$idPaciente.'/show' : '#';
+          $url = $etapa->idTratamiento ? '/report/'.$idPaciente.'/show/'.$etapa->idTratamiento : '#';
           $classA = $etapa->idTratamiento ? '' : 'non-active'
         @endphp
         <a href="{{$url}}" target="_blank" class="text-dark {{$classA}}">
