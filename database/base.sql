@@ -180,3 +180,14 @@ INSERT INTO `tbldiagnosticocie` VALUES ('C83.3', 'Linfoma no Hodgkin de células
 INSERT INTO `tbldiagnosticocie` VALUES ('C83.4', 'Linfoma no Hodgkin inmunoblástico (difuso)', 'Linfoma no Hodgkin inmunoblástico (difuso) C83.4\r');
 INSERT INTO `tbldiagnosticocie` VALUES ('C83.5', 'Linfoma no Hodgkin linfoblástico (difuso)', 'Linfoma no Hodgkin linfoblástico (difuso) C83.5\r');
 INSERT INTO `tbldiagnosticocie` VALUES ('C83.6', 'Linfoma no Hodgkin indiferenciado (difuso)', 'Linfoma no Hodgkin indiferenciado (difuso) C83.6\r');
+
+-- Agregado de diagnositicos tipo TUMOR
+INSERT INTO tbldiagnosticocie VALUES ('C01','Tumor maligno de la base de la lengua', 'Tumor maligno de la base de la lengua C01');
+INSERT INTO tbldiagnosticocie VALUES ('C03','Tumor maligno de la encía','Tumor maligno de la encía C03');
+INSERT INTO tbldiagnosticocie VALUES ('C04','Tumor maligno del piso de la boca','Tumor maligno del piso de la boca C04');
+INSERT INTO tbldiagnosticocie VALUES ('C05','Tumor maligno del paladar','Tumor maligno del paladar C05');
+INSERT INTO tbldiagnosticocie VALUES ('C06','Tumor maligno de otras partes y de las no especificadas','Tumor maligno de otras partes y de las no especificadas');
+INSERT INTO tbldiagnosticocie VALUES ('C07','Tumor maligno de la glándula parótida','Tumor maligno de la glándula parótida C07');
+INSERT INTO tbldiagnosticocie VALUES ('C08','Tumor maligno de otras glándulas salivales mayores','Tumor maligno de otras glándulas salivales mayores');
+INSERT INTO tbldiagnosticocie VALUES ('C09','Tumor maligno de la amígdala','Tumor maligno de la amígdala C09');
+INSERT INTO tbldiagnosticocie VALUES ('C10','Tumor maligno de la orofaringe','Tumor maligno de la orofaringe C10');

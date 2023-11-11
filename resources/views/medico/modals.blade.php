@@ -22,7 +22,8 @@
 </div>
 
 {{-- Modal Eliminar Medico --}}
-<div class="modal fade" id="modal_eliminar_medico" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_eliminar_medico" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -38,7 +39,8 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarMedico()">Sí, eliminar</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="eliminarMedico()">Sí,
+          eliminar</button>
       </div>
     </div>
   </div>

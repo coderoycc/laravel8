@@ -15,20 +15,33 @@ class Medico extends Controller {
     $this->middleware('auth');
   }
   public function index() {
-    // $gate = app()->make('Gate');
-    // if ($gate->authorize('admin')) {
-    // } else {
-    //   abort(403); // Mostrar una página de error 403 Forbidden
-    // }
-    $medicos = User::where('rol', 'MEDICO')->get();
+    $medicos = User::where('rol', 'MEDICO')->where('estado', 'ALTA')->get();
     return view('medico.index', compact('medicos'));
+  }
+  public function bajasList() {
+    $medicos = MedicoModel::where('rol', 'MEDICO')->where('estado', 'BAJA')->get();
+    return view('medico.bajalist', compact('medicos'));
   }
 
 
   public function create() {
     return view('medico.create');
   }
-
+  public function darBaja(Request $request) {
+    date_default_timezone_set('America/La_Paz');
+    $now = date('Y-m-d');
+    $medico = MedicoModel::where('idUsuario', $request->all()['idMedico'])->first();
+    if ($medico) {
+      $medico->estado = 'BAJA';
+      $medico->fechaBaja = $now;
+      if ($medico->save()) {
+        return response()->json(['status' => 'success', 'message' => 'Médico dado de baja']);
+      }
+      return response()->json(['status' => 'error', 'message' => 'No se pudo dar de baja al médico']);
+    } else {
+      return response()->json(['status' => 'error', 'message' => 'No se encontró al médico para dar baja']);
+    }
+  }
 
   public function store(Request $request) {
     try {
@@ -71,7 +84,7 @@ class Medico extends Controller {
     } catch (\Throwable $th) {
       $request->session()->flash('error', 'Ocurrio un error al modificar al médico.');
       return redirect()->route('medico.index');
-    }    
+    }
   }
 
   /**

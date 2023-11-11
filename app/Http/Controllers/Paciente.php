@@ -18,8 +18,12 @@ class Paciente extends Controller {
     $this->middleware('auth');
   }
   public function index() {
-    $pacientes = User::where('rol', 'PACIENTE')->get();
+    $pacientes = User::where('rol', 'PACIENTE')->where('estado', 'ALTA')->get();
     return view('pacientes.index', compact('pacientes'));
+  }
+  public function bajasList() {
+    $pacientes = User::where('rol', 'PACIENTE')->where('estado', 'BAJA')->get();
+    return view('pacientes.bajalist', compact('pacientes'));
   }
 
   public function create() {
@@ -58,8 +62,8 @@ class Paciente extends Controller {
     $user = Auth::user();
     if ($user->rol == 'PACIENTE') {
       $idHistorial = HistorialModel::where('idPaciente', $user->idUsuario)->first()->idHistorial;
-      if($idHistorial){
-        return view('pacientes.calendar',compact('idHistorial'));
+      if ($idHistorial) {
+        return view('pacientes.calendar', compact('idHistorial'));
       }
       return redirect()->route('home');
     } else {
@@ -79,23 +83,39 @@ class Paciente extends Controller {
     $idPaciente = Auth::user()->idUsuario;
     $evolucion = Evolucion::where('idPaciente', $idPaciente)->get()->first();
     $tratamientos = $evolucion->tratamiento;
-    $utils = ["1"=>["#17a2b8","fa-file-medical-alt"], "2"=>["#6c757d","fa-file-medical"], 
-            "3"=>["#fd7e14","fa-notes-medical"], "4" => ["#007bff", "fa-hand-holding-medical"], 
-            "5"=>["#20c997", "fa-prescription-bottle-alt"], 
-            "6"=>["#28a745", "fa-pump-medical"], "7"=>["#6f42c1", "fa-heartbeat"]];
+    $utils = [
+      "1" => ["#17a2b8", "fa-file-medical-alt"], "2" => ["#6c757d", "fa-file-medical"],
+      "3" => ["#fd7e14", "fa-notes-medical"], "4" => ["#007bff", "fa-hand-holding-medical"],
+      "5" => ["#20c997", "fa-prescription-bottle-alt"],
+      "6" => ["#28a745", "fa-pump-medical"], "7" => ["#6f42c1", "fa-heartbeat"]
+    ];
     $etapas = DB::table('tbletapa as te')
-    ->select('te.detalle', 'te.idEtapa', 'tt.idTratamiento', 'tt.fechaInicio')
-    ->leftJoin(
-        DB::raw('(SELECT idTratamiento, fechaInicio, idEtapa FROM tbltratamiento WHERE idEvolucion = '.$evolucion->idEvolucion.') as tt'),
+      ->select('te.detalle', 'te.idEtapa', 'tt.idTratamiento', 'tt.fechaInicio')
+      ->leftJoin(
+        DB::raw('(SELECT idTratamiento, fechaInicio, idEtapa FROM tbltratamiento WHERE idEvolucion = ' . $evolucion->idEvolucion . ') as tt'),
         'te.idEtapa',
         '=',
         'tt.idEtapa'
-    )
-    ->orderBy('te.idEtapa')
-    ->get();
+      )
+      ->orderBy('te.idEtapa')
+      ->get();
     return view('pacientes.evolucion', compact('idPaciente', 'etapas', 'utils'));
   }
-
+  public function darBaja(Request $request) {
+    date_default_timezone_set('America/La_Paz');
+    $now = date('Y-m-d');
+    $paciente = PacienteModel::where('idUsuario', $request->all()['idPaciente'])->first();
+    if ($paciente) {
+      $paciente->estado = 'BAJA';
+      $paciente->fechaBaja = $now;
+      if ($paciente->save()) {
+        return response()->json(['status' => 'success', 'message' => 'Paciente dado de baja']);
+      }
+      return response()->json(['status' => 'error', 'message' => 'No se pudo dar de baja al paciente']);
+    } else {
+      return response()->json(['status' => 'error', 'message' => 'No existe el paciente']);
+    }
+  }
   public function show($id) {
     return view('pacientes.show');
   }
@@ -131,14 +151,14 @@ class Paciente extends Controller {
     $fechaInicio = strtotime($tratamientoActual->fechaInicio);
     $arrFechas[] = date('d-m-Y', $fechaInicio);
     $fechaActual = strtotime($tratamientoActual->fechaInicio);
-    $fechaFinal = strtotime($tratamientoActual->fechaInicio.'+20 days');
-    for($i = 1; $i < 21; $i++){
-      if($fechaActual < $fechaFinal){
-        $fechaActual = strtotime(date('d-m-Y',$fechaActual).'+1 days');
-        $arrFechas[] = date('d-m-Y', strtotime(date('d-m-Y',$fechaInicio)."+$i days"));
+    $fechaFinal = strtotime($tratamientoActual->fechaInicio . '+20 days');
+    for ($i = 1; $i < 21; $i++) {
+      if ($fechaActual < $fechaFinal) {
+        $fechaActual = strtotime(date('d-m-Y', $fechaActual) . '+1 days');
+        $arrFechas[] = date('d-m-Y', strtotime(date('d-m-Y', $fechaInicio) . "+$i days"));
       } else {
         break;
-      } 
+      }
     }
     // Inicializando el Objeto creador de PDF
     $pdf = app('dompdf.wrapper');
@@ -151,7 +171,7 @@ class Paciente extends Controller {
     return $pdf->stream();
   }
 
-  public function ProtocolSTJudeTrat($idPaciente, $idTratamiento){
+  public function ProtocolSTJudeTrat($idPaciente, $idTratamiento) {
     $evolucion = Evolucion::where('idPaciente', $idPaciente)->first();
     $historial = HistorialModel::where('idPaciente', $idPaciente)->first();
     $etapas = Etapa::all();
@@ -172,19 +192,19 @@ class Paciente extends Controller {
     $fechaInicio = strtotime($tratamientoActual->fechaInicio);
     $arrFechas[] = date('d-m-Y', $fechaInicio);
     $fechaActual = strtotime($tratamientoActual->fechaInicio);
-    $fechaFinal = strtotime($tratamientoActual->fechaInicio.'+20 days');
-    for($i = 1; $i < 21; $i++){
-      if($fechaActual < $fechaFinal){
-        $fechaActual = strtotime(date('d-m-Y',$fechaActual).'+1 days');
-        $arrFechas[] = date('d-m-Y', strtotime(date('d-m-Y',$fechaInicio)."+$i days"));
+    $fechaFinal = strtotime($tratamientoActual->fechaInicio . '+20 days');
+    for ($i = 1; $i < 21; $i++) {
+      if ($fechaActual < $fechaFinal) {
+        $fechaActual = strtotime(date('d-m-Y', $fechaActual) . '+1 days');
+        $arrFechas[] = date('d-m-Y', strtotime(date('d-m-Y', $fechaInicio) . "+$i days"));
       } else {
         break;
-      } 
+      }
     }
     // Inicializando el Objeto creador de PDF
     $pdf = app('dompdf.wrapper');
     // Asignando la vista de referencia del documento
-    $pdf->loadView('pacientes.protocol_report', compact(array('data', 'evolucion', 'historial', 'arrFechas', 'tratamientoActual','peso', 'talla')));
+    $pdf->loadView('pacientes.protocol_report', compact(array('data', 'evolucion', 'historial', 'arrFechas', 'tratamientoActual', 'peso', 'talla')));
     // Configuracion las dimensiones del documento
     $pdf->setPaper('legal', 'landscape');
     // Definiendo el tipo de fuente
