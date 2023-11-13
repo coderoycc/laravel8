@@ -44,8 +44,7 @@
         <div class="form-group col-md-3">
           {!! Form::label('tipoCancer', 'Seleccione un tipo de cancer', []) !!}
           {!! Form::select('tipoCancer', 
-          [ 'Leucemia'=>'Leucemia','Tumores cerebrales'=>'Tumor cerebral','Neuroblastoma'=>'Neuroblastoma',
-            'Linfoma'=>'Linfoma','Cáncer de sarcoma'=>'Cáncer de sarcoma', 'Tumor sólido'=>'Tumor Sólido'], null, ['class'=>'form-control']) !!}
+          [ ''=>'--seleccione tipo de cáncer--','Leucemia'=>'Leucemia','Tumor'=>'Tumores','Linfoma'=>'Linfoma'], null, ['class'=>'form-control', 'id' => 'tipoCancerid']) !!}
         </div>
         <div class="form-group col-md-3">
           {!! Form::label('etapa', 'Etapa del cáncer', []) !!}
@@ -71,10 +70,10 @@
         </div>
         <div class="form-group col-md-4">
           {!! Form::label('diagnostico', 'Diagnóstico (s)', []) !!}
-          <select class="select2" multiple="multiple" data-placeholder="Selecione uno o varios" id="diag" style="width: 100%;">
-            @foreach ($diagnosticoscie as $diag)
+          <select class="form-control" data-placeholder="Selecione uno o varios" id="diag" style="width: 100%;", name="diagnostico_cie">
+            {{-- @foreach ($diagnosticoscie as $diag)
             <option value="{{$diag->codigo_cie}}"> {{$diag->descripcion}}</option>
-            @endforeach
+            @endforeach --}}
           </select>
         </div>
       </div>
@@ -181,9 +180,29 @@
         $("#botonSolicitud").attr('disabled', true);
       }
     }
-    $("#diag").on('change', ()=>{
-      $("#listDiag").val(JSON.stringify($("#diag").val()))
-      // console.log($("#listDiag").val())
+    // $("#diag").on('change', ()=>{
+    //   $("#listDiag").val(JSON.stringify($("#diag").val()))
+    //   // console.log($("#listDiag").val())
+    // })
+    $(document).on('change', '#tipoCancerid', async (e) => {
+      const tipo = e.target.value;
+      $("#diag").html('');
+      try {
+        const res = await $.ajax({
+          url: `/api/tipocancer/${tipo}`,
+          type: 'GET',
+          dataType: 'json'
+        });
+        if(res.status == 'success'){
+          $("#diag").html(res.data);
+          $("#diag").select2();
+        }else{
+          mensajeToast('Error al recuperar diagnósticos', 'No se pudieron recuperar los diagnosticos para '+tipo, 'warning', 2800);
+        }
+
+      } catch (error) {
+        console.log(error)
+      }
     })
   </script>
 @stop

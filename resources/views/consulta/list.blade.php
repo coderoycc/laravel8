@@ -51,7 +51,6 @@
                     @if (isset($consulta->receta->idReceta) )
                     <a class="dropdown-item" target="_blank" href="{{route('receta.show', ['idReceta'=>$consulta->receta->idReceta])}}"> <i class="fas fa-notes-medical text-info"></i> Ver receta médica</a>
                     @endif
-                    <a class="dropdown-item" href="#"><i class="fas fa-vial text-warning"></i> Evolución</a>
                   </div>
                 </div>
               </td>

@@ -33,7 +33,7 @@ class Historial extends Controller
   {
     try {
       $valores = $request->all();
-      $diagList = json_decode($valores['diagnosticos']);
+      // $diagList = json_decode($valores['diagnosticos']);
       $historial->atendido = 'SI';
       $historial->tipoCancer = $valores['tipoCancer'];
       $historial->etapa = $valores['etapa'];
@@ -45,10 +45,11 @@ class Historial extends Controller
       $talla = number_format($valores['talla'], 2);
       $historial->talla = $talla;
       $historial->save();
-      foreach ($diagList as $diag) {
-        $data = ['idHistorial' => $historial->idHistorial, 'idDiagnosticoCIE' => $diag];
-        Diagnosticos::create($data);
-      }
+      Diagnosticos::create(['idHistorial' => $historial->idHistorial, 'idDiagnosticoCIE' => $valores['diagnostico_cie']]);
+      // foreach ($diagList as $diag) {
+      //   $data = ['idHistorial' => $historial->idHistorial, 'idDiagnosticoCIE' => $diag];
+      //   Diagnosticos::create($data);
+      // }
       $request->session()->flash('success', 'Datos guardados con éxito');
       return redirect()->route('mispacientes.index');
     } catch (\Throwable $th) {

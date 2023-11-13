@@ -364,10 +364,10 @@ return [
           'text' => 'Pacientes con leucemia',
           'route' => 'reports.leucemia'
         ],
-        [
-          'text' => 'Pacientes con Tumor',
-          'route' => 'reports.tumor'
-        ]
+        // [
+        //   'text' => 'Pacientes con Tumor',
+        //   'route' => 'reports.tumor'
+        // ]
       ]
     ],
     // vista solo para medicos

@@ -21,6 +21,7 @@ Route::get('calendar/paciente', 'App\Http\Controllers\RequestController@calendar
 Route::get('ensala/medico', 'App\Http\Controllers\RequestController@pacientesenSala');
 Route::put('ensala/cambiarEstado', 'App\Http\Controllers\RequestController@cambiarEstado');
 Route::post('profile/image', 'App\Http\Controllers\RequestController@imageupload');
+Route::get('tipocancer/{tipo}', 'App\Http\Controllers\RequestController@getCancer');
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

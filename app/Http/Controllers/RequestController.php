@@ -126,4 +126,21 @@ class RequestController extends Controller {
       return response()->json(['status'=>'error','error' => json_encode($th)], 400);
     }
   }
+
+  public function getCancer($tipo){
+    try {
+      $data = DB::select("select * from tbldiagnosticocie where descripcion like '%".$tipo."%'");
+      if($data){
+        $cadHtml = '';
+        foreach ($data as $diag) {
+          $cadHtml .= '<option value="'.$diag->codigo_cie.'">'.$diag->descripcion.'</option>';
+        }
+        echo json_encode(array('status' => 'success', 'data' => $cadHtml));
+      }else{
+        echo json_encode(array('status' => 'error', 'error' => 'No se encontraron registros'));  
+      }
+    } catch (\Throwable $th) {
+      echo json_encode(array('status' => 'error', 'error' => json_encode($th)));
+    }
+  }
 }
